@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { error } from 'console';
+import React, { useContext, useEffect, useState } from 'react';
+import useAuthListener from './hooks/use-auth-listener';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Sidebar from './components/sidebar/Sidebar';
+import { HomePage } from './pages';
+
 
 function App() {
+  const { user } = useAuthListener();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Sidebar />
+        <Switch>
+          <Route path='/' exact component={HomePage} />
+          {/* <Route path='/reports' component={Reports} /> */}
+          {/* <Route path='/products' component={Products} /> */}
+        </Switch>
+      </Router>
+    </>
   );
 }
 
