@@ -49,9 +49,7 @@ const Sidebar = () => {
       <SidebarContainer showSidebar={showSidebar}>
         <LinksContainer onClick={toggleSidebar}>
           <ToggleSidebarWrapper>
-            {/* <Link to='#'> */}
             <CloseIcon style={{ cursor: 'pointer' }}></CloseIcon>
-            {/* </Link> */}
           </ToggleSidebarWrapper>
           {SidebarData.map((item, index) => {
             return (

@@ -10,11 +10,15 @@ export const TopNavbar = styled.div`
   height: 80px;
   width: 100%;
   position: fixed;
-  z-index: 1000;
+  z-index: 100;
+  @media screen and (max-width: 768px) {
+    height: 120px;
+    // padding-top:20px;
+  }
   `;
 export const TopNavbarContainer = styled.div<
   { scrollNav: boolean } >`
-  background: ${({ scrollNav }) => (scrollNav ? 'rgb(41,41,41,0.8)' : 'transparent')};
+  background: ${({ scrollNav }) => (scrollNav ? 'rgb(41,41,41)' : 'transparent')};
   height: 80px;
   display: flex;
   transition: 1.3s all ease;
@@ -22,6 +26,10 @@ export const TopNavbarContainer = styled.div<
   align-items: center;
   max-width: 1160px;
   margin: 0 auto;
+  @media screen and (max-width: 768px) {
+    height: 120px;
+    // padding-top:20px;
+  }
 `;
 
 export const HamburgerWrapper = styled.div`
@@ -73,7 +81,7 @@ display: flex;
 justify-content: center;
 position: fixed;
 z-index: 1000;
-top: 0;
+top: 20px;
 transition: ${({ showSidebar }) => (showSidebar ? '350ms' : '1350ms')};
 left: ${({ showSidebar }) => (showSidebar ? '0' : '-100%')};
 `;
@@ -93,7 +101,8 @@ export const ToggleSidebarWrapper = styled.li`
 export const CloseIcon = styled(AiIcons.AiOutlineClose)`
   color: white;
   font-size: 2rem;
-  padding-bottom: 2rem;
+  margin-left:1.3rem;
+  // padding-bottom: 2rem;
   background: none;
 `;
 
@@ -101,7 +110,7 @@ export const NavbarItem = styled.span`
   display: flex;
   justify-content: start;
   align-items: start;
-  // padding: 8px 0px 8px 16px;
+  padding: 8px 0px 8px 16px;
   list-style: none;
   height: 60px;
   color:white;
@@ -132,9 +141,9 @@ display:none
 `;
 export const NavbarItemMobile = styled.span`
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: start;
-  // padding: 8px 0px 8px 16px;
+  padding: 8px 0px 8px 16px;
   list-style: none;
   height: 60px;
   color:white;

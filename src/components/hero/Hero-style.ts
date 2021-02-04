@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
 import * as FaIcons from 'react-icons/fa';
-import background from '../../images/hero2.jpg';
+import Background from '../../images/hero2.jpg';
+import TitleBackground from '../../images/burger-title-background.jpg';
 import { Link as LinkScroll } from 'react-scroll';
+import { Link as LinkRouter } from 'react-router-dom';
 
 export const HeroSection = styled.section`
   width: 100%;
@@ -13,7 +15,7 @@ export const HeroSection = styled.section`
   position: relative;
   &::before {
     content: '';
-    background-image: url(${background});
+    background-image: url(${Background});
     background-blend-mode: luminosity;
     ${'' /* background-blend-mode: multiply	; */}
     background-color: #666666;
@@ -43,7 +45,7 @@ export const HeroTitle = styled.h1`
   font-family: 'Noto Sans JP', sans-serif;
   text-align: center;
   font-size: 8rem;
-  background-image: url(https://acdn.foodbox.co.il/wp-content/uploads/sites/15/2019/06/25133533/covers2.jpg);
+  background-image: url(${TitleBackground});
   background-size: cover;
   background-clip: text;
   -webkit-background-clip: text;
@@ -81,7 +83,7 @@ export const ButtonAndArrowWrapper = styled.div`
   justify-content: center;
 `;
 
-export const ButtonSignUp = styled.button`
+export const SignUpLink = styled(LinkRouter)`
   color: white;
   background: black;
   font-family: 'Imbue', serif;
@@ -92,7 +94,7 @@ export const ButtonSignUp = styled.button`
   border: 2px solid white;
   padding: 20px 20px;
   margin: 40px;
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 5px 0 rgba(3, 6, 26, 0.15);
@@ -105,7 +107,6 @@ export const ButtonSignUp = styled.button`
     background: white;
     color: #1f4141;
     animation: none;
-    ${'' /* animation-play-state: paused; */}
   }
 
   @media screen and (max-width: 768px) {
@@ -144,5 +145,4 @@ export const DownArrow = styled(FaIcons.FaArrowCircleDown)`
   }
 `;
 
-export const DownArrowScrollLink = styled(LinkScroll)`
-`;
+export const DownArrowScrollLink = styled(LinkScroll)``;
