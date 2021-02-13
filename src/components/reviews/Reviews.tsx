@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { reviewsData } from './ReviewsData';
-import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from 'react-icons/fa';
 import { ReviewsSection, ReviewsContainer, ReviewsTitle, ReviewerImage, ReviewerNameAndLocation, ReviewDescription, DotsContainer, Dot, Slide, } from './Reviews-style';
 
 const Reviews = () => {
@@ -23,9 +22,6 @@ const Reviews = () => {
     setCurrent(current === length - 1 ? 0 : current + 1);
   };
 
-  const prevSlide = () => {
-    setCurrent(current === 0 ? length - 1 : current - 1);
-  };
 
   if (!Array.isArray(reviewsData) || reviewsData.length <= 0) {
     return null;
@@ -72,9 +68,10 @@ const Reviews = () => {
           <Dot current={current === 1 ? +true: 0} onClick={()=>setCurrent(1)} />
           <Dot current={current === 2 ? +true: 0} onClick={()=>setCurrent(2)} />  
         </DotsContainer>
-      </ReviewsContainer> 
+      </ReviewsContainer>    
     </ReviewsSection>
   );
 };
 
 export default Reviews;
+       

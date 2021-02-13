@@ -1,46 +1,99 @@
-import React, { FC, useState, FormEvent, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { signInUserWithGoogle, logOut, signInUserWithFacebook, loginUser, signUpUser } from '../../redux/actions/authActions';
+import { AuthFormSection, AuthFormContainer, Form, MainForm, SideForm, AuthFormTitle, IconsWrapper, FacebookIcon, GoogleIcon, SubTitle, Input, SubmitButton, SwitchButton } from './AuthForm-style';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpUser, setError, signout } from '../../redux/actions/authActions';
 import { RootState } from '../../redux';
-import { FormSection, FormContainer,Form,FormTitle,FormSubTitle } from './AuthForm-style'
-
-const AuthForm: FC = () => {
-  const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const AuthForm = () => {
+  const [current, setCurrent] = useState('signIn');
+  const [signInEmail, setSignInEmail] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
+  const [signUpName, setSignUpName] = useState('');
   const dispatch = useDispatch();
-  const { error, user, loading } = useSelector((state: RootState) => state.userRegister);
+  const { error, user, loading } = useSelector((state: RootState) => state.userLogin);
 
-  useEffect(() => {
-    return () => {
-      if (error) {
-        dispatch(setError());
-      }
-    }
-  }, [error, dispatch]);
-
-  const submitHandler = (e: FormEvent) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
-    if (error) {
-      dispatch(setError());
-    }
-    // dispatch(signUpUser({ email, password, firstName }));
-    dispatch(signUpUser({ email: 'ronn@wedas.com', password: '1111111', firstName: 'firstName' }));
+    dispatch(signUpUser({ email: signUpEmail, password: signUpPassword, name: signUpName }))
+  }
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    dispatch(loginUser({ email: signInEmail, password: signInPassword }))
   }
 
   return (
-    <FormSection>
-      <FormContainer>
-        <Form>
-        <FormTitle>Sign Up</FormTitle>
-        <FormTitle>Sign In</FormTitle>
-        </Form>
-      
-      {/* <button onClick={(e) => submitHandler(e)}>in</button>
-      <button onClick={() => dispatch(signout())}>out</button> */}
-      </FormContainer>
-    </FormSection>
-  );
-}
+    <>
+      <AuthFormSection>
+        <AuthFormContainer>
+          {current === 'signIn' && <Form onSubmit={handleSignIn}>
+            <MainForm>
+              <AuthFormTitle isSideForm={false}>Sign In</AuthFormTitle>
+              <IconsWrapper>
+                <FacebookIcon onClick={() => {
+                  dispatch(signInUserWithFacebook())
+                }}></FacebookIcon>
+                <GoogleIcon onClick={() => {
+                  dispatch(signInUserWithGoogle())
+                }}></GoogleIcon>
+              </IconsWrapper>
+              <SubTitle>or use your email account</SubTitle>
+              <Input onChange={(e) => {
+                setSignInEmail(e.target.value)
+              }} placeholder="Email" type="email"></Input>
+              <Input onChange={(e) => {
+                setSignInPassword(e.target.value)
+              }} placeholder="Password" type="password"></Input>
+              <SubmitButton>
+                SIGN IN
+            </SubmitButton>
+            </MainForm>
+            <SideForm>
+              <AuthFormTitle isSideForm={true}>Hello, Friend!</AuthFormTitle>
+              <SubTitle>Enter your personal details and start a journey full of discounts with us</SubTitle>
+              <SwitchButton onClick={() => {
+                setCurrent('signUp')
+              }} type="button">Sign Up</SwitchButton>
+            </SideForm>
+          </Form>}
+          {current === 'signUp' && <Form onSubmit={handleSignUp}>
+            <MainForm>
+              <AuthFormTitle isSideForm={false}>Create Account
+            </AuthFormTitle>
+              <IconsWrapper>
+                <FacebookIcon onClick={() => {
+                  dispatch(signInUserWithFacebook())
+                }}></FacebookIcon>
+                <GoogleIcon onClick={() => {
+                  dispatch(signInUserWithGoogle())
+                }}></GoogleIcon>
+              </IconsWrapper>
+              <SubTitle>or use your email for  registration</SubTitle>
+              <Input onChange={(e) => {
+                setSignUpName(e.target.value)
+              }} placeholder="Name" type="text"></Input>
+              <Input onChange={(e) => {
+                setSignUpEmail(e.target.value)
+              }} placeholder="Email" type="email"></Input>
+              <Input onChange={(e) => {
+                setSignUpPassword(e.target.value)
+              }} placeholder="Password" type="password"></Input>
+              <SubmitButton>
+                SIGN Up
+            </SubmitButton>
+            </MainForm>
+            <SideForm>
+              <AuthFormTitle isSideForm={true}>Welcome Back!</AuthFormTitle>
+              <SubTitle>To keep you connected with us please login with your personal info</SubTitle>
+              <SwitchButton onClick={() => {
+                setCurrent('signIn')
+              }} type="button">Sign In</SwitchButton>
+            </SideForm>
+          </Form>}
 
-export default AuthForm;   
+        </AuthFormContainer>
+    </AuthFormSection>
+    </>);
+};
+
+export default AuthForm;

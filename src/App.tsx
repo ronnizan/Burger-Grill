@@ -1,24 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
-import useAuthListener from './hooks/use-auth-listener';
+import useAutoLogin from './hooks/use-autoLogin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Sidebar from './components/sidebar/Sidebar';
 import { HomePage } from './pages';
 import AuthPage from './pages/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from './redux';
+import PrivateRoute from './auth/PrivateRoute';
+import PrivateAlreadyAuthRoute from './auth/PrivateAlereadyAuthRoute';
+import PopupMessage from './components/popup-message/PopupMessage';
+import BookTablePage from './pages/bookTable';
+
 
 
 function App() {
-  const { user } = useAuthListener();
+  useAutoLogin();
+  const { error, user, loading } = useSelector((state: RootState) => state.userLogin);
 
   return (
     <>
       <Router>
-        <Sidebar />
-        {user && JSON.stringify(user)}
-        {/* {!user && 'no'} */}
+        <Sidebar user={user} />
+        <PopupMessage/>
         <Switch>
           <Route path='/' exact component={HomePage} />
-          <Route path='/auth' component={AuthPage} />
-          {/* <Route path='/products' component={Products} /> */}
+          <PrivateAlreadyAuthRoute path='/auth' component={AuthPage} />
+          <Route path='/book-table' component={BookTablePage} />
         </Switch>
       </Router>
     </>

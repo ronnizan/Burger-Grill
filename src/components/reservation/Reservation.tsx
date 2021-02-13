@@ -1,64 +1,99 @@
 import React, { useState } from "react";
-import { ReservationSection, ReservationForm, ReservationTitle, ReservationSubTitle, FormInputWrapper, FormLabel, DatePickerInput, FormInput, IconWrapper, SubmitButton } from "./Reservation-style";
+import { ReservationSection, ReservationForm, ReservationTitle, ReservationSubTitle,ReservationSmall, FormInputWrapper, FormLabel, DatePickerInput, FormInput, IconWrapper, SubmitButton } from "./Reservation-style";
 import * as BsIcons from 'react-icons/bs';
 import * as HiIcons from 'react-icons/hi';
+import moment from 'moment';
+import { setReservationData } from "../../redux/actions/reservationActions";
+import { useDispatch, useSelector } from 'react-redux';
+import { ReservationData } from './../../redux/types/reservationTypes';
+import { useHistory } from "react-router";
 
-const Reservation = () => {
-  const [startDate, setStartDate] = useState<any>(new Date());
-  const [timeDate, setTimeDate] = useState<any>(new Date());
-  // var tempDate = new Date(parseInt(startDate, 10));
+const Reservation = ({fromBookTablePage}) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [date, setDate] = useState<any>(new Date());
+  const [time, setTime] = useState<any>(moment().hours(12).minutes(0).toDate());
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [partySize, setPartySize] = useState<number>(0);
+  const [name, setName] = useState<any>('');
+
+
   const handleDate = (date: any) => {
-    setStartDate(date);
-    console.log(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    setDate(date);
+    // console.log(date.getDate(), date.getMonth() + 1, date.getFullYear());
   }
-    
-  console.log(timeDate.toLocaleTimeString());
-  
-  return (
-    <> 
-      <ReservationSection id="Reservation">
-        <ReservationTitle className="title">RESERVATIONS</ReservationTitle>
-        <ReservationSubTitle className="title">Book a table online. Confirmation will reach your email.</ReservationSubTitle>
-        <ReservationForm>
+  const handleTimeDate = (date: any) => {
+    setTime(date);
+    // console.log(date.getHours()); 
+  }
 
+  const submitForm = (e) => {
+    e.preventDefault();
+    let reservationData: ReservationData = {
+      date, name, email, phoneNumber, partySize, time: time.getHours()
+    }
+    dispatch(setReservationData(reservationData))
+    history.push('/book-table')
+  }
+
+
+  return (
+    <>
+      <ReservationSection id="Reservation">
+        <ReservationTitle fromBookTablePage={fromBookTablePage} className="title">RESERVATIONS</ReservationTitle>
+        <ReservationSubTitle fromBookTablePage={fromBookTablePage} className="title">Book a table online. Confirmation will reach your email.</ReservationSubTitle>
+        <ReservationSmall fromBookTablePage={fromBookTablePage}>* all fields are required</ReservationSmall>
+        <br />
+        <ReservationForm fromBookTablePage={fromBookTablePage} onSubmit={submitForm}>
           <FormInputWrapper>
             <FormLabel>Date:</FormLabel>
             <DatePickerInput
+              required={true}
               dateFormat="dd/MM/yyyy"
-              selected={startDate} onChange={handleDate} />
+              selected={date} onChange={handleDate} />
             <IconWrapper> <BsIcons.BsCalendar></BsIcons.BsCalendar></IconWrapper>
           </FormInputWrapper>
           <FormInputWrapper>
             <FormLabel>Name:</FormLabel>
-            <FormInput type="text"></FormInput>
+            <FormInput required={true}  
+              onChange={(e) => setName(e.target.value)} type="text"></FormInput>
             <IconWrapper> <HiIcons.HiPencilAlt></HiIcons.HiPencilAlt></IconWrapper>
           </FormInputWrapper>
           <FormInputWrapper>
             <FormLabel>Time:</FormLabel>
             <DatePickerInput
-              selected={timeDate}
-              onChange={date => setTimeDate(date)}
+              required={true}
+
+              selected={time}
+              onChange={handleTimeDate}
               showTimeSelect
               showTimeSelectOnly
-              timeIntervals={15}
+              timeIntervals={60}
+              minTime={moment().hours(12).minutes(0).toDate()}
+              maxTime={moment().hours(22).minutes(0).toDate()}
               timeCaption="Time"
-              dateFormat="hh:mm aa"
+              dateFormat="HH:mm"
+              timeFormat="HH:mm"
             />
             <IconWrapper> <BsIcons.BsClock></BsIcons.BsClock></IconWrapper>
           </FormInputWrapper>
           <FormInputWrapper>
             <FormLabel>Email:</FormLabel>
-            <FormInput type="email"></FormInput>
+            <FormInput required={true}
+              onChange={(e) => setEmail(e.target.value)} type="email"></FormInput>
             <IconWrapper> <HiIcons.HiOutlineMail></HiIcons.HiOutlineMail></IconWrapper>
           </FormInputWrapper>
           <FormInputWrapper>
-            <FormLabel>Guests:</FormLabel>
-            <FormInput min={1} type="number"></FormInput>
+            <FormLabel>Number Of Guests:</FormLabel>
+            <FormInput required={true}
+              onChange={(e) => setPartySize(+e.target.value)} min={1} max={12} type="number"></FormInput>
             <IconWrapper> <BsIcons.BsFillPersonFill></BsIcons.BsFillPersonFill></IconWrapper>
           </FormInputWrapper>
           <FormInputWrapper>
             <FormLabel>Phone Number:</FormLabel>
-            <FormInput type="text"></FormInput>
+            <FormInput required={true}
+              onChange={(e) => setPhoneNumber(e.target.value)} type="text"></FormInput>
             <IconWrapper> <HiIcons.HiPhone></HiIcons.HiPhone></IconWrapper>
           </FormInputWrapper>
           <SubmitButton>Check Availability</SubmitButton>

@@ -47,7 +47,7 @@ export const ReviewsContainer = styled.div`
   align-items: center;
   // background:red;
   padding:50px
-
+   
 `;
 
 

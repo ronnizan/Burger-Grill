@@ -10,7 +10,8 @@ export const TopNavbar = styled.div`
   height: 80px;
   width: 100%;
   position: fixed;
-  z-index: 100;
+  z-index: 1000;
+  top:0;
   @media screen and (max-width: 768px) {
     height: 120px;
     // padding-top:20px;
@@ -80,8 +81,8 @@ height: 100vh;
 display: flex;
 justify-content: center;
 position: fixed;
-z-index: 1000;
-top: 20px;
+z-index: 10000;
+// top: 20px;
 transition: ${({ showSidebar }) => (showSidebar ? '350ms' : '1350ms')};
 left: ${({ showSidebar }) => (showSidebar ? '0' : '-100%')};
 `;
