@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import firebaseForCaptcha from 'firebase';
 import firebase from '../../firebase/firebaseConfig';
 import { Captcha, Title, Input, Button, Error } from './PhoneConformation-style'
@@ -8,6 +8,9 @@ import { ReservationData } from '../../redux/types/reservationTypes';
 import { RootState } from '../../redux';
 import Loader from '../loader/Loader';
 import { useHistory } from 'react-router';
+import convertPhoneNumber from '../../helpers/convertPhoneNumber';
+import { setTimeout } from 'timers';
+import { CLEAR_RESERVATION_DATA } from '../../redux/constants/reservationConstants';
 
 declare global {
   interface Window {
@@ -21,27 +24,28 @@ function PhoneConformation({ phoneNumber, date, table, partySize, time }) {
   const dispatch = useDispatch();
   const { reservationData }: { reservationData: ReservationData } = useSelector((state: RootState) => state.reservationAvailability);
   const { loading,reservationData:ReservationDataAfterBookingCompleted }: { loading: boolean,reservationData:ReservationData } = useSelector((state: RootState) => state.bookTable);
-
+  const convertedPhoneNumber = convertPhoneNumber(phoneNumber);
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [code, setCode] = useState('');
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
-if (ReservationDataAfterBookingCompleted) {
-  history.push('/');
-}
+// if (ReservationDataAfterBookingCompleted) {
+//   history.push('/');
+// }
 
-
-  useEffect(() => {
-    window.recaptchaVerifier = new firebaseForCaptcha.auth.RecaptchaVerifier('recaptcha-container');
-    // const phoneNumber = "+972542356555";
-    const appVerifier = window.recaptchaVerifier;
-    firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-      .then((confirmationResult) => {
-
-        setConfirmationResult(confirmationResult)
-      }).catch((error) => {
-        setError('Failed to send sms Please try a again later')
-      });
+  useEffect(() => {  
+      window.recaptchaVerifier = new firebaseForCaptcha.auth.RecaptchaVerifier('recaptcha-container');
+      const appVerifier = window.recaptchaVerifier;
+      console.log(convertedPhoneNumber)
+      firebase.auth().signInWithPhoneNumber(convertedPhoneNumber, appVerifier)
+        .then((confirmationResult) => {
+          setConfirmationResult(confirmationResult)
+        }).catch((error) => {
+          console.log(error)
+          setError('Failed to send sms Please try a again later')
+        });
+      
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const sendCode = () => {
@@ -52,12 +56,12 @@ if (ReservationDataAfterBookingCompleted) {
         dispatch(bookTable({ date: dateToSend, partySize, time, table, email: reservationData.email, name: reservationData.name }))
        
       }).catch((error) => {
+        console.log(error)
         setProcessing(false);
         setError('wrong code entered!')
       });
     }
   }
-
 
   return (
     <>
@@ -77,8 +81,6 @@ if (ReservationDataAfterBookingCompleted) {
           Book!
     </Button>
       </>}
-      {ReservationDataAfterBookingCompleted && <h1>asdasd</h1>}
-
     </>
   );
 }

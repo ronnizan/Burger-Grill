@@ -10,19 +10,23 @@ import PrivateRoute from './auth/PrivateRoute';
 import PrivateAlreadyAuthRoute from './auth/PrivateAlereadyAuthRoute';
 import PopupMessage from './components/popup-message/PopupMessage';
 import BookTablePage from './pages/bookTable';
+import Navbar from './components/navbar/Navbar';
 
 
 
 function App() {
   useAutoLogin();
   const { error, user, loading } = useSelector((state: RootState) => state.userLogin);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const toggleSidebar = () => setShowSidebar(!showSidebar);
 
   return (
-    <>
+    <>   
       <Router>
-        <Sidebar user={user} />
+        <Navbar user={user} toggleSidebar={toggleSidebar}/>
+        <Sidebar showSidebar={showSidebar} toggleSidebar={toggleSidebar} user={user} />
         <PopupMessage/>
-        <Switch>
+        <Switch>  
           <Route path='/' exact component={HomePage} />
           <PrivateAlreadyAuthRoute path='/auth' component={AuthPage} />
           <Route path='/book-table' component={BookTablePage} />

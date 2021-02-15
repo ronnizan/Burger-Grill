@@ -106,7 +106,7 @@ export const FormInput = styled.input`
 `;
 export const IconWrapper = styled.div`
   position: absolute;
-  top: 45%;
+  top: 35%;
   z-index: 200;
   right: 30px;
   color: orange;

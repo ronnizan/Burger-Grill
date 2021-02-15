@@ -48,8 +48,10 @@ export const bookTableReducer = (state: { loading: boolean, reservationData: Res
       return { reservationData: action.payload, loading: false }
     case BOOK_TABLE_FAIL:
       return { error: 'failed to book table', loading: false }
+    case CLEAR_RESERVATION_DATA:
+      return { loading: false, reservationData: null, error: '' }
     case USER_LOGOUT:
-      return []
+      return { loading: false, reservationData: null, error: '' }
     default:
       return state;
   }

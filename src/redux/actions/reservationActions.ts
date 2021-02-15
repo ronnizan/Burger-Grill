@@ -8,7 +8,8 @@ import { ReservationAction } from '../types/reservationTypes';
 import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_REQUEST, GET_TABLES_SUCCESS, GET_TABLES_FAIL, BOOK_TABLE_FAIL, BOOK_TABLE_SUCCESS } from './../constants/reservationConstants';
 import { BOOK_TABLE_REQUEST } from '../constants/reservationConstants';
 import { User } from './../types/authTypes';
-
+import axios from 'axios';
+import { ServerBaseUrl } from '../constants/endPoints';
 
 export const bookTable = ({ date, table, time, partySize, email, name }: { date: string, time: string, table: TableData, partySize: number, email: string, name: string }): ThunkAction<void, RootState, null, ReservationAction> => {
   return async (dispatch, getState) => {
@@ -50,7 +51,7 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
       }
 
       const reservationData = { date, time, partySize, email, name, table }
-      const isReservationAlreadyExists = await firebase.firestore().collection('/reservations').doc(userId ? userId : date + " " + time).get();
+      const isReservationAlreadyExists = await firebase.firestore().collection('/reservations').doc(userId && userId).get();
       if (isReservationAlreadyExists.exists) {
         //convert into array the pervious reservations
         const reservations = Object.values(isReservationAlreadyExists.data())
@@ -60,10 +61,10 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
         //convert into object all the reservations, firebase not accepting arrays
         const reservationsToSaveInDb = Object.assign({}, reservations);
 
-        await firebase.firestore().collection('/reservations').doc(userId ? userId : date + " " + time).set(reservationsToSaveInDb);
+        await firebase.firestore().collection('/reservations').doc(userId ? userId : date + " " + time + " " + table.name).set(reservationsToSaveInDb);
       } else {
         
-        await firebase.firestore().collection('/reservations').doc(userId ? userId : date + " " + time).set({ 0: reservationData });
+        await firebase.firestore().collection('/reservations').doc(userId ? userId : date + " " + time + table.name).set({ 0: reservationData });
       }
 
 
@@ -72,7 +73,17 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
         type: BOOK_TABLE_SUCCESS,
         payload: reservationData
       });
-      dispatch(popupMessage({ type: 'success', content: "Successfully Booked a table" }))
+      
+      const { data } = await axios.post(`http://localhost:5001/burgergril-30358/us-central1/api/send-reservation-mail`, {
+        email: reservationData.email,
+        name: reservationData.name,
+        date: reservationData.date,
+        time: reservationData.time,
+        partySize:reservationData.partySize,  
+        table: reservationData.table,
+      });
+      
+      dispatch(popupMessage({ type: 'success', content: "Table Booked!" }))
 
 
     } catch (err) {
@@ -114,6 +125,7 @@ export const getTables = (date, time): ThunkAction<void, RootState, null, Reserv
           payload: tables
         });
       }
+     
     } catch (err) {
       console.log(err);
       dispatch({
@@ -130,10 +142,6 @@ export const setReservationData = (data: ReservationData): ThunkAction<void, Roo
       type: SET_RESERVATION_DATA,
       payload: data
     })
-
-    // dispatch(popupMessage({ type: 'success', content: "Successfully Registered" }))
-
-
   }
 }
 export const clearReservationData = (data: ReservationData): ThunkAction<void, RootState, null, ReservationAction> => {

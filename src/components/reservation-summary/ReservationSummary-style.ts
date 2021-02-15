@@ -20,6 +20,8 @@ padding:20px;
 flex-direction: column;
 justify-content: center;
 align-items: center;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+border:2px solid black;
 `;
 export const ReservationSummarySubTitle = styled.h3`
 color:black;
