@@ -5,6 +5,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import {userLoginReducer, userRegisterReducer} from './reducers/authReducer';
 import { popupMessageReducer } from './reducers/popupMessageReducer';
 import { getTablesReducer, reservationAvailabilityReducer,bookTableReducer } from './reducers/reservationReducer';
+import { cartReducer } from './reducers/cartReducer';
+import { allProductsReducer, bestSellersReducer, productPopupReducer } from './reducers/productsReducer';
 
 const rootReducer = combineReducers({
   userRegister: userRegisterReducer,
@@ -12,8 +14,13 @@ const rootReducer = combineReducers({
   popupMessage:popupMessageReducer,
   reservationAvailability:reservationAvailabilityReducer,
   getTables:getTablesReducer,
-  bookTable:bookTableReducer
+  bookTable:bookTableReducer,
+  cart:cartReducer,
+  allProducts:allProductsReducer,
+  bestSellers:bestSellersReducer,  
+  productPopup:productPopupReducer
 });
+
 
 const store = createStore(
   rootReducer,

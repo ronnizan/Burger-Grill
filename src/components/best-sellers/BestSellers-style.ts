@@ -57,8 +57,6 @@ export const LeftArrow = styled(FaIcons.FaArrowAltCircleLeft)`
   // top:50%;
   color:white;
   cursor: pointer;
-
-
 `;
 export const BestSellersTitle = styled.h1`
   font-family: 'Imbue', serif;
@@ -146,7 +144,7 @@ export const BurgerDescriptionContainer = styled.div`
   flex-direction: column;
   @media screen and (max-width: 768px) {
     width: 250px;
-    height: 300px;
+    height: 320px;
     }
   
 `;
@@ -210,10 +208,53 @@ opacity:0.7;
 @media screen and (max-width: 768px) {
   padding:5px;
 
-  }
-
+}
 `;
-
+export const VIcon = styled(AiIcons.AiFillCheckCircle)`
+  width: 50px;
+  height: 50px;
+  color:green;
+  cursor: pointer;
+  
+  -webkit-animation-name: zoomInRight;
+  animation-name: zoomInRight;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  }
+  @-webkit-keyframes zoomInRight {
+  0% {
+  opacity: 0;
+  -webkit-transform: scale3d(.1, .1, .1) translate3d(1000px, 0, 0);
+  transform: scale3d(.1, .1, .1) translate3d(1000px, 0, 0);
+  -webkit-animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+  60% {
+  opacity: 1;
+  -webkit-transform: scale3d(.475, .475, .475) translate3d(-10px, 0, 0);
+  transform: scale3d(.475, .475, .475) translate3d(-10px, 0, 0);
+  -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+  }
+  @keyframes zoomInRight {
+  0% {
+  opacity: 0;
+  -webkit-transform: scale3d(.1, .1, .1) translate3d(1000px, 0, 0);
+  transform: scale3d(.1, .1, .1) translate3d(1000px, 0, 0);
+  -webkit-animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+  60% {
+  opacity: 1;
+  -webkit-transform: scale3d(.475, .475, .475) translate3d(-10px, 0, 0);
+  transform: scale3d(.475, .475, .475) translate3d(-10px, 0, 0);
+  -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+`;
 export const MenuLink = styled(LinkRouter)`
   color: white;
   background: black;

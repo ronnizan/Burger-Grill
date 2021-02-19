@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
+import * as IoIcons from 'react-icons/io';
 
 export const SidebarContainer =
   styled.nav <
@@ -37,6 +38,15 @@ export const CloseIcon = styled(AiIcons.AiOutlineClose)`
   background: none;
 `;
 
+export const NumberOfCartItems = styled.div`
+  width: 35px!important;
+  height: 35px !important;
+  padding: 10px;
+  margin-left:10px;
+  background: rgb(247,195,105);
+  border-radius: 50% !important;
+  color:black !important;
+`;
 
 export const NavbarItemMobile = styled.span`
   display: flex;

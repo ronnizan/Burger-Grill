@@ -1,5 +1,5 @@
 import { USER_LOGOUT } from "../constants/authConstants";
-import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST,BOOK_TABLE_REQUEST,BOOK_TABLE_SUCCESS,BOOK_TABLE_FAIL } from "../constants/reservationConstants";
+import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL } from "../constants/reservationConstants";
 
 
 
@@ -47,7 +47,7 @@ interface BookTableRequestAction {
 }
 interface BookTableSuccessAction {
   type: typeof BOOK_TABLE_SUCCESS;
-  payload:any;
+  payload: any;
 }
 interface BookTableFailAction {
   type: typeof BOOK_TABLE_FAIL;

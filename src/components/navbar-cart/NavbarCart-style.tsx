@@ -5,25 +5,22 @@ import { Link } from 'react-router-dom';
 import * as IoIcons from 'react-icons/io';
 
 
-export const CloseIcon = styled(AiIcons.AiOutlineClose)`
-  color: black;
-  // font-size: 2rem;
-  // margin-left:1.3rem;
-  // padding-bottom: 2rem;
-  // background: none;
-`;
 
-export const CartWrapper = styled.div<{ showCartItems: boolean }>`
+export const CartWrapper = styled.div<{ showCartItems: boolean,showScrollBar:boolean }>`
     position: relative ;
     ul{
       display: ${({ showCartItems }) => (showCartItems ? 'block' : 'none')};
       position: absolute;
       background-color: #f1f1f1;
-      min-width: 460px;
+      min-width: 300px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
       z-index: 1;
       top:115%;
       right:-20%;
+      max-height:600px;
+      overflow:hidden;
+      overflow-y: ${({ showScrollBar }) => (showScrollBar ? 'auto' : 'hidden')};
+      
     }
 `;
 
@@ -35,12 +32,12 @@ export const CartLogo = styled(IoIcons.IoIosCart)`
 export const NumberOfCartItems = styled.div`
   width: 36px!important;
   height: 36px !important;
-  padding: 5px;
+  padding: 8px;
   background: rgb(247,195,105);
   border-radius: 50% !important;
-  border: 2px solid #666;
+  // border: 2px solid #666;
   color:black !important;
-  // text-align: center;
+  // text-align: center !important;
   // font: 32px Arial, sans-serif;
 `;
 export const CartUl= styled.ul`
@@ -63,6 +60,15 @@ color: black;
 padding: 12px;
 text-decoration: none;
 display: flex;
+align-items: center;
+`;
+export const CartTitle = styled.h3`
+color: black;
+padding: 12px;
+text-decoration: none;
+display: flex;
+align-items: center;
+
 `;
 export const CartItemImage = styled.img`
 width:50px;
@@ -81,10 +87,45 @@ font-size:14px;
 color:black;
 width:100%;
 line-height:1.5;
+
 `;
 export const CartItemPrice = styled.span`
-font-size:14px;
+font-size:20px;
 color:black;
 width:100%;
+font-family: 'Imbue', serif;
+`;
+export const CartItemAdditionalDiscount = styled.small`
+font-size:17px;
+color:black;
+width:100%;
+font-family: 'Imbue', serif;
+position: absolute;
+left:5px;
+`;
+
+export const CloseIcon = styled(AiIcons.AiOutlineClose)`
+  color: black;
+  cursor: pointer;  
+`;
+
+
+export const CartItemTotalPrice = styled.span`
+font-size:24px;
+color:black;
+width:100%;
+`;
+export const ViewCartLink = styled(Link)`
+// font-size:14px;
+color:black !important;
+padding:20px;
+width:200px !important;
+background:#F7C369;
+opacity:0.8;
+text-align: center !important;
+:hover{
+  background:#F7C369;
+  opacity:1;
+}
 `;
 

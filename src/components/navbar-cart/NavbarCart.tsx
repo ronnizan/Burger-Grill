@@ -1,67 +1,53 @@
 import React, { useState, useEffect } from 'react'
-import { CloseIcon, CartWrapper, CartLogo, NumberOfCartItems,CartUl, TopArrowTriangle, CartItemRow, CartItemImage, CartItemDescriptionAndPriceWrapper, CartItemDescription, CartItemPrice } from './NavbarCart-style';
+import { CloseIcon, CartWrapper, CartLogo, NumberOfCartItems, CartUl, TopArrowTriangle, CartItemRow, CartTitle, CartItemImage, CartItemDescriptionAndPriceWrapper, CartItemDescription, CartItemPrice, CartItemAdditionalDiscount, CartItemTotalPrice, ViewCartLink } from './NavbarCart-style';
 import { User } from '../../redux/types/authTypes';
 import * as FiIcons from 'react-icons/fi';
 import * as HiIcons from 'react-icons/hi';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/index';
+import { RegularCartItem, MealCartItem, BurgerCartItem } from '../../redux/types/cartTypes';
+import { removeItemFromCart } from '../../redux/actions/cartActions';
+import firebase from '../../firebase/firebaseConfig';
 
 const NavbarCart = ({ showCartItems }: { showCartItems: boolean }) => {
-
   const dispatch = useDispatch();
-
-
+  const [pro, setPro] = useState([])
+  const { error, user, loading } = useSelector((state: RootState) => state.userLogin);
+  const { cartItems }: { cartItems: (RegularCartItem|BurgerCartItem|MealCartItem)[] } = useSelector((state: RootState) => state.cart);
   return (
-    <CartWrapper showCartItems={showCartItems}>
-        <TopArrowTriangle showCartItems={showCartItems}></TopArrowTriangle>
+    <CartWrapper showCartItems={showCartItems} showScrollBar={cartItems && cartItems.length >= 7}>
+      <TopArrowTriangle showCartItems={showCartItems}></TopArrowTriangle>
       <CartLogo />
-      <NumberOfCartItems>5</NumberOfCartItems>
+      <NumberOfCartItems> {cartItems.length}</NumberOfCartItems>
       <CartUl>
-        <CartItemRow><h4>Shopping Cart</h4></CartItemRow>    
+        <CartItemRow onClick={() => {
+
+        }}><CartTitle>Shopping Cart</CartTitle>
+        </CartItemRow>
         <hr />
-        <CartItemRow><CartItemImage src="https://demo.web3canvas.com/themeforest/tomato/img/shop/single/1.jpg" />
-          <CartItemDescriptionAndPriceWrapper>
-            <CartItemDescription>The Impossible Burger</CartItemDescription>
-            <CartItemPrice>$25.99</CartItemPrice>
-          </CartItemDescriptionAndPriceWrapper>
-          <CloseIcon/>
 
-        </CartItemRow>        <hr />
+        {cartItems && cartItems.map((cartItem, index) => (
 
-        <CartItemRow><CartItemImage src="https://demo.web3canvas.com/themeforest/tomato/img/shop/single/1.jpg" />
-          <CartItemDescriptionAndPriceWrapper>
-            <CartItemDescription>The Impossible Burger</CartItemDescription>
-            <CartItemPrice>$25.99</CartItemPrice>
-          </CartItemDescriptionAndPriceWrapper>
-          <CloseIcon/>
+          <CartItemRow key={index}><CartItemImage src={cartItem.image} />
+            <CartItemDescriptionAndPriceWrapper>
+              <CartItemDescription>{cartItem.title}</CartItemDescription>
+              <CartItemPrice>${cartItem.price}</CartItemPrice>
+            </CartItemDescriptionAndPriceWrapper>
+            <CloseIcon onClick={() => {
+              dispatch(removeItemFromCart(cartItem.id))
+            }} />
+            <hr />
+          </CartItemRow>
 
-        </CartItemRow>        <hr />
 
-        <CartItemRow><CartItemImage src="https://demo.web3canvas.com/themeforest/tomato/img/shop/single/1.jpg" />
-          <CartItemDescriptionAndPriceWrapper>
-            <CartItemDescription>The Impossible Burger</CartItemDescription>
-            <CartItemPrice>$25.99</CartItemPrice>
-          </CartItemDescriptionAndPriceWrapper>
-          <CloseIcon/>
-
-        </CartItemRow>        <hr />
-
-        <CartItemRow><CartItemImage src="https://demo.web3canvas.com/themeforest/tomato/img/shop/single/1.jpg" />
-          <CartItemDescriptionAndPriceWrapper>
-            <CartItemDescription>The Impossible Burger</CartItemDescription>
-            <CartItemPrice>$25.99</CartItemPrice>
-          </CartItemDescriptionAndPriceWrapper>
-          <CloseIcon/>
-
-        </CartItemRow>        <hr />
-
-        <CartItemRow><CartItemImage src="https://demo.web3canvas.com/themeforest/tomato/img/shop/single/1.jpg" />
-          <CartItemDescriptionAndPriceWrapper>
-            <CartItemDescription>The Impossible Burger</CartItemDescription>
-            <CartItemPrice>$25.99</CartItemPrice>
-          </CartItemDescriptionAndPriceWrapper>
-          <CloseIcon/>
-
+        ))}
+        <CartItemRow>
+          {/* calculate 5% discount if logged user or calculate cart sum */}
+          <CartItemTotalPrice>{cartItems ? '$' : '0'}{user ? (+cartItems?.reduce((amount, item) => item.price + amount, 0).toFixed(2) - +cartItems?.reduce((amount, item) => item.price + amount, 0) * 0.05).toFixed(2) : +cartItems?.reduce((amount, item) => item.price + amount, 0).toFixed(2)}
+          <br/>
+            {user && <CartItemAdditionalDiscount>(5% discount for Registered User)</CartItemAdditionalDiscount>}
+          </CartItemTotalPrice>
+          <ViewCartLink to="cart">View Cart</ViewCartLink>
         </CartItemRow>
       </CartUl>
 
@@ -71,3 +57,4 @@ const NavbarCart = ({ showCartItems }: { showCartItems: boolean }) => {
 }
 
 export default NavbarCart
+   
