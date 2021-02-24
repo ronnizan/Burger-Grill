@@ -58,7 +58,7 @@ const BurgerPopup = ({ menuItem,children }: { menuItem: MenuItem;children:any })
             setCookingLevel('MW')
           }}>MW {cookingLevel === 'MW' && <VIcon></VIcon>}
           </PopupOption>
-
+   
           <PopupOption isSelected={cookingLevel === 'WD'} onClick={() => {
             setCookingLevel('WD')
           }}>WD {cookingLevel === 'WD' && <VIcon></VIcon>}

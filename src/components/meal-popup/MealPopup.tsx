@@ -133,7 +133,7 @@ const MealPopup = ({ menuItem, children }: { menuItem: MenuItem; children: any }
       <PopupRow>
         <PopupLabel>Drink:</PopupLabel>
         <PopupOptionsContainer>
-          {menuItems.map(menuItem =>( menuItem.type === 'drinks' && <PopupOption isSelected={drink === menuItem.title} onClick={() => {
+          {menuItems.map(menuItem =>( menuItem.type === 'drinks' && <PopupOption key ={menuItem.id}isSelected={drink === menuItem.title} onClick={() => {
             setDrink(menuItem.title)
           }}>{menuItem.title} {drink === menuItem.title && <VIcon></VIcon>}
           </PopupOption>))}

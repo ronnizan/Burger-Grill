@@ -73,8 +73,8 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
         type: BOOK_TABLE_SUCCESS,
         payload: reservationData
       });
-      
-      const { data } = await axios.post(`http://localhost:5001/burgergril-30358/us-central1/api/send-reservation-mail`, {
+    
+      const { data } = await axios.post(`${ServerBaseUrl}/email/send-reservation-mail`, {
         email: reservationData.email,
         name: reservationData.name,
         date: reservationData.date,

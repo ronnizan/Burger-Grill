@@ -1,5 +1,5 @@
 import { USER_LOGOUT } from '../constants/authConstants';
-import { ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART } from '../constants/cartConstants';
+import { ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, CLEAR_CART } from '../constants/cartConstants';
 import { CartAction, Cart, } from '../types/cartTypes';
 
 export const cartReducer = (state: Cart = { cartItems: [] }, action: CartAction) => {
@@ -16,6 +16,10 @@ export const cartReducer = (state: Cart = { cartItems: [] }, action: CartAction)
         cartItems:cartItemsCopy
       }
     case USER_LOGOUT:
+      return {
+        cartItems: []
+      }
+    case CLEAR_CART:
       return {
         cartItems: []
       }

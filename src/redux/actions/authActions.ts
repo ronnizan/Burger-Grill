@@ -7,7 +7,11 @@ import { User, SignUpData, AuthAction } from './../types/authTypes';
 import { popupMessage } from './popupMessageAction';
 import { SignInData } from '../types/authTypes';
 
-
+// db.collection("cities").doc("DC").delete().then(() => {
+//   console.log("Document successfully deleted!");
+// }).catch((error) => {
+//   console.error("Error removing document: ", error);
+// });
    
 export const signUpUser = (data: SignUpData): ThunkAction<void, RootState, null, AuthAction> => {
   return async dispatch => {

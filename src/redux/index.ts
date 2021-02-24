@@ -7,6 +7,7 @@ import { popupMessageReducer } from './reducers/popupMessageReducer';
 import { getTablesReducer, reservationAvailabilityReducer,bookTableReducer } from './reducers/reservationReducer';
 import { cartReducer } from './reducers/cartReducer';
 import { allProductsReducer, bestSellersReducer, productPopupReducer } from './reducers/productsReducer';
+import { creatOrderReducer } from './reducers/orderReducer';
 
 const rootReducer = combineReducers({
   userRegister: userRegisterReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   cart:cartReducer,
   allProducts:allProductsReducer,
   bestSellers:bestSellersReducer,  
-  productPopup:productPopupReducer
+  productPopup:productPopupReducer,
+  creatOrder:creatOrderReducer
 });
 
 

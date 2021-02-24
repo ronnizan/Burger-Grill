@@ -1,5 +1,5 @@
 import React from 'react'
-import { SidebarContainer, LinksContainer, ToggleSidebarWrapper,NumberOfCartItems, CloseIcon, NavbarItemMobile } from './Sidebar-style';
+import { SidebarContainer, LinksContainer, ToggleSidebarWrapper, NumberOfCartItems, CloseIcon, NavbarItemMobile } from './Sidebar-style';
 import { SidebarData } from './SidebarData'
 import { Link } from 'react-router-dom';
 import { User } from '../../redux/types/authTypes';
@@ -8,13 +8,13 @@ import * as HiIcons from 'react-icons/hi';
 import * as IoIcons from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../redux/actions/authActions';
-import { RegularCartItem,BurgerCartItem,MealCartItem } from '../../redux/types/cartTypes';
+import { CartItem } from '../../redux/types/cartTypes';
 import { RootState } from '../../redux';
 
 
 const Sidebar = ({ user, showSidebar, toggleSidebar }: { user: User, showSidebar: boolean, toggleSidebar: () => void }) => {
-  const dispatch = useDispatch();  
-  const { cartItems }: { cartItems: (RegularCartItem|BurgerCartItem| MealCartItem)[] } = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
+  const { cartItems }: { cartItems: CartItem[] } = useSelector((state: RootState) => state.cart);
 
   return (
     <SidebarContainer showSidebar={showSidebar}>
@@ -38,13 +38,20 @@ const Sidebar = ({ user, showSidebar, toggleSidebar }: { user: User, showSidebar
             </NavbarItemMobile>
           )
         })}
-         <NavbarItemMobile>
+        <NavbarItemMobile>
           <Link to={'/cart'}>
             <IoIcons.IoIosCart />
             <span>Cart </span>
             <NumberOfCartItems>{cartItems && cartItems.length}</NumberOfCartItems>
           </Link>
         </NavbarItemMobile>
+        {!user &&
+          <NavbarItemMobile>
+            <Link to='/auth'>
+              <FiIcons.FiLogIn />
+              <span>Login</span>
+            </Link>
+          </NavbarItemMobile>}
         {user && <NavbarItemMobile>
           <Link onClick={() => {
             dispatch(logOut())

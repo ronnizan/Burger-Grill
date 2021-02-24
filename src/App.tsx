@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import useAutoLogin from './hooks/use-autoLogin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Sidebar from './components/sidebar/Sidebar';
-import { HomePage, AuthPage, BookTablePage, MenuPage } from './pages';
+import { HomePage, AuthPage, BookTablePage, MenuPage,CartSummaryPage,CheckoutPage } from './pages';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './redux';
 import PrivateRoute from './auth/PrivateRoute';
@@ -33,9 +33,11 @@ function App() {
         <MenuItemPopup />
         <Switch>
           <Route path='/' exact component={HomePage} />
-          <PrivateAlreadyAuthRoute path='/auth' component={AuthPage} />
-          <Route path='/book-table' component={BookTablePage} />
-          <Route path='/menu' component={MenuPage} />
+          <PrivateAlreadyAuthRoute path='/auth' component={AuthPage} exact />
+          <Route path='/book-table' component={BookTablePage} exact/>
+          <Route path='/order' component={MenuPage} exact/>
+          <Route path='/cart' component={CartSummaryPage} exact/>
+          <Route path='/checkout' component={CheckoutPage} exact/>
         </Switch>
       </Router>
     </>

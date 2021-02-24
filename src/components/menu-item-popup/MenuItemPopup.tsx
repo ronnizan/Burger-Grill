@@ -9,20 +9,13 @@ import MealPopup from '../meal-popup/MealPopup';
 
 
 const MenuItemPopup = () => {
-  const dispatch = useDispatch();
   const { menuItem }: { menuItem: MenuItem } = useSelector((state: RootState) => state.productPopup);
   return (<>
     {menuItem.id &&  
       <Overlay>  
         {menuItem.type === 'burgers' && <BurgerPopup menuItem={menuItem}>
         </BurgerPopup>}
-
-  
         {menuItem.type === 'meals' &&  <MealPopup menuItem={menuItem} children={''}/>}
-
-
-        {/* dispatch(addItemToCart(menuItem));
- */}
       </Overlay>}
   </>)
 }

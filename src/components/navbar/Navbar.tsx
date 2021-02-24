@@ -59,6 +59,13 @@ const Navbar = ({ user, toggleSidebar }: { user: User, toggleSidebar: () => void
           <NavbarItem onMouseOver={() => setShowCartItems(true)} onMouseOut={() => setShowCartItems(false)} >
             <NavbarCart showCartItems={showCartItems} />
           </NavbarItem>
+          {!user &&
+            <NavbarItem>
+              <Link to='/auth'>
+                <FiIcons.FiLogIn />
+                <span>Login</span>
+              </Link>
+            </NavbarItem>}
           {user &&
             <NavbarItem>
               <Link onClick={() => {

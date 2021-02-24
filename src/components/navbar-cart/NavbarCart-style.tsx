@@ -101,7 +101,7 @@ color:black;
 width:100%;
 font-family: 'Imbue', serif;
 position: absolute;
-left:5px;
+left:3px;
 `;
 
 export const CloseIcon = styled(AiIcons.AiOutlineClose)`

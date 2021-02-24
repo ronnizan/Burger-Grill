@@ -4,11 +4,10 @@ import * as AiIcons from 'react-icons/ai';
 import BestSellersBackground from '../../images/bestsellers-background.jpg';
 import { Link as LinkScroll } from 'react-scroll';
 import { Link as LinkRouter } from 'react-router-dom';
-import ReviewsBackground from '../../images/reviews-background.jpg';
-import Reviews1Background from '../../images/menu-hero.jpg';
+import ReviewsBackground from '../../images/menu-hero.jpg';
 
 export const MenuHero = styled.div`
-  background-image: url(${Reviews1Background});
+  background-image: url(${ReviewsBackground});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -16,7 +15,7 @@ export const MenuHero = styled.div`
   padding: 70px;
   display:flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   @media screen and (max-width: 768px) {
     height:380px;
