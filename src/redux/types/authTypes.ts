@@ -1,4 +1,5 @@
-import { RESET_ERROR, SET_USER, USER_LOGIN_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS } from "../constants/authConstants";
+import { RESET_ERROR, SET_USER, USER_LOGIN_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, DELETE_USER_SUCCESS } from '../constants/authConstants';
+import { DELETE_USER_REQUEST, DELETE_USER_FAIL } from './../constants/authConstants';
 export interface User {
   name: string;
   email: string;
@@ -38,6 +39,17 @@ interface UserActionLoginFail {
   type: typeof USER_LOGIN_FAIL;
   payload: string;
 }
+interface UserDeleteRequest {
+  type: typeof DELETE_USER_REQUEST;
+}
+interface UserDeleteSuccess {
+  type: typeof DELETE_USER_SUCCESS;
+  payload: string;
+}
+interface UserDeleteFail {
+  type: typeof DELETE_USER_FAIL;
+  payload: string;
+}
 
 interface SetUserAction {
   type: typeof SET_USER;
@@ -52,5 +64,5 @@ interface SetErrorAction {
   type: typeof RESET_ERROR;
 }
 
-export type AuthAction = UserActionRegisterRequest | UserActionRegisterSuccess | UserActionRegisterFail | UserActionLoginRequest | UserActionLoginSuccess | UserActionLoginFail | SetUserAction | SignOutAction | SetErrorAction;
+export type AuthAction = UserActionRegisterRequest | UserActionRegisterSuccess | UserActionRegisterFail | UserActionLoginRequest | UserActionLoginSuccess | UserActionLoginFail |UserDeleteRequest|UserDeleteSuccess|UserDeleteFail| SetUserAction | SignOutAction | SetErrorAction;
 

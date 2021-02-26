@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux';
+import { useDispatch } from 'react-redux';
 import { MenuItem } from '../../redux/types/productsType';
-import {Popup, PopupTopRow, ItemTitle, VIcon, CloseIcon, PopupRow, PopupLabel, PopupOptionsContainer, PopupOption,AddToCartButton } from './BurgerPopup-style';
+import { Popup, PopupTopRow, ItemTitle, VIcon, CloseIcon, PopupRow, PopupLabel, PopupOptionsContainer, PopupOption, AddToCartButton } from './BurgerPopup-style';
 import { removeItemFromPopup, } from '../../redux/actions/productsActions';
 import { addItemToCart } from '../../redux/actions/cartActions';
 
-  
-const BurgerPopup = ({ menuItem,children }: { menuItem: MenuItem;children:any }) => {
+
+const BurgerPopup = ({ menuItem, children }: { menuItem: MenuItem; children: any }) => {
   const dispatch = useDispatch();
   const [burgerSize, setBurgerSize] = useState('Classic')
   const [cookingLevel, setCookingLevel] = useState('MW')
@@ -16,9 +15,9 @@ const BurgerPopup = ({ menuItem,children }: { menuItem: MenuItem;children:any })
     noLettuce: false,
     noTomato: false,
     noPickle: false,
-    noVegetables: false,  
+    noVegetables: false,
     vegetablesOnTheSide: false
-});
+  });
   return (
     <Popup>
       <PopupTopRow>
@@ -58,7 +57,7 @@ const BurgerPopup = ({ menuItem,children }: { menuItem: MenuItem;children:any })
             setCookingLevel('MW')
           }}>MW {cookingLevel === 'MW' && <VIcon></VIcon>}
           </PopupOption>
-   
+
           <PopupOption isSelected={cookingLevel === 'WD'} onClick={() => {
             setCookingLevel('WD')
           }}>WD {cookingLevel === 'WD' && <VIcon></VIcon>}
@@ -69,41 +68,40 @@ const BurgerPopup = ({ menuItem,children }: { menuItem: MenuItem;children:any })
         <PopupLabel>Changes:</PopupLabel>
         <PopupOptionsContainer>
           <PopupOption isSelected={changes.noOnion} onClick={() => {
-            setChanges({...changes, noOnion: !changes.noOnion})
+            setChanges({ ...changes, noOnion: !changes.noOnion })
           }}>Without Onion {changes.noOnion && <VIcon></VIcon>}
           </PopupOption>
 
           <PopupOption isSelected={changes.noLettuce} onClick={() => {
-            setChanges({...changes, noLettuce: !changes.noLettuce})
+            setChanges({ ...changes, noLettuce: !changes.noLettuce })
           }}>Without Lettuce {changes.noLettuce && <VIcon></VIcon>}
           </PopupOption>
 
           <PopupOption isSelected={changes.noPickle} onClick={() => {
-            setChanges({...changes, noPickle: !changes.noPickle})
+            setChanges({ ...changes, noPickle: !changes.noPickle })
           }}>Without Pickle{changes.noPickle && <VIcon></VIcon>}
           </PopupOption>
           <PopupOption isSelected={changes.noTomato} onClick={() => {
-            setChanges({...changes, noTomato: !changes.noTomato})
+            setChanges({ ...changes, noTomato: !changes.noTomato })
           }}>Without Tomato {changes.noTomato && <VIcon></VIcon>}
           </PopupOption>
 
           <PopupOption isSelected={changes.noVegetables} onClick={() => {
-            setChanges({...changes, noVegetables: !changes.noVegetables})
+            setChanges({ ...changes, noVegetables: !changes.noVegetables })
           }}>Without Vegetables {changes.noVegetables && <VIcon></VIcon>}
           </PopupOption>
- 
+
           <PopupOption isSelected={changes.vegetablesOnTheSide} onClick={() => {
-            setChanges({...changes, vegetablesOnTheSide: !changes.vegetablesOnTheSide})
+            setChanges({ ...changes, vegetablesOnTheSide: !changes.vegetablesOnTheSide })
           }}>Vegetables On The Side {changes.vegetablesOnTheSide && <VIcon></VIcon>}
           </PopupOption>
         </PopupOptionsContainer>
       </PopupRow>
-      <AddToCartButton onClick={() =>{
-        dispatch(addItemToCart({...menuItem,burgerSize,cookingLevel,changes, price: burgerSize === 'Large' ? menuItem.price + 2 : burgerSize === 'Gigantic' ? menuItem.price +3 : menuItem.price}))
+      <AddToCartButton onClick={() => {
+        dispatch(addItemToCart({ ...menuItem, burgerSize, cookingLevel, changes, price: burgerSize === 'Large' ? menuItem.price + 2 : burgerSize === 'Gigantic' ? menuItem.price + 3 : menuItem.price }))
         dispatch(removeItemFromPopup())
       }}>ADD TO CART</AddToCartButton>
     </Popup>)
 }
 
 export default BurgerPopup
-    

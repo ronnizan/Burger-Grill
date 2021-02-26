@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartSummaryHero, CartSummarySectionWrapper, CartSummarySection, CartSummaryTableAndTotalSummary, TotalSummary, TotalSummaryTitle, TotalSummaryRow, TotalSummaryCell, CartSummaryTitle, CartSummarySubTitle, CartIsEmptyTitle, CartSummaryTable, CartSummaryTableHeader, CartSummaryTableRow, CartSummaryTableHeaderCell, CartSummaryTableBody, CartSummaryTableBodyCell, CartSummaryItemImage, CartSummaryItemDescription, CloseIcon, LinksContainer, CheckoutLink, BackToOrderLink } from './CartSummary-style';
-import { addItemToCart } from '../../redux/actions/cartActions';
 import { RootState } from '../../redux';
-import { MenuItem } from '../../redux/types/productsType';
-import { getAllProducts, getBestSellersProducts, selectItemForPopup } from '../../redux/actions/productsActions';
 import { removeItemFromCart } from '../../redux/actions/cartActions';
-import Loader from '../loader/Loader';
 import { CartItem } from '../../redux/types/cartTypes';
 import { getCartTotalForLoggedUser } from '../../helpers/getCartTotal';
 import { getCartTotal } from './../../helpers/getCartTotal';
@@ -25,7 +21,7 @@ const CartSummary = () => {
           </CartSummaryItemDescription>
         }
         if (key.startsWith('vegetablesOnTheSide')) {
-          return <CartSummaryItemDescription  key={key}>
+          return <CartSummaryItemDescription key={key}>
             * Vegetables On The Side
           </CartSummaryItemDescription>
         }
@@ -100,7 +96,7 @@ const CartSummary = () => {
               </CartSummaryTableBody>
             </CartSummaryTable>
           </CartSummaryTableAndTotalSummary>}
-          <LinksContainer isCartEmpty={cartItems.length === 0 }>
+          <LinksContainer isCartEmpty={cartItems.length === 0}>
             {cartItems.length > 0 && <CheckoutLink to="/checkout">TO CHECKOUT</CheckoutLink>}
             {cartItems.length > 0 && <BackToOrderLink to="/order">BACK TO MENU</BackToOrderLink>}
             {cartItems.length === 0 && <CheckoutLink to="/order">BACK TO MENU</CheckoutLink>}

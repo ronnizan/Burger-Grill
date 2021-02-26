@@ -1,4 +1,4 @@
-import React, { FC, useState, FormEvent, useEffect } from 'react';
+import React, { FC, } from 'react';
 import AuthForm from '../components/auth-form/AuthForm';
 
 

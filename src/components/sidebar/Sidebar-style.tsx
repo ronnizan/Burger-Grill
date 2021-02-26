@@ -1,21 +1,19 @@
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
-import * as IoIcons from 'react-icons/io';
 
 export const SidebarContainer =
   styled.nav <
-    { showSidebar: boolean } >
-    `
-background-color: #292929;
-width: 200px;
-height: 100vh;
-display: flex;
-justify-content: center;
-position: fixed;
-z-index: 10000;
-// top: 20px;
-transition: ${({ showSidebar }) => (showSidebar ? '350ms' : '1350ms')};
-left: ${({ showSidebar }) => (showSidebar ? '0' : '-100%')};
+  { showSidebar: boolean } >
+  `
+  background-color: #292929;
+  width: 200px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: fixed; 
+  z-index: 10000;
+  transition: ${({ showSidebar }) => (showSidebar ? '350ms' : '1350ms')};
+  left: ${({ showSidebar }) => (showSidebar ? '0' : '-100%')};
 `;
 
 export const LinksContainer = styled.ul`
@@ -33,19 +31,18 @@ export const ToggleSidebarWrapper = styled.li`
 export const CloseIcon = styled(AiIcons.AiOutlineClose)`
   color: white;
   font-size: 2rem;
-  margin-left:1.3rem;
-  // padding-bottom: 2rem;
+  margin-left: 1.3rem;
   background: none;
 `;
 
 export const NumberOfCartItems = styled.div`
-  width: 35px!important;
+  width: 35px !important;
   height: 35px !important;
   padding: 10px;
-  margin-left:10px;
-  background: rgb(247,195,105);
+  margin-left: 10px;
+  background: rgb(247, 195, 105);
   border-radius: 50% !important;
-  color:black !important;
+  color: black !important;
 `;
 
 export const NavbarItemMobile = styled.span`
@@ -58,14 +55,12 @@ export const NavbarItemMobile = styled.span`
   color:white;
   a{
   text-decoration: none;
-  // color: #f5f5f5;
   color: white;
   font-size: 18px;
   width: 70%;
   height: 100%;
   display: flex;
   align-items: center;
-  // padding: 0 16px;
   border-radius: 4px;
   transition: all .2s ease-in-out; 
   }
@@ -80,14 +75,12 @@ export const NavbarItemMobile = styled.span`
 
   div{
     text-decoration: none;
-    // color: #f5f5f5;
     color: white;
     font-size: 18px;
     width: 70%;
     height: 100%;
     display: flex;
     align-items: center;
-    // padding: 0 16px;
     border-radius: 4px;
     transition: all .2s ease-in-out; 
   }
@@ -103,5 +96,3 @@ export const NavbarItemMobile = styled.span`
 
   }
 `;
-
-

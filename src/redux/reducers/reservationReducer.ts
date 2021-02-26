@@ -1,11 +1,12 @@
 import { USER_LOGOUT } from '../constants/authConstants';
-import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL } from '../constants/reservationConstants';
-import { ReservationAction, ReservationData, TableData, } from '../types/reservationTypes';
+import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS } from '../constants/reservationConstants';
+import { ReservationAction, ReservationData, TableData, ReservationDataFromDb } from '../types/reservationTypes';
+import { GET_RESERVATIONS_FOR_USER_REQUEST, GET_RESERVATIONS_FOR_USER_FAIL } from './../constants/reservationConstants';
 
 
 
 
-export const reservationAvailabilityReducer = (state: ReservationData = { name: '', partySize: 0, email: "", phoneNumber: "", time: "", date: "" }, action: ReservationAction) => {
+export const reservationAvailabilityReducer = (state: ReservationData = { name: '', partySize: 0, email: "", phoneNumber: "", time: "", date: "", }, action: ReservationAction) => {
   switch (action.type) {
     case SET_RESERVATION_DATA:
       return {
@@ -50,6 +51,22 @@ export const bookTableReducer = (state: { loading: boolean, reservationData: Res
       return { error: 'failed to book table', loading: false }
     case CLEAR_RESERVATION_DATA:
       return { loading: false, reservationData: null, error: '' }
+    case USER_LOGOUT:
+      return { loading: false, reservationData: null, error: '' }
+    default:
+      return state;
+  }
+}
+export const getReservationForUserReducer = (state: { loading: boolean, reservationData: ReservationDataFromDb, error: string } = { loading: false, reservationData: null, error: '' }, action: ReservationAction) => {
+  switch (action.type) {
+    case GET_RESERVATIONS_FOR_USER_REQUEST:
+      return {
+        loading: true
+      }
+    case GET_RESERVATIONS_FOR_USER_SUCCESS:
+      return { reservationData: action.payload, loading: false }
+    case GET_RESERVATIONS_FOR_USER_FAIL:
+      return { error: 'Failed to get reservations', loading: false }
     case USER_LOGOUT:
       return { loading: false, reservationData: null, error: '' }
     default:

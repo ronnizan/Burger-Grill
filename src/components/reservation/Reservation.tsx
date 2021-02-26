@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { ReservationSection, ReservationForm, ReservationTitle, ReservationSubTitle,ReservationSmall, FormInputWrapper, FormLabel, DatePickerInput, FormInput, IconWrapper, SubmitButton } from "./Reservation-style";
+import { ReservationSection, ReservationForm, ReservationTitle, ReservationSubTitle, ReservationSmall, FormInputWrapper, FormLabel, DatePickerInput, FormInput, IconWrapper, SubmitButton } from "./Reservation-style";
 import * as BsIcons from 'react-icons/bs';
 import * as HiIcons from 'react-icons/hi';
 import moment from 'moment';
 import { setReservationData } from "../../redux/actions/reservationActions";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import { ReservationData } from './../../redux/types/reservationTypes';
 import { useHistory } from "react-router";
 
-const Reservation = ({fromBookTablePage}) => {
+const Reservation = ({ fromBookTablePage }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [date, setDate] = useState<any>(new Date());
@@ -21,11 +21,9 @@ const Reservation = ({fromBookTablePage}) => {
 
   const handleDate = (date: any) => {
     setDate(date);
-    // console.log(date.getDate(), date.getMonth() + 1, date.getFullYear());
   }
   const handleTimeDate = (date: any) => {
     setTime(date);
-    // console.log(date.getHours()); 
   }
 
   const submitForm = (e) => {
@@ -56,7 +54,7 @@ const Reservation = ({fromBookTablePage}) => {
           </FormInputWrapper>
           <FormInputWrapper>
             <FormLabel>Name:</FormLabel>
-            <FormInput required={true}  
+            <FormInput required={true}
               onChange={(e) => setName(e.target.value)} type="text"></FormInput>
             <IconWrapper> <HiIcons.HiPencilAlt></HiIcons.HiPencilAlt></IconWrapper>
           </FormInputWrapper>

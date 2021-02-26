@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import useAutoLogin from './hooks/use-autoLogin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Sidebar from './components/sidebar/Sidebar';
-import { HomePage, AuthPage, BookTablePage, MenuPage,CartSummaryPage,CheckoutPage } from './pages';
+import { HomePage, AuthPage, BookTablePage, MenuPage,CartSummaryPage,CheckoutPage,ProfilePage } from './pages';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './redux';
 import PrivateRoute from './auth/PrivateRoute';
@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     dispatch(getAllProducts())
   })
-  const { error, user, loading } = useSelector((state: RootState) => state.userLogin);
+  const { user } = useSelector((state: RootState) => state.userLogin);
   const [showSidebar, setShowSidebar] = useState(false);
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
@@ -38,6 +38,7 @@ function App() {
           <Route path='/order' component={MenuPage} exact/>
           <Route path='/cart' component={CartSummaryPage} exact/>
           <Route path='/checkout' component={CheckoutPage} exact/>
+          <PrivateRoute path='/profile' component={ProfilePage} exact/>
         </Switch>
       </Router>
     </>

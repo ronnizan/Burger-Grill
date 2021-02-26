@@ -1,9 +1,9 @@
 import React from "react";
-import {TableContainer,TableWrapper,TableRow,Chair,TableName} from "./Table-Reservation-style";
+import { TableContainer, TableWrapper, TableRow, Chair, TableName } from "./Table-Reservation-style";
 
 
-const TableToDisplay = ({table,onTableSelected}) => {
- 
+const TableToDisplay = ({ table, onTableSelected }) => {
+
   const getRow1 = () => {
     let chairs = [];
     for (let i = 0; i < Math.ceil(table.capacity / 2); i++) {
@@ -23,7 +23,7 @@ const TableToDisplay = ({table,onTableSelected}) => {
         <Chair
           key={i}
           tableEmpty={table.isAvailable}
-        ></Chair>  
+        ></Chair>
       );
     }
     return chairs2;
@@ -37,21 +37,21 @@ const TableToDisplay = ({table,onTableSelected}) => {
           if (table.isAvailable) {
             onTableSelected(table);
           }
-          
+
         }}
-      > 
+      >
         <TableRow>
-          
-            {getRow1()}
+
+          {getRow1()}
         </TableRow>
         <TableRow >
-            {getRow2()}
+          {getRow2()}
         </TableRow>
 
         <TableName>{table.name}, {table.location}</TableName>
       </TableWrapper>
     </TableContainer>
   );
-};    
+};
 
 export default TableToDisplay;

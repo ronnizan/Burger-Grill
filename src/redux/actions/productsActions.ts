@@ -1,7 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
 import firebase from '../../firebase/firebaseConfig';
-import staticFireBase from 'firebase';
 import { GET_BESTSELLERS_REQUEST, GET_PRODUCTS_REQUEST } from '../constants/productsConstants';
 import { ProductsAction, MenuItem } from '../types/productsType';
 import { GET_BESTSELLERS_SUCCESS, GET_BESTSELLERS_FAIL, GET_PRODUCTS_SUCCESS, SET_SELECTED_ITEM_FOR_POPUP, REMOVE_SELECTED_ITEM_FROM_POPUP } from './../constants/productsConstants';

@@ -17,7 +17,6 @@ export const HeroSection = styled.section`
     content: '';
     background-image: url(${Background});
     background-blend-mode: luminosity;
-    ${'' /* background-blend-mode: multiply	; */}
     background-color: #666666;
     position: absolute;
     top: 0px;
@@ -28,7 +27,6 @@ export const HeroSection = styled.section`
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    ${'' /* opacity: 0.75; */}
   }
 `;
 

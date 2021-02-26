@@ -1,25 +1,23 @@
 import styled from 'styled-components';
 import * as FaIcons from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import * as IoIcons from 'react-icons/io';
-
-
 
 export const TopNavbar = styled.div`
-  // background:#292929;
   height: 80px;
   width: 100%;
   position: fixed;
   z-index: 1000;
-  top:0;
+  top: 0;
   @media screen and (max-width: 768px) {
     height: 120px;
-    // padding-top:20px;
   }
-  `;
-export const TopNavbarContainer = styled.div<
-  { scrollNav: boolean } >`
-  background: ${({ scrollNav }) => (scrollNav ? 'rgb(41,41,41)' : 'transparent')};
+`;
+export const TopNavbarContainer =
+  styled.div <
+  { scrollNav: boolean } >
+  `
+  background: ${({ scrollNav }) =>
+    scrollNav ? 'rgb(41,41,41)' : 'transparent'};
   height: 80px;
   display: flex;
   transition: 1.3s all ease;
@@ -29,7 +27,6 @@ export const TopNavbarContainer = styled.div<
   margin: 0 auto;
   @media screen and (max-width: 768px) {
     height: 120px;
-    // padding-top:20px;
   }
 `;
 
@@ -55,11 +52,9 @@ export const LogoWrapper = styled(Link)`
   height: 50px;
   margin-left: 16px;
   width: 50px;
-  // padding-top: 10px;
   @media screen and (max-width: 768px) {
     margin-right: 75px;
   }
-  
 `;
 
 export const Logo = styled.img`
@@ -69,7 +64,7 @@ export const Logo = styled.img`
 `;
 export const LinksWrapper = styled.div`
   display: flex;
-  margin-right:10px;
+  margin-right: 10px;
 `;
 
 export const NavbarItem = styled.span`
@@ -82,14 +77,12 @@ export const NavbarItem = styled.span`
   color:white;
   a{
     text-decoration: none;
-    // color: #f5f5f5;
     color: white;
     font-size: 18px;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
-    // padding: 0 16px;
     border-radius: 4px;
     transition: all .2s ease-in-out; 
   }
@@ -99,14 +92,12 @@ export const NavbarItem = styled.span`
 
   div{
     text-decoration: none;
-    // color: #f5f5f5;
     color: white;
     font-size: 18px;
     width: 70%;
     height: 100%;
     display: flex;
     align-items: center;
-    // padding: 0 16px;
     border-radius: 4px;
     transition: all .2s ease-in-out; 
   }
@@ -124,5 +115,3 @@ export const NavbarItem = styled.span`
 
   }
 `;
-
-

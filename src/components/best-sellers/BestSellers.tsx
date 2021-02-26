@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BestSellersSection, BestSellersContainer, BestSellersTitle, SlideInner, BestSellersImageBox, BestSellersImage, BurgerDescriptionContainer, BurgerTitle, BurgerPrice, BurgerDescription, ArrowsContainer, RightArrow, LeftArrow, Slide, ButtonsContainer, OrderButton, AddToCartButton, VIcon, MenuLink } from './BestSellers-style';
+import { BestSellersSection, BestSellersContainer, BestSellersTitle, SlideInner, BestSellersImageBox, BestSellersImage, BurgerDescriptionContainer, BurgerTitle, BurgerPrice, BurgerDescription, ArrowsContainer, RightArrow, LeftArrow, Slide, ButtonsContainer, OrderButton, VIcon, MenuLink } from './BestSellers-style';
 import { addItemToCart } from '../../redux/actions/cartActions';
 import { RootState } from '../../redux';
 import { MenuItem } from '../../redux/types/productsType';
@@ -9,7 +9,7 @@ import Loader from '../loader/Loader';
 
 const BestSellers = () => {
   const dispatch = useDispatch();
-  const { menuItems, loading, error }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.bestSellers);
+  const { menuItems, loading, }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.bestSellers);
 
   const [current, setCurrent] = useState(0);
   const [showVIcon, setShowVIcon] = useState(false);

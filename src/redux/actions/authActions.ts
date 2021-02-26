@@ -1,18 +1,50 @@
 import { ThunkAction } from 'redux-thunk';
-import { USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, RESET_ERROR, USER_LOGOUT, SET_USER, USER_LOGIN_FAIL, USER_LOGIN_REQUEST } from '../constants/authConstants';
+import { USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, RESET_ERROR, USER_LOGOUT, SET_USER, USER_LOGIN_FAIL, USER_LOGIN_REQUEST, DELETE_USER_SUCCESS } from '../constants/authConstants';
 import { RootState } from '..';
 import firebase from '../../firebase/firebaseConfig';
 import staticFireBase from 'firebase';
 import { User, SignUpData, AuthAction } from './../types/authTypes';
 import { popupMessage } from './popupMessageAction';
 import { SignInData } from '../types/authTypes';
+import { DELETE_USER_REQUEST, DELETE_USER_FAIL } from './../constants/authConstants';
 
-// db.collection("cities").doc("DC").delete().then(() => {
-//   console.log("Document successfully deleted!");
-// }).catch((error) => {
-//   console.error("Error removing document: ", error);
-// });
-   
+
+export const deleteUser = (): ThunkAction<void, RootState, null, AuthAction> => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: DELETE_USER_REQUEST
+      })
+      const {
+        userLogin
+      } = getState();
+      const { user }: { user: User } = userLogin;
+      let userId;
+      if (user && user.id) {
+        userId = user.id;
+      }
+      await firebase.firestore().collection('/users').doc(userId).delete();
+      dispatch({
+        type: DELETE_USER_SUCCESS,
+        payload: 'Successfully Deleted your account'
+      });
+
+      dispatch(popupMessage({ type: 'error', content: "Successfully Deleted your account" }))
+      dispatch({
+        type: USER_LOGOUT
+      });
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: DELETE_USER_FAIL,
+        payload: "Failed to delete your account"
+      });
+      dispatch(popupMessage({ type: 'error', content: "Failed to delete your account" }))
+
+    }
+  }
+}
+
 export const signUpUser = (data: SignUpData): ThunkAction<void, RootState, null, AuthAction> => {
   return async dispatch => {
     try {
@@ -36,7 +68,7 @@ export const signUpUser = (data: SignUpData): ThunkAction<void, RootState, null,
           type: SET_USER,
           payload: userData
         });
-        dispatch(popupMessage({type: 'success',content:"Successfully Registered"}))
+        dispatch(popupMessage({ type: 'success', content: "Successfully Registered" }))
 
         localStorage.setItem('token', JSON.stringify(userData.id));
       }
@@ -46,7 +78,7 @@ export const signUpUser = (data: SignUpData): ThunkAction<void, RootState, null,
         type: USER_REGISTER_FAIL,
         payload: err.message
       });
-      dispatch(popupMessage({type: 'error',content:"Registration Failed"}))
+      dispatch(popupMessage({ type: 'error', content: "Registration Failed" }))
 
     }
   }
@@ -74,7 +106,7 @@ export const signInUserWithGoogle = (): ThunkAction<void, RootState, null, AuthA
             type: SET_USER,
             payload: userData
           });
-          dispatch(popupMessage({type: 'success',content:"Successfully Logged in"}))
+          dispatch(popupMessage({ type: 'success', content: "Successfully Logged in" }))
 
           localStorage.setItem('token', JSON.stringify(userData.id));
 
@@ -88,7 +120,7 @@ export const signInUserWithGoogle = (): ThunkAction<void, RootState, null, AuthA
             type: SET_USER,
             payload: userData
           });
-          dispatch(popupMessage({type: 'success',content:"Successfully Logged in"}))
+          dispatch(popupMessage({ type: 'success', content: "Successfully Logged in" }))
           localStorage.setItem('token', JSON.stringify(userData.id));
 
         }
@@ -99,7 +131,7 @@ export const signInUserWithGoogle = (): ThunkAction<void, RootState, null, AuthA
         type: USER_REGISTER_FAIL,
         payload: error.message
       });
-      dispatch(popupMessage({type: 'error',content:error.message}))
+      dispatch(popupMessage({ type: 'error', content: error.message }))
 
     }
   }
@@ -128,7 +160,7 @@ export const signInUserWithFacebook = (): ThunkAction<void, RootState, null, Aut
             type: SET_USER,
             payload: userData
           });
-          dispatch(popupMessage({type: 'success',content:"Successfully Logged in"}))
+          dispatch(popupMessage({ type: 'success', content: "Successfully Logged in" }))
           localStorage.setItem('token', JSON.stringify(userData.id));
 
         } else {
@@ -140,7 +172,7 @@ export const signInUserWithFacebook = (): ThunkAction<void, RootState, null, Aut
             type: SET_USER,
             payload: userData
           });
-          dispatch(popupMessage({type: 'success',content:"Successfully Logged in"}))
+          dispatch(popupMessage({ type: 'success', content: "Successfully Logged in" }))
 
           localStorage.setItem('token', JSON.stringify(userData.id));
 
@@ -153,7 +185,7 @@ export const signInUserWithFacebook = (): ThunkAction<void, RootState, null, Aut
         type: USER_LOGIN_FAIL,
         payload: error.message
       });
-      dispatch(popupMessage({type: 'error',content:error.message}))
+      dispatch(popupMessage({ type: 'error', content: error.message }))
 
     }
   }
@@ -191,7 +223,7 @@ export const getAuthUser = (id: string): ThunkAction<void, RootState, null, Auth
   }
 }
 
-export const loginUser = (userInfo:SignInData): ThunkAction<void, RootState, null, AuthAction> => {
+export const loginUser = (userInfo: SignInData): ThunkAction<void, RootState, null, AuthAction> => {
   return async dispatch => {
     try {
       dispatch({
@@ -221,34 +253,13 @@ export const loginUser = (userInfo:SignInData): ThunkAction<void, RootState, nul
         type: USER_LOGIN_FAIL,
         payload: err.message
       });
-      dispatch(popupMessage({type: 'error',content:err.message}))
+      dispatch(popupMessage({ type: 'error', content: err.message }))
 
     }
   }
 }
 
-// Set loading
-// export const setLoading = (value: boolean): ThunkAction<void, RootState, null, AuthAction> => {
-//   return dispatch => {
-//     dispatch({
-//       type: SET_LOADING,
-//       payload: value
-//     });
-//   }
-// }
 
-// Log in
-// export const signin = (data: SignInData, onError: () => void): ThunkAction<void, RootState, null, AuthAction> => {
-//   return async dispatch => {
-//     try {
-//       await firebase.auth().signInWithEmailAndPassword(data.email, data.password);
-//     } catch (err) {
-//       console.log(err);
-//       onError();
-//       dispatch(setError(err.message));
-//     }
-//   }
-// }
 
 // Log out
 export const logOut = (): ThunkAction<void, RootState, null, AuthAction> => {
@@ -259,7 +270,7 @@ export const logOut = (): ThunkAction<void, RootState, null, AuthAction> => {
       dispatch({
         type: USER_LOGOUT
       });
-      dispatch(popupMessage({type: 'error',content:'Successfully logged out'}))
+      dispatch(popupMessage({ type: 'error', content: 'Successfully logged out' }))
 
     } catch (err) {
       console.log(err);
@@ -275,35 +286,3 @@ export const setError = (): ThunkAction<void, RootState, null, AuthAction> => {
     });
   }
 }
-
-// Set need verification
-// export const setNeedVerification = (): ThunkAction<void, RootState, null, AuthAction> => {
-//   return dispatch => {
-//     dispatch({
-//       type: NEED_VERIFICATION
-//     });
-//   }
-// }
-
-// Set success
-// export const setSuccess = (msg: string): ThunkAction<void, RootState, null, AuthAction> => {
-//   return dispatch => {
-//     dispatch({
-//       type: SET_SUCCESS,
-//       payload: msg
-//     });
-//   }
-// }
-
-// Send password reset email
-// export const sendPasswordResetEmail = (email: string, successMsg: string): ThunkAction<void, RootState, null, AuthAction> => {
-//   return async dispatch => {
-//     try {
-//       await firebase.auth().sendPasswordResetEmail(email);
-//       dispatch(setSuccess(successMsg));
-//     } catch (err) {
-//       console.log(err);
-//       dispatch(setError(err.message));
-//     }
-//   }
-// }

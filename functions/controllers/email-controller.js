@@ -86,7 +86,7 @@ router.post('/send-order-mail', (req, res) => {
           <br>
           <p style="font-size:larger"><strong>Total Sum:</strong>$${amount}</p>
           <br>
-          <p style="font-size:larger"><strong>orderNotes:</strong> ${
+          <p style="font-size:larger"><strong>Order Comment:</strong> ${
             orderNotes ? orderNotes: 'No additional comment'  
           }.</p>
         </div>

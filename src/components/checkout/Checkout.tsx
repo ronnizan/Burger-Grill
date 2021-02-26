@@ -22,7 +22,6 @@ declare global {
 }
 
 const Checkout = () => {
-
   const dispatch = useDispatch();
   const { cartItems }: { cartItems: CartItem[] } = useSelector((state: RootState) => state.cart);
   const { order, loading, error }: OrderState = useSelector((state: RootState) => state.creatOrder);
@@ -58,15 +57,16 @@ const Checkout = () => {
     } else {
       setSdkReady(true)
     }
-    return ()=>{
-      dispatch({type:CLEAR_ORDER});
+    return () => {
+      dispatch({ type: CLEAR_ORDER });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const validateForm = (e) => {
     e.preventDefault();
     setIsFormValid(true)
-  }  
+  }
 
   const successPaymentHandler = (paymentResult) => {
     if (paymentResult.status === "COMPLETED") {
@@ -74,7 +74,7 @@ const Checkout = () => {
         id: paymentResult.id,
         create_time: paymentResult.create_time,
         orderItems: cartItems,
-        userId: user?.id? user?.id:'Anonymous' ,
+        userId: user?.id ? user?.id : 'Anonymous',
         amount: user ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems),
         orderMethod,
         firstName,
@@ -144,7 +144,7 @@ const Checkout = () => {
               <OrderFormInput type="email" onChange={(e) => setEmail(e.target.value)} required></OrderFormInput>
               <OrderFormLabel>Phone:</OrderFormLabel>
               <OrderFormInput type="tel" onChange={(e) => setPhoneNumber(e.target.value)} required></   OrderFormInput>
-              <OrderFormLabel>Order Notes:</OrderFormLabel>
+              <OrderFormLabel>Order Comment:</OrderFormLabel>
               <OrderFormInput type="text" onChange={(e) => setOrderNotes(e.target.value)}></OrderFormInput>
               <SaveOrderDetailsButton>Save Deatils</SaveOrderDetailsButton>
               <br />
@@ -179,9 +179,9 @@ const Checkout = () => {
 
         </CheckoutSection>}
         {order?.id && <CheckoutSection> <CheckoutTitle> Order Completed!</CheckoutTitle>
-            <CheckoutSubTitle>An email with your order details has been sent to your mail.</CheckoutSubTitle>
-            
-          </CheckoutSection>}
+          <CheckoutSubTitle>An email with your order details has been sent to your mail.</CheckoutSubTitle>
+
+        </CheckoutSection>}
       </CheckoutSectionWrapper>
     </>
   );

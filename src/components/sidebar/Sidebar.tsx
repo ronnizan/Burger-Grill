@@ -24,7 +24,6 @@ const Sidebar = ({ user, showSidebar, toggleSidebar }: { user: User, showSidebar
         </ToggleSidebarWrapper>
         {user && <NavbarItemMobile>
           <div>
-            <HiIcons.HiUser />
             <span>Hello {user.name}</span>
           </div>
         </NavbarItemMobile>}
@@ -38,6 +37,14 @@ const Sidebar = ({ user, showSidebar, toggleSidebar }: { user: User, showSidebar
             </NavbarItemMobile>
           )
         })}
+        {user &&
+          <NavbarItemMobile>
+            <Link to='/profile'>
+              <HiIcons.HiUser />
+              <span>Profile</span>
+            </Link>
+          </NavbarItemMobile>
+        }
         <NavbarItemMobile>
           <Link to={'/cart'}>
             <IoIcons.IoIosCart />

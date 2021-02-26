@@ -2,25 +2,28 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import {userLoginReducer, userRegisterReducer} from './reducers/authReducer';
+import { userLoginReducer, userRegisterReducer, userDeleteReducer } from './reducers/authReducer';
 import { popupMessageReducer } from './reducers/popupMessageReducer';
-import { getTablesReducer, reservationAvailabilityReducer,bookTableReducer } from './reducers/reservationReducer';
+import { getTablesReducer, reservationAvailabilityReducer,bookTableReducer, getReservationForUserReducer } from './reducers/reservationReducer';
 import { cartReducer } from './reducers/cartReducer';
 import { allProductsReducer, bestSellersReducer, productPopupReducer } from './reducers/productsReducer';
-import { creatOrderReducer } from './reducers/orderReducer';
+import { creatOrderReducer, getOrdersForUserReducer } from './reducers/orderReducer';
 
 const rootReducer = combineReducers({
   userRegister: userRegisterReducer,
   userLogin:userLoginReducer,
+  userDelete:userDeleteReducer,
   popupMessage:popupMessageReducer,
   reservationAvailability:reservationAvailabilityReducer,
   getTables:getTablesReducer,
   bookTable:bookTableReducer,
+  getReservationForUser:getReservationForUserReducer,
   cart:cartReducer,
   allProducts:allProductsReducer,
   bestSellers:bestSellersReducer,  
   productPopup:productPopupReducer,
-  creatOrder:creatOrderReducer
+  creatOrder:creatOrderReducer,
+  getOrdersForUser:getOrdersForUserReducer
 });
 
 

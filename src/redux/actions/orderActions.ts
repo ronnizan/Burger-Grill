@@ -1,14 +1,15 @@
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
 import firebase from '../../firebase/firebaseConfig';
-import staticFireBase from 'firebase';
 import { popupMessage } from './popupMessageAction';
 import { CLEAR_CART } from '../constants/cartConstants';
 import { Order, OrderAction } from '../types/orderTypes';
-import { CREATE_ORDER_REQUEST, CREATE_ORDER_FAIL, CREATE_ORDER_SUCCESS } from '../constants/orderConstants';
+import { CREATE_ORDER_REQUEST, CREATE_ORDER_FAIL, CREATE_ORDER_SUCCESS, GET_ORDERS_FOR_USER_FAIL, GET_ORDERS_FOR_USER_REQUEST } from '../constants/orderConstants';
 import axios from 'axios';
 import { CartAction } from '../types/cartTypes';
 import { ServerBaseUrl } from './../constants/endPoints';
+import { User } from './../types/authTypes';
+import { GET_ORDERS_FOR_USER_SUCCESS } from './../constants/orderConstants';
 
 
 export const createOrder = (order: Order): ThunkAction<void, RootState, null, OrderAction | CartAction> => {
@@ -38,7 +39,7 @@ export const createOrder = (order: Order): ThunkAction<void, RootState, null, Or
       });
 
 
-      dispatch(popupMessage({ type: 'success', content: "Order Received" }));
+      dispatch(popupMessage({ type: 'success', content: "Order Completed!" }));
 
       dispatch({ type: CLEAR_CART });
 
@@ -53,47 +54,55 @@ export const createOrder = (order: Order): ThunkAction<void, RootState, null, Or
     }
   }
 }
+export const getOrdersForUser = (): ThunkAction<void, RootState, null, OrderAction> => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: GET_ORDERS_FOR_USER_REQUEST
+      })
+      const {
+        userLogin
+      } = getState();
+
+      const { user }: { user: User } = userLogin;
+      let userId;
+      if (user && user.id) {
+        userId = user.id;
+      }
+
+      const orders = await firebase.firestore().collection('orders').where('userId', '==', userId)
+        .get();
+      if (orders.empty) {
+        dispatch({
+          type: GET_ORDERS_FOR_USER_SUCCESS,
+          payload: []
+        });
+      } else {
+        let ordersFromDb: Order [] = [];
+        orders.forEach(doc => {
+          ordersFromDb.push(doc.data() as Order);
+        });
+        dispatch({
+          type: GET_ORDERS_FOR_USER_SUCCESS,
+          payload: ordersFromDb
+        });
+
+      }
+
+    } catch (err) {
+      console.log('err', err);
+      dispatch({
+        type: GET_ORDERS_FOR_USER_FAIL,
+        payload: 'get orders failed'
+      });
+    }
+  }
+}
 
 
 
 
 
-
-// export const loginUser = (userInfo:SignInData): ThunkAction<void, RootState, null, AuthAction> => {
-//   return async dispatch => {
-//     try {
-//       dispatch({
-//         type: USER_LOGIN_REQUEST,
-//       });
-//       const user = await firebase.auth().signInWithEmailAndPassword(userInfo.email, userInfo.password);
-//       console.log(user)
-//       const userFromDb = await firebase.firestore().collection('users').doc(user.user.uid).get();
-//       console.log(userFromDb.exists)
-//       if (userFromDb.exists) {
-//         const userData = userFromDb.data() as User;
-
-//         dispatch({
-//           type: SET_USER,
-//           payload: userData
-//         });
-//         localStorage.setItem('token', JSON.stringify(userData.id));
-//       } else {
-//         dispatch({
-//           type: USER_LOGIN_FAIL,
-//           payload: 'User login failed, please try again later'
-//         });
-//       }
-//     } catch (err) {
-//       console.log(err);
-//       dispatch({
-//         type: USER_LOGIN_FAIL,
-//         payload: err.message
-//       });
-//       dispatch(popupMessage({type: 'error',content:err.message}))
-
-//     }
-//   }
-// }
 
 
 

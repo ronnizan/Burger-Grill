@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { signInUserWithGoogle, logOut, signInUserWithFacebook, loginUser, signUpUser } from '../../redux/actions/authActions';
-import { BookReservationSection, BookReservationContainer, BookReservationTitle, Form, InputsWrapper, DatePickerInput, Input, FormSelect, FormSelectOption, TablesContainer, ChairSymbolWrapper, ChairSymbolLabel, ChairSymbol } from './Book-Reservation-style';
+import { BookReservationSection, BookReservationContainer, BookReservationTitle, Form, InputsWrapper, DatePickerInput, FormSelect, FormSelectOption, TablesContainer, ChairSymbolWrapper, ChairSymbolLabel, ChairSymbol } from './Book-Reservation-style';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux';
 import TableToDisplay from '../table-reservation/Table-Reservation';
 import { ReservationData, TableData } from '../../redux/types/reservationTypes';
-import { CLEAR_RESERVATION_DATA } from '../../redux/constants/reservationConstants';
-import { bookTable, getTables } from './../../redux/actions/reservationActions';
+import { getTables } from './../../redux/actions/reservationActions';
 import Loader from '../loader/Loader';
 import Reservation from '../reservation/Reservation';
 import PhoneConformation from '../phone-conformation/PhoneConformation';

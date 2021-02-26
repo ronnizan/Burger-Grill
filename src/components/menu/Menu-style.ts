@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import * as HiIcons from 'react-icons/hi';
 import * as AiIcons from 'react-icons/ai';
-import BestSellersBackground from '../../images/bestsellers-background.jpg';
-import { Link as LinkScroll } from 'react-scroll';
 import { Link as LinkRouter } from 'react-router-dom';
 import ReviewsBackground from '../../images/menu-hero.jpg';
 
@@ -11,23 +9,23 @@ export const MenuHero = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height:400px;
+  height: 400px;
   padding: 70px;
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   @media screen and (max-width: 768px) {
-    height:380px;
-    }
+    height: 380px;
+  }
 `;
 export const MenuTitle = styled.h1`
   font-family: 'Imbue', serif;
   font-size: 5rem;
   display: inline-block;
   border-bottom: 3px solid rgb(222, 141, 87, 0.7);
-    margin-bottom: 20px;
-    color:white;
+  margin-bottom: 20px;
+  color: white;
 
   @media screen and (max-width: 768px) {
     font-size: 2.8rem;
@@ -38,37 +36,39 @@ export const MenuSubTitle = styled.h3`
   font-size: 4rem;
   display: inline-block;
   border-bottom: 3px solid rgb(222, 141, 87, 0.7);
-    margin-bottom: 20px;
-    color:white;
+  margin-bottom: 20px;
+  color: white;
   @media screen and (max-width: 768px) {
     font-size: 2rem;
   }
 `;
 export const MenuSectionWrapper = styled.div`
-  background:rgb(236,236,236);
+  background: rgb(236, 236, 236);
 `;
 export const MenuSection = styled.div`
-  max-width:1360px;
-  margin:0 auto;
+  max-width: 1360px;
+  margin: 0 auto;
   display: flex;
-  // position:relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background:rgb(236,236,236);
-
+  background: rgb(236, 236, 236);
 `;
 export const CategoriesContainer = styled.div`
-margin: 30px 0;
-display:flex;
-flex-wrap: wrap;
-align-items: center;
-justify-content:space-between;
+  margin: 30px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
 `;
-export const Category = styled.div<{ currentCategory: boolean }>`
+export const Category =
+  styled.div <
+  { currentCategory: boolean } >
+  `
 font-family: 'Imbue', serif;
 font-size: 2rem;
-border-bottom: ${({ currentCategory }) => (currentCategory ? '3px solid rgb(222, 141, 87, 0.7)' : 'none')};
+border-bottom: ${({ currentCategory }) =>
+    currentCategory ? '3px solid rgb(222, 141, 87, 0.7)' : 'none'};
 margin: 0 10px;
 color:black;
 @media screen and (max-width: 768px) {
@@ -81,19 +81,15 @@ color:black;
 `;
 
 export const MenuItemsContainer = styled.div`
-max-width:1360px;
-margin:0 auto;
-display: flex;
-flex-wrap: wrap;
-// position:relative;
-justify-content: center;
-align-items: center;
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 `;
 
-
-export const MenuItemCard =
-  styled.div
-    `
+export const MenuItemCard = styled.div`
   display:flex;
   margin:20px;
   flex-direction: column;
@@ -115,86 +111,67 @@ export const MenuItemCard =
   100% {opacity: 1;}
 `;
 export const MenuItemImageBox = styled.div`
-
   margin: 0 auto;
   overflow: hidden;
   width: 250px;
   height: 250px;
   :hover img {
     transform: scale(1.1);
-
-}
-@media screen and (max-width: 768px) {
-  width: 250px;
-  height: 250px;
+  }
+  @media screen and (max-width: 768px) {
+    width: 250px;
+    height: 250px;
   }
 `;
 export const MenuItemImage = styled.img`
   transition: all 0.3s;
   display: block;
   width: 100%;
-  margin:0 auto;
-  height:100%;
+  margin: 0 auto;
+  height: 100%;
   transform: scale(1);
 `;
 export const DescriptionContainer = styled.div`
   width: 250px;
-  height: 300px; 
-  background:white;
-  padding:20px;
-  display:flex;
+  height: 300px;
+  background: white;
+  padding: 20px;
+  display: flex;
   position: relative;
   flex-direction: column;
 `;
 export const MenuItemTitle = styled.h1`
-      // margin-left:40px;
-      // margin-top:40px;
-      font-family: 'Imbue', serif;
-      text-align:center;
-      border-bottom:1px solid black;
+  font-family: 'Imbue', serif;
+  text-align: center;
+  border-bottom: 1px solid black;
 `;
 export const MenuItemDescription = styled.p`
-      // margin-left:40px;
-      font-family: 'Indie Flower', cursive;
-font-size:1.2rem;
-      // margin-top:40px;
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.2rem;
 `;
 
 export const MenuItemPrice = styled.p`
-      // margin-left:40px;
-      // margin-top:40px;
-      font-weight:bold;
-
+  font-weight: bold;
 `;
 export const ButtonsContainer = styled.div`
-display:flex;
-position:absolute;
-bottom:20px;
-align-items:center;
-justify-content: space-between;
-width:80%;
+  display: flex;
+  position: absolute;
+  bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
 `;
 
 export const AddToCartButton = styled(HiIcons.HiPlusCircle)`
-color:#F9C56A;
-// border:none;
-cursor:pointer;
-font-size:45px;
-opacity:0.9;
-:hover{
-  opacity:1;
-}
+  color: #f9c56a;
+  cursor: pointer;
+  font-size: 45px;
+  opacity: 0.9;
+  :hover {
+    opacity: 1;
+  }
 `;
-export const RightArrow = styled(HiIcons.HiOutlineChevronRight)`
-// color:#F9C56A;
-// // border:none;
-// cursor:pointer;
-// font-size:45px;
-// opacity:0.7;
-// :hover{
-//   opacity:1;
-// }
-`;
+export const RightArrow = styled(HiIcons.HiOutlineChevronRight)``;
 export const VIcon = styled(AiIcons.AiFillCheckCircle)`
   width: 50px;
   height: 50px;
@@ -219,7 +196,7 @@ export const VIcon = styled(AiIcons.AiFillCheckCircle)`
 
 export const SummaryLink = styled(LinkRouter)`
   color: white;
-  background: #F9C56A;
+  background: #f9c56a;
   font-family: 'Imbue', serif;
   text-decoration: none;
   display: inline-block;
@@ -231,7 +208,7 @@ export const SummaryLink = styled(LinkRouter)`
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity:0.8;
+  opacity: 0.8;
   box-shadow: 0 2px 5px 0 rgba(3, 6, 26, 0.15);
   transition: 0.5s all ease-in-out;
   animation: pulse 2s infinite 3s cubic-bezier(0.25, 0, 0, 1);
@@ -239,11 +216,8 @@ export const SummaryLink = styled(LinkRouter)`
   font-size: 2rem;
   &:hover {
     cursor: pointer;
-    // background: white;
-    // color: #1f4141;
     animation: none;
-    opacity:1;
-
+    opacity: 1;
   }
 
   @media screen and (max-width: 768px) {
@@ -256,5 +230,3 @@ export const SummaryLink = styled(LinkRouter)`
     }
   }
 `;
-
-

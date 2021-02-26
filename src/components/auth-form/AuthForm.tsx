@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { signInUserWithGoogle, logOut, signInUserWithFacebook, loginUser, signUpUser } from '../../redux/actions/authActions';
+import React, { useState } from 'react';
+import { signInUserWithGoogle, signInUserWithFacebook, loginUser, signUpUser } from '../../redux/actions/authActions';
 import { AuthFormSection, AuthFormContainer, Form, MainForm, SideForm, AuthFormTitle, IconsWrapper, FacebookIcon, GoogleIcon, SubTitle, Input, SubmitButton, SwitchButton } from './AuthForm-style';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux';
+import { useDispatch } from 'react-redux';
+
 const AuthForm = () => {
   const [current, setCurrent] = useState('signIn');
   const [signInEmail, setSignInEmail] = useState('');
@@ -11,7 +11,6 @@ const AuthForm = () => {
   const [signUpPassword, setSignUpPassword] = useState('');
   const [signUpName, setSignUpName] = useState('');
   const dispatch = useDispatch();
-  const { error, user, loading } = useSelector((state: RootState) => state.userLogin);
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -92,7 +91,7 @@ const AuthForm = () => {
           </Form>}
 
         </AuthFormContainer>
-    </AuthFormSection>
+      </AuthFormSection>
     </>);
 };
 

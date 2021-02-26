@@ -4,5 +4,6 @@ export { default as BookTablePage } from './bookTable';
 export { default as MenuPage } from './menu';
 export { default as CartSummaryPage } from './cartSummary';
 export { default as CheckoutPage } from './checkout';
+export { default as ProfilePage } from './profile';
 
  

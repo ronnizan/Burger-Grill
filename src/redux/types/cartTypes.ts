@@ -12,6 +12,7 @@ export interface CartItem {
   cookingLevel?: string;
   sideDish?: string;
   drink?: string;
+  type:string;
   changes?: {
     noOnion: boolean;
     noLettuce: boolean;
@@ -19,7 +20,7 @@ export interface CartItem {
     noPickle: boolean;
     noVegetables: boolean;
     vegetablesOnTheSide: boolean;
-  }
+  }  
 }
 
 export interface Cart {

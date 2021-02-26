@@ -9,7 +9,7 @@ import { addItemToCart } from '../../redux/actions/cartActions';
 
 const MealPopup = ({ menuItem, children }: { menuItem: MenuItem; children: any }) => {
   const dispatch = useDispatch();
-  const { menuItems, loading, error }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.allProducts);
+  const { menuItems, }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.allProducts);
 
   const [burgerSize, setBurgerSize] = useState('Classic');
   const [cookingLevel, setCookingLevel] = useState('MW');
@@ -133,14 +133,14 @@ const MealPopup = ({ menuItem, children }: { menuItem: MenuItem; children: any }
       <PopupRow>
         <PopupLabel>Drink:</PopupLabel>
         <PopupOptionsContainer>
-          {menuItems.map(menuItem =>( menuItem.type === 'drinks' && <PopupOption key ={menuItem.id}isSelected={drink === menuItem.title} onClick={() => {
+          {menuItems.map(menuItem => (menuItem.type === 'drinks' && <PopupOption key={menuItem.id} isSelected={drink === menuItem.title} onClick={() => {
             setDrink(menuItem.title)
           }}>{menuItem.title} {drink === menuItem.title && <VIcon></VIcon>}
           </PopupOption>))}
         </PopupOptionsContainer>
       </PopupRow>
       <AddToCartButton onClick={() => {
-        dispatch(addItemToCart({ ...menuItem, burgerSize, cookingLevel, changes, drink,sideDish, price: burgerSize === 'Large' ? menuItem.price + 2 : burgerSize === 'Gigantic' ? menuItem.price + 3 : menuItem.price }))
+        dispatch(addItemToCart({ ...menuItem, burgerSize, cookingLevel, changes, drink, sideDish, price: burgerSize === 'Large' ? menuItem.price + 2 : burgerSize === 'Gigantic' ? menuItem.price + 3 : menuItem.price }))
         dispatch(removeItemFromPopup())
       }}>ADD TO CART</AddToCartButton>
     </Popup>)

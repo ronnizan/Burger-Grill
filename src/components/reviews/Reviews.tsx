@@ -27,7 +27,7 @@ const Reviews = () => {
     return null;
   }
 
-  return (  
+  return (
     <ReviewsSection>
       <ReviewsContainer id="best-sellers" className="best-sellers">
         <ReviewsTitle>‟</ReviewsTitle>
@@ -50,28 +50,27 @@ const Reviews = () => {
                   <ReviewDescription>
                     {review.content}
                   </ReviewDescription>
-                  <br/>
+                  <br />
                   <ReviewerNameAndLocation>
                     {review.name}, {review.location}
                   </ReviewerNameAndLocation>
-                  <br/>
+                  <br />
                   <ReviewerImage src={review.image}></ReviewerImage>
                 </>)}
 
             </Slide>
 
           );
-        })} 
-           
+        })}
+
         <DotsContainer >
-          <Dot current={current === 0? +true: 0} onClick={()=>setCurrent(0)} />
-          <Dot current={current === 1 ? +true: 0} onClick={()=>setCurrent(1)} />
-          <Dot current={current === 2 ? +true: 0} onClick={()=>setCurrent(2)} />  
+          <Dot current={current === 0 ? +true : 0} onClick={() => setCurrent(0)} />
+          <Dot current={current === 1 ? +true : 0} onClick={() => setCurrent(1)} />
+          <Dot current={current === 2 ? +true : 0} onClick={() => setCurrent(2)} />
         </DotsContainer>
-      </ReviewsContainer>    
+      </ReviewsContainer>
     </ReviewsSection>
   );
 };
 
 export default Reviews;
-       

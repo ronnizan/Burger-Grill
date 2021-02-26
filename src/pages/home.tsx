@@ -1,6 +1,5 @@
-import React, { FC, useState, FormEvent, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-// import { signUpUser, setError, signOut } from '../redux/actions/authActions';
+import React, { FC,useEffect } from 'react';
+import {  useSelector } from 'react-redux';
 import { RootState } from '../redux';
 import activateScrollReveal from '../helpers/scrollReveal';
 import Hero from '../components/hero/Hero';
@@ -12,11 +11,11 @@ import Footer from '../components/footer/Footer';
 
 
 const HomePage: FC = () => {
-  const dispatch = useDispatch();
+
   useEffect(() => {
     activateScrollReveal()
   })
-  const { error, user, loading } = useSelector((state: RootState) => state.userLogin);
+  const { user  } = useSelector((state: RootState) => state.userLogin);
 
 
   return (

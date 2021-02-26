@@ -61,7 +61,6 @@ export const BurgerImage = styled.img`
   max-height: 430px;
   max-width: 430px;
   @media screen and (max-width: 768px) {
-    ${'' /* flex: 100%; */}
     max-height: 300px;
     max-width: 300px;
     order: 1;
@@ -94,7 +93,6 @@ export const ScrollButton = styled(LinkScroll)`
     background: lightgrey;
     color: #1f4141;
     animation: none;
-    ${'' /* animation-play-state: paused; */}
   }
 
   @media screen and (max-width: 768px) {
@@ -109,18 +107,15 @@ export const ScrollButton = styled(LinkScroll)`
 `;
 
 export const DownArrow = styled(AiIcons.AiFillCaretDown)`
-// font-size: 3rem;
-cursor: pointer;
-animation: float 1.5s linear alternate infinite;
+  cursor: pointer;
+  animation: float 1.5s linear alternate infinite;
 
-@keyframes float {
-  50% {
-    transform: translateY(-px);
+  @keyframes float {
+    50% {
+      transform: translateY(-px);
+    }
+    100% {
+      transform: translateY(-5px);
+    }
   }
-  100% {
-    transform: translateY(-5px);
-  }
-}
-@media screen and (max-width: 768px) {
-  // font-size: 3rem;
-}`;
+`;

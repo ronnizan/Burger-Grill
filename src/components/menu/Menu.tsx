@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MenuHero, MenuSectionWrapper, MenuSection, MenuTitle, MenuSubTitle, MenuItemCard, MenuItemImageBox, MenuItemImage, DescriptionContainer, MenuItemTitle, MenuItemPrice, MenuItemDescription, CategoriesContainer, Category, MenuItemsContainer, ButtonsContainer, AddToCartButton, RightArrow, VIcon, SummaryLink } from './Menu-style';
 import { addItemToCart } from '../../redux/actions/cartActions';
 import { RootState } from '../../redux';
 import { MenuItem } from '../../redux/types/productsType';
-import { getAllProducts, getBestSellersProducts, selectItemForPopup } from './../../redux/actions/productsActions';
+import { selectItemForPopup } from './../../redux/actions/productsActions';
 import Loader from '../loader/Loader';
 
 const Menu = () => {
   const dispatch = useDispatch();
-  const { menuItems, loading, error }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.allProducts);
+  const { menuItems, loading }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.allProducts);
   const [currentCategory, setCurrentCategory] = useState('meals');
   const [showVIcon, setShowVIcon] = useState({ index: null, showVIcon: false });
 

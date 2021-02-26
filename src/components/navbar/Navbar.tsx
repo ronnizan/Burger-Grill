@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { TopNavbar, TopNavbarContainer, HamburgerWrapper, HamburgerMenu, LinksWrapper, LogoWrapper, Logo, NavbarItem,  } from './Navbar-style';
+import { TopNavbar, TopNavbarContainer, HamburgerWrapper, HamburgerMenu, LinksWrapper, LogoWrapper, Logo, NavbarItem, } from './Navbar-style';
 import { SidebarData } from './NavbarData'
 import { Link, useLocation } from 'react-router-dom';
 import BusinessLogo from '../../../src/images/burgerlogo.png';
@@ -8,7 +8,6 @@ import * as FiIcons from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/actions/authActions';
 import NavbarCart from '../navbar-cart/NavbarCart';
-
 
 
 
@@ -46,6 +45,7 @@ const Navbar = ({ user, toggleSidebar }: { user: User, toggleSidebar: () => void
                 <span>Hello {user.name}</span>
               </div>
             </NavbarItem>}
+
           {SidebarData.map((item, index) => {
             return (
               <NavbarItem key={index}>
@@ -56,6 +56,13 @@ const Navbar = ({ user, toggleSidebar }: { user: User, toggleSidebar: () => void
               </NavbarItem>
             )
           })}
+          {user &&
+            <NavbarItem>
+              <Link to={'/profile'}>
+                <FiIcons.FiUser />
+                <span>Profile</span>
+              </Link>
+            </NavbarItem>}
           <NavbarItem onMouseOver={() => setShowCartItems(true)} onMouseOut={() => setShowCartItems(false)} >
             <NavbarCart showCartItems={showCartItems} />
           </NavbarItem>

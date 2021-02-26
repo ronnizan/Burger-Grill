@@ -1,15 +1,56 @@
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
 import firebase from '../../firebase/firebaseConfig';
-import staticFireBase from 'firebase';
 import { popupMessage } from './popupMessageAction';
 import { ReservationData, TableData } from './../types/reservationTypes';
 import { ReservationAction } from '../types/reservationTypes';
-import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_REQUEST, GET_TABLES_SUCCESS, GET_TABLES_FAIL, BOOK_TABLE_FAIL, BOOK_TABLE_SUCCESS } from './../constants/reservationConstants';
-import { BOOK_TABLE_REQUEST } from '../constants/reservationConstants';
+import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_REQUEST, GET_TABLES_SUCCESS, GET_TABLES_FAIL, BOOK_TABLE_FAIL, BOOK_TABLE_SUCCESS, GET_RESERVATIONS_FOR_USER_REQUEST, GET_RESERVATIONS_FOR_USER_FAIL } from './../constants/reservationConstants';
+import { BOOK_TABLE_REQUEST, GET_RESERVATIONS_FOR_USER_SUCCESS } from '../constants/reservationConstants';
 import { User } from './../types/authTypes';
 import axios from 'axios';
 import { ServerBaseUrl } from '../constants/endPoints';
+
+export const getReservationsForUser = (): ThunkAction<void, RootState, null, ReservationAction> => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: GET_RESERVATIONS_FOR_USER_REQUEST
+      })
+      const {
+        userLogin
+      } = getState();
+
+      const { user }: { user: User } = userLogin;
+      let userId;
+      if (user && user.id) {
+        userId = user.id;
+      }
+      
+      const isReservationAlreadyExists = await firebase.firestore().collection('/reservations').doc(userId && userId).get();
+      if (isReservationAlreadyExists.exists) {
+        //convert into array the reservations
+        const reservations = Object.values(isReservationAlreadyExists.data())
+        //convert into object all the reservations, firebase not accepting arrays
+        dispatch({
+          type: GET_RESERVATIONS_FOR_USER_SUCCESS,
+          payload:reservations
+        })
+      } else {
+        dispatch({
+          type: GET_RESERVATIONS_FOR_USER_SUCCESS,
+          payload:[]
+        })
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: GET_RESERVATIONS_FOR_USER_FAIL,
+        payload: err.message
+      });
+    }
+  }
+}
+
 
 export const bookTable = ({ date, table, time, partySize, email, name }: { date: string, time: string, table: TableData, partySize: number, email: string, name: string }): ThunkAction<void, RootState, null, ReservationAction> => {
   return async (dispatch, getState) => {
@@ -66,9 +107,6 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
         
         await firebase.firestore().collection('/reservations').doc(userId ? userId : date + " " + time + table.name).set({ 0: reservationData });
       }
-
-
-
       dispatch({
         type: BOOK_TABLE_SUCCESS,
         payload: reservationData

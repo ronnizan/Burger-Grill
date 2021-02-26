@@ -1,6 +1,6 @@
 import React from "react";
 import { AboutSection, AboutContainer, AboutTitle, ImageAndDescriptionContainer, AboutDescription, BurgerImage, ScrollButton, DownArrow } from "./About-style";
-import AboutBurgerImage from "../../images/about-burger.png" 
+import AboutBurgerImage from "../../images/about-burger.png"
 
 const About = () => {
 

@@ -1,9 +1,6 @@
 import styled from 'styled-components';
-import * as AiIcons from 'react-icons/ai';
-import { Link as LinkScroll } from 'react-scroll';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import * as BsIcons from 'react-icons/bs';
 
 export const ReservationSection = styled.section`
   padding: 40px;
@@ -13,38 +10,48 @@ export const ReservationSection = styled.section`
   justify-content: center;
   align-items: center;
 `;
-export const ReservationTitle = styled.h1<
-{ fromBookTablePage: boolean } >`
+export const ReservationTitle =
+  styled.h1 <
+  { fromBookTablePage: boolean } >
+  `
   font-family: 'Imbue', serif;
   font-size: 3rem;
-  display: ${({ fromBookTablePage }) => (fromBookTablePage ? "none" : "inline-block")};
+  display: ${({ fromBookTablePage }) =>
+    fromBookTablePage ? 'none' : 'inline-block'};
   border-bottom: 3px solid rgb(222, 141, 87, 0.7);
   @media screen and (max-width: 768px) {
     font-size: 2rem;
     margin-bottom: 0px;
   }
 `;
-export const ReservationSubTitle = styled.h4<
-{ fromBookTablePage: boolean } >`
+export const ReservationSubTitle =
+  styled.h4 <
+  { fromBookTablePage: boolean } >
+  `
   font-family: 'Imbue', serif;
   font-size: 2rem;
   margin-top: 20px;
   margin-bottom: 20px;
-  display: ${({ fromBookTablePage }) => (fromBookTablePage ? "none" : "inline-block")};
+  display: ${({ fromBookTablePage }) =>
+    fromBookTablePage ? 'none' : 'inline-block'};
   @media screen and (max-width: 768px) {
     font-size: 1.5rem;
     margin-bottom: 10px;
   }
 `;
 
-export const ReservationSmall = styled.small<
-{ fromBookTablePage: boolean } >`
+export const ReservationSmall =
+  styled.small <
+  { fromBookTablePage: boolean } >
+  `
  font-size:1rem;
- color: ${({ fromBookTablePage }) => (fromBookTablePage ? "white" : "black")};
+ color: ${({ fromBookTablePage }) => (fromBookTablePage ? 'white' : 'black')};
 
 `;
-export const ReservationForm = styled.form<
-{ fromBookTablePage: boolean } >`
+export const ReservationForm =
+  styled.form <
+  { fromBookTablePage: boolean } >
+  `
   display: flex;
   background-color: white;
   align-items: center;
@@ -100,9 +107,9 @@ export const FormInput = styled.input`
   }
   ::-webkit-outer-spin-button,
   ::-webkit-inner-spin-button {
-     -webkit-appearance: none;
-     margin: 0;
-}
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 export const IconWrapper = styled.div`
   position: absolute;
