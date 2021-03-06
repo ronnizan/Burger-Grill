@@ -46,6 +46,19 @@ export const ItemTitle = styled.h1`
     font-size: 1.8rem;
   }
 `;
+export const ItemDescription = styled.h3`
+  font-family: 'Imbue', serif;
+  font-size: 1.5rem;
+  display: inline-block;
+  // border-bottom: 3px solid rgb(222, 141, 87, 0.7);
+  margin-bottom: 20px;
+  color: black;
+  margin-top: 20px;
+text-align: center;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
+`;
 
 export const PopupRow = styled.div`
   display: flex;
@@ -71,8 +84,8 @@ export const PopupOptionsContainer = styled.span`
 `;
 export const PopupOption =
   styled.span <
-  { isSelected: boolean } >
-  `
+    { isSelected: boolean } >
+    `
 font-size:1rem;
 margin:5px;
 border:1px solid lightgrey;
@@ -80,7 +93,7 @@ padding:5px;
 position:relative;
 cursor: pointer;
 background: ${({ isSelected }) =>
-    isSelected ? 'rgb(204,25,54,0.8)' : 'white'};
+      isSelected ? 'rgb(204,25,54,0.8)' : 'white'};
 color: ${({ isSelected }) => (isSelected ? 'white' : 'black')};
 `;
 export const VIcon = styled(AiIcons.AiFillCheckCircle)`

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import * as FaIcons from 'react-icons/fa';
 import * as FcIcons from 'react-icons/fc';
-import AuthFormBackground from '../../images/reviews-background.jpg';
+// import AuthFormBackground from '../../images/reviews-background.jpg';
 
 export const AuthFormSection = styled.section`
   padding-top: 100px;
   padding-bottom: 220px;
-  background: url(${AuthFormBackground});
+  background: url('https://icecube-eu-291.icedrive.io/thumbnail?p=ZUrNMMiF3JXRwVUUyfzlFvg5ecuWW7oahKmwNxBoigmfhSMXNUq6%2FPR9Uj2E%2F0XochOSc%2FT9CQV5aMiFyeanNPE7%2FQPHhxF%2FSwtvhwW8VHPpN87ivTxZidTUfic6X1cZ&w=1280&h=1280&m=cropped');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

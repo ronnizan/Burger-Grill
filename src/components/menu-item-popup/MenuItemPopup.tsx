@@ -9,13 +9,15 @@ import MealPopup from '../meal-popup/MealPopup';
 
 
 const MenuItemPopup = () => {
-  const { menuItem }: { menuItem: MenuItem } = useSelector((state: RootState) => state.productPopup);
+  const { menuItem,fromChatbot }: { menuItem: MenuItem,fromChatbot:boolean } = useSelector((state: RootState) => state.productPopup);
+  
+  // console.log(fromChatbot,'asd')
   return (<>
     {menuItem.id &&
       <Overlay>
         {menuItem.type === 'burgers' && <BurgerPopup menuItem={menuItem}>
         </BurgerPopup>}
-        {menuItem.type === 'meals' && <MealPopup menuItem={menuItem} children={''} />}
+        {menuItem.type === 'meals' && <MealPopup menuItem={menuItem} fromChatbot={fromChatbot} children={''} />}
       </Overlay>}
   </>)
 }

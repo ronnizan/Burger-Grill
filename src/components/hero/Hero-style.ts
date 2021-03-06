@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
 import * as FaIcons from 'react-icons/fa';
-import Background from '../../images/hero2.jpg';
-import TitleBackground from '../../images/burger-title-background.jpg';
+// import Background from '../../images/hero2.jpg';
+// import TitleBackground from '../../images/burger-title-background.jpg';
 import { Link as LinkScroll } from 'react-scroll';
 import { Link as LinkRouter } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ export const HeroSection = styled.section`
   position: relative;
   &::before {
     content: '';
-    background-image: url(${Background});
+    background-image: url('https://icecube-eu-288.icedrive.io/thumbnail?p=I2JmNQKNK5AAOb5ZTyWVjy1RQiEd1JKGikBiJJmPbLy3kz2Cv%2FvLcRzREDKYyMsncGrtJO7b8Scv%2FgR%2Fhvl15I%2BzaEJVd98Bb2%2B3DakOeJ8LV%2B4F1Zn2ip5pxD98ol%2BX&w=1280&h=1280&m=cropped');
     background-blend-mode: luminosity;
     background-color: #666666;
     position: absolute;
@@ -43,7 +43,7 @@ export const HeroTitle = styled.h1`
   font-family: 'Noto Sans JP', sans-serif;
   text-align: center;
   font-size: 8rem;
-  background-image: url(${TitleBackground});
+  background-image: url('https://icecube-eu-291.icedrive.io/thumbnail?p=Mah961STSZY%2FbP5WC7eVEkiRoSIzdLU1Pevc%2FDIFGFl4oZpJSMYn3kR7SeCZMuAYGN6c5mxOZ1739fCUyu883lf9qbMnWfWr7FM3DfhP9AWg5Co9gGzuopya8mVefP8k&w=1280&h=1280&m=cropped');
   background-size: cover;
   background-clip: text;
   -webkit-background-clip: text;

@@ -6,7 +6,7 @@ import { CheckoutHero, CheckoutSectionWrapper, CheckoutSection, HeroTitle, Check
 import { RootState } from '../../redux';
 import Loader from '../loader/Loader';
 import { CartItem } from '../../redux/types/cartTypes';
-import { ServerBaseUrl } from '../../redux/constants/endPoints';
+import { ServerBaseUrlProd } from '../../redux/constants/endPoints';
 import { getCartTotal, getCartTotalForLoggedUser } from '../../helpers/getCartTotal';
 import { Order } from '../../redux/types/orderTypes';
 import { User } from '../../redux/types/authTypes';
@@ -42,7 +42,7 @@ const Checkout = () => {
 
   useEffect(() => {
     const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get(ServerBaseUrl + '/config/paypal')
+      const { data: clientId } = await axios.get(ServerBaseUrlProd + '/config/paypal')
       const script = document.createElement('script')
       script.type = 'text/javascript'
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
@@ -132,14 +132,14 @@ const Checkout = () => {
                   <NameInput type="text" onChange={(e) => setLastName(e.target.value)} required></NameInput>
                 </NameWrapper>
               </FullNameWrapper>
-              <OrderFormLabel>City:</OrderFormLabel>
-              <OrderFormInput type="text" onChange={(e) => setCity(e.target.value)} required></OrderFormInput>
-              <OrderFormLabel>Address:</OrderFormLabel>
-              <OrderFormInput type="text" onChange={(e) => setAddress(e.target.value)} required></OrderFormInput>
-              <OrderFormLabel>Floor:</OrderFormLabel>
-              <OrderFormInput min="0" onChange={(e) => setFloor(+e.target.value)} type="number"></OrderFormInput>
-              <OrderFormLabel>Apartment Number:</OrderFormLabel>
-              <OrderFormInput min="0" onChange={(e) => setApartmentNumber(+e.target.value)} type="number"></OrderFormInput>
+              {orderMethod === "Delivery" && <> <OrderFormLabel>City:</OrderFormLabel>
+                <OrderFormInput type="text" onChange={(e) => setCity(e.target.value)} required></OrderFormInput></>}
+              {orderMethod === "Delivery" && <><OrderFormLabel>Address:</OrderFormLabel>
+                <OrderFormInput type="text" onChange={(e) => setAddress(e.target.value)} required></OrderFormInput></>}
+              {orderMethod === "Delivery" && <><OrderFormLabel>Floor:</OrderFormLabel>
+                <OrderFormInput min="0" onChange={(e) => setFloor(+e.target.value)} type="number"></OrderFormInput></>}
+              {orderMethod === "Delivery" && <><OrderFormLabel>Apartment Number:</OrderFormLabel>
+                <OrderFormInput min="0" onChange={(e) => setApartmentNumber(+e.target.value)} type="number"></OrderFormInput></>}
               <OrderFormLabel>Email:</OrderFormLabel>
               <OrderFormInput type="email" onChange={(e) => setEmail(e.target.value)} required></OrderFormInput>
               <OrderFormLabel>Phone:</OrderFormLabel>

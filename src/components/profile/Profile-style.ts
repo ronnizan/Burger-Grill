@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import ProfileBackground from '../../images/checkout-hero.jpg';
+// import ProfileBackground from '../../images/checkout-hero.jpg';
 
 export const ProfileHero = styled.div`
-  background-image: url(${ProfileBackground});
+  background-image: url('https://icecube-eu-288.icedrive.io/thumbnail?p=1yw1XZ3gnxykePwVFST%2FGGNzqJAZl%2BVrOPkWzBtgrq0uwt%2FkOo1dmLD2Ke6guVNVKWVUOGrUhFmeg5ePDrWUWsbibTCOEVM1rjEa2mHdGX%2BbltAF8n%2F%2FvgAJkQxzcOAR&w=1280&h=1280&m=cropped');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -94,6 +94,7 @@ export const Card = styled.div`
   border: 1px solid lightgrey;
   background: #ffffff;
   margin: 20px;
+  min-height:350px;
   box-shadow: 0 2px 5px 0 rgba(3, 6, 26, 0.15);
 `;
 export const CardRow = styled.div`

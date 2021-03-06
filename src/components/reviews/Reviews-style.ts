@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import * as GoIcons from 'react-icons/go';
-import ReviewsBackground from '../../images/reviews-background.jpg';
+// import ReviewsBackground from '../../images/reviews-background.jpg';
 
 export const ReviewsSection = styled.section`
   position: relative;
   background: black;
   &::before {
     content: '';
-    background-image: url(${ReviewsBackground});
+    background-image: url('https://icecube-eu-291.icedrive.io/thumbnail?p=ZUrNMMiF3JXRwVUUyfzlFvg5ecuWW7oahKmwNxBoigmfhSMXNUq6%2FPR9Uj2E%2F0XochOSc%2FT9CQV5aMiFyeanNPE7%2FQPHhxF%2FSwtvhwW8VHPpN87ivTxZidTUfic6X1cZ&w=1280&h=1280&m=cropped');
     background-color: #666666;
     position: absolute;
     top: 0px;

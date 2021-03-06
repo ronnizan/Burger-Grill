@@ -40,7 +40,7 @@ interface GetProductsFail {
 
 interface AddProductToOverlay {
   type: typeof SET_SELECTED_ITEM_FOR_POPUP;
-  payload: MenuItem
+  payload:{menuItem: MenuItem,fromChatbot: boolean}
 }
 interface RemoveProductFromOverlay {
   type: typeof REMOVE_SELECTED_ITEM_FROM_POPUP;

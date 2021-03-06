@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
 import { Link as LinkRouter } from 'react-router-dom';
-import CartSummaryBackground from '../../images/cart-summary-hero.jpg';
+// import CartSummaryBackground from '../../images/cart-summary-hero.jpg';
 
 export const CartSummaryHero = styled.div`
-  background-image: url(${CartSummaryBackground});
+  background-image: url('https://icecube-eu-287.icedrive.io/thumbnail?p=SePmIGXOMBXXx9AgfktGX5ipQtwzpDbCKwwN1YYGMU5ia8iiW2bcsLqnZBDSu08GfIRtDvA9P%2B19ICW2IHxOyhRa1O69kEiw3mNkSO%2BttvNbuyIdvYGQi8y9Pkkd50dm&w=1280&h=1280&m=cropped');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

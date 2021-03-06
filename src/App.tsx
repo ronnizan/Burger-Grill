@@ -1,6 +1,6 @@
 import React, {  useEffect, useState } from 'react';
 import useAutoLogin from './hooks/use-autoLogin';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Sidebar from './components/sidebar/Sidebar';
 import { HomePage, AuthPage, BookTablePage, MenuPage,CartSummaryPage,CheckoutPage,ProfilePage } from './pages';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,8 @@ import PopupMessage from './components/popup-message/PopupMessage';
 import Navbar from './components/navbar/Navbar';
 import MenuItemPopup from './components/menu-item-popup/MenuItemPopup';
 import { getAllProducts } from './redux/actions/productsActions';
+import Chatbot from './components/chatbot/Chatbot';
+
 
 
 
@@ -31,6 +33,7 @@ function App() {
         <Sidebar showSidebar={showSidebar} toggleSidebar={toggleSidebar} user={user} />
         <PopupMessage />
         <MenuItemPopup />
+        <Chatbot user={user}/>
         <Switch>
           <Route path='/' exact component={HomePage} />
           <PrivateAlreadyAuthRoute path='/auth' component={AuthPage} exact />

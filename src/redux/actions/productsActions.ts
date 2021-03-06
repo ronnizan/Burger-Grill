@@ -6,11 +6,11 @@ import { ProductsAction, MenuItem } from '../types/productsType';
 import { GET_BESTSELLERS_SUCCESS, GET_BESTSELLERS_FAIL, GET_PRODUCTS_SUCCESS, SET_SELECTED_ITEM_FOR_POPUP, REMOVE_SELECTED_ITEM_FROM_POPUP } from './../constants/productsConstants';
 
 
-export const selectItemForPopup = (menuItem: MenuItem): ThunkAction<void, RootState, null, ProductsAction> => {
+export const selectItemForPopup = (menuItem: MenuItem,fromChatbot = false): ThunkAction<void, RootState, null, ProductsAction> => {
   return dispatch => {
     dispatch({
       type: SET_SELECTED_ITEM_FOR_POPUP,
-      payload: menuItem
+      payload: {menuItem, fromChatbot}  
     });
   }
 }

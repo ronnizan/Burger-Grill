@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { TopNavbar, TopNavbarContainer, HamburgerWrapper, HamburgerMenu, LinksWrapper, LogoWrapper, Logo, NavbarItem, } from './Navbar-style';
 import { SidebarData } from './NavbarData'
 import { Link, useLocation } from 'react-router-dom';
-import BusinessLogo from '../../../src/images/burgerlogo.png';
+import BusinessLogo from '../../../src/images/burger-logo.png';
 import { User } from '../../redux/types/authTypes';
 import * as FiIcons from 'react-icons/fi';
 import { useDispatch } from 'react-redux';

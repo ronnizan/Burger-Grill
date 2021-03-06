@@ -7,7 +7,7 @@ export const BookReservationSection = styled.section`
   padding-top: 100px;
   padding-bottom: 50px;
   min-height: 100vh;
-  background: url(${BookReservationBackground});
+  background: url('https://icecube-eu-291.icedrive.io/thumbnail?p=mPmkoccDLCa5E0PGZVqA%2Ftj8PV%2FTgGGNqK1dyY1PPZJbiVAZoZ%2Fo4NY7zSkihTTC%2BU%2BMO0BV5ClaP%2FROEHC1MV9vMmdtOUdLnk6aWMLPSkR%2BYzGNbajKpLGTEVvEQX3D&w=1280&h=1280&m=cropped');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

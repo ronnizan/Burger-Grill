@@ -2,15 +2,14 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux';
 import { MenuItem } from '../../redux/types/productsType';
-import { Popup, PopupTopRow, ItemTitle, VIcon, CloseIcon, PopupRow, PopupLabel, PopupOptionsContainer, PopupOption, AddToCartButton } from './MealPopup-style';
+import { Popup, PopupTopRow, ItemTitle, ItemDescription, VIcon, CloseIcon, PopupRow, PopupLabel, PopupOptionsContainer, PopupOption, AddToCartButton } from './MealPopup-style';
 import { removeItemFromPopup, } from '../../redux/actions/productsActions';
-import { addItemToCart } from '../../redux/actions/cartActions';
+import { addItemToCart, addItemToChatbotCart } from '../../redux/actions/cartActions';
 
 
-const MealPopup = ({ menuItem, children }: { menuItem: MenuItem; children: any }) => {
+const MealPopup = ({ menuItem, children, fromChatbot }: { menuItem: MenuItem; children: any, fromChatbot: boolean }) => {
   const dispatch = useDispatch();
   const { menuItems, }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.allProducts);
-
   const [burgerSize, setBurgerSize] = useState('Classic');
   const [cookingLevel, setCookingLevel] = useState('MW');
   const [sideDish, setSideDish] = useState('French Fries');
@@ -31,6 +30,8 @@ const MealPopup = ({ menuItem, children }: { menuItem: MenuItem; children: any }
           dispatch(removeItemFromPopup())
         }} />
       </PopupTopRow>
+      <ItemDescription>{menuItem.description}</ItemDescription>
+
       <PopupRow>
         <PopupLabel>Burger Size:</PopupLabel>
         <PopupOptionsContainer>
@@ -140,8 +141,15 @@ const MealPopup = ({ menuItem, children }: { menuItem: MenuItem; children: any }
         </PopupOptionsContainer>
       </PopupRow>
       <AddToCartButton onClick={() => {
-        dispatch(addItemToCart({ ...menuItem, burgerSize, cookingLevel, changes, drink, sideDish, price: burgerSize === 'Large' ? menuItem.price + 2 : burgerSize === 'Gigantic' ? menuItem.price + 3 : menuItem.price }))
-        dispatch(removeItemFromPopup())
+        if (fromChatbot) {
+          dispatch(addItemToChatbotCart({ ...menuItem, burgerSize, cookingLevel, changes, drink, sideDish, price: burgerSize === 'Large' ? menuItem.price + 2 : burgerSize === 'Gigantic' ? menuItem.price + 3 : menuItem.price }))
+          dispatch(removeItemFromPopup())
+        } else {
+          dispatch(addItemToCart({ ...menuItem, burgerSize, cookingLevel, changes, drink, sideDish, price: burgerSize === 'Large' ? menuItem.price + 2 : burgerSize === 'Gigantic' ? menuItem.price + 3 : menuItem.price }))
+          dispatch(removeItemFromPopup())
+        }
+
+
       }}>ADD TO CART</AddToCartButton>
     </Popup>)
 }

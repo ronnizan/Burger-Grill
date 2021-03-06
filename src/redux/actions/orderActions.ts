@@ -7,7 +7,7 @@ import { Order, OrderAction } from '../types/orderTypes';
 import { CREATE_ORDER_REQUEST, CREATE_ORDER_FAIL, CREATE_ORDER_SUCCESS, GET_ORDERS_FOR_USER_FAIL, GET_ORDERS_FOR_USER_REQUEST } from '../constants/orderConstants';
 import axios from 'axios';
 import { CartAction } from '../types/cartTypes';
-import { ServerBaseUrl } from './../constants/endPoints';
+import { ServerBaseUrlProd } from './../constants/endPoints';
 import { User } from './../types/authTypes';
 import { GET_ORDERS_FOR_USER_SUCCESS } from './../constants/orderConstants';
 
@@ -23,7 +23,7 @@ export const createOrder = (order: Order): ThunkAction<void, RootState, null, Or
         type: CREATE_ORDER_SUCCESS,
         payload: order
       });
-      const { data } = await axios.post(`${ServerBaseUrl}/email/send-order-mail`, {
+      const { data } = await axios.post(`${ServerBaseUrlProd}/email/send-order-mail`, {
         date: new Date(order.create_time).toLocaleString(),
         firstName: order.firstName,
         amount: order.amount,

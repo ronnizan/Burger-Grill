@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { Link as LinkRouter } from 'react-router-dom';
-import CheckoutBackground from '../../images/checkout-hero.jpg';
+// import CheckoutBackground from '../../images/checkout-hero.jpg';
 
 export const CheckoutHero = styled.div`
-  background-image: url(${CheckoutBackground});
+  background-image: url('https://icecube-eu-288.icedrive.io/thumbnail?p=1yw1XZ3gnxykePwVFST%2FGGNzqJAZl%2BVrOPkWzBtgrq0uwt%2FkOo1dmLD2Ke6guVNVKWVUOGrUhFmeg5ePDrWUWsbibTCOEVM1rjEa2mHdGX%2BbltAF8n%2F%2FvgAJkQxzcOAR&w=1280&h=1280&m=cropped');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

@@ -2,15 +2,18 @@ import { ProductsAction, MenuItemsState, MenuItem } from '../types/productsType'
 import { GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST } from '../constants/productsConstants';
 import { GET_PRODUCTS_SUCCESS, GET_BESTSELLERS_REQUEST, GET_BESTSELLERS_SUCCESS, GET_BESTSELLERS_FAIL, SET_SELECTED_ITEM_FOR_POPUP, REMOVE_SELECTED_ITEM_FROM_POPUP } from './../constants/productsConstants';
 
-export const productPopupReducer = (state: { menuItem: MenuItem } = { menuItem: { id: '', image: '', price: 0, title: '', description: '', type: '', bestSeller: '' } }, action: ProductsAction) => {
+export const productPopupReducer = (state: { menuItem: MenuItem, fromChatbot: boolean } = { menuItem: { id: '', image: '', price: 0, title: '', description: '', type: '', bestSeller: '' }, fromChatbot: false }, action: ProductsAction) => {
   switch (action.type) {
     case SET_SELECTED_ITEM_FOR_POPUP:
       return {
-        menuItem: action.payload
+        menuItem: action.payload.menuItem,
+        fromChatbot: action.payload.fromChatbot
       }
     case REMOVE_SELECTED_ITEM_FROM_POPUP:
       return {
-        menuItem: { id: '', image: '', price: 0, title: '', description: '', type: '', bestSeller: '' }
+        menuItem: { id: '', image: '', price: 0, title: '', description: '', type: '', bestSeller: '' },
+        fromChatbot: false
+
       }
     default:
       return state;

@@ -8,7 +8,7 @@ import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_REQUEST, GET_T
 import { BOOK_TABLE_REQUEST, GET_RESERVATIONS_FOR_USER_SUCCESS } from '../constants/reservationConstants';
 import { User } from './../types/authTypes';
 import axios from 'axios';
-import { ServerBaseUrl } from '../constants/endPoints';
+import { ServerBaseUrlProd } from '../constants/endPoints';
 
 export const getReservationsForUser = (): ThunkAction<void, RootState, null, ReservationAction> => {
   return async (dispatch, getState) => {
@@ -112,7 +112,7 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
         payload: reservationData
       });
     
-      const { data } = await axios.post(`${ServerBaseUrl}/email/send-reservation-mail`, {
+      const { data } = await axios.post(`${ServerBaseUrlProd}/email/send-reservation-mail`, {
         email: reservationData.email,
         name: reservationData.name,
         date: reservationData.date,

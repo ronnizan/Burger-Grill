@@ -76,12 +76,13 @@ const Profile = () => {
             <CardTitle>{order.orderMethod} </CardTitle>
             <hr />
             <CardRow>
-              <CardLabel>{new Date(order.create_time).toLocaleString()}.</CardLabel>
+              <CardLabel>Order Made At: </CardLabel>
+              <CardDescription>&nbsp; {new Date(order.create_time).toLocaleString()}.</CardDescription>
             </CardRow>
-            <CardRow>
+            {order.address &&<CardRow>
               <CardLabel>Address: </CardLabel>
               <CardDescription>&nbsp; {order.address}, {order.city}. </CardDescription>
-            </CardRow>
+            </CardRow>}
             <CardOrderItemsRow>
               <CardLabel>Order Items: </CardLabel>
               {order.orderItems.map((orderItem => <>
