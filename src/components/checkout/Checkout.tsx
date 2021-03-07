@@ -72,7 +72,7 @@ const Checkout = () => {
     if (paymentResult.status === "COMPLETED") {
       const order: Order = {
         id: paymentResult.id,
-        create_time: paymentResult.create_time,
+        create_time: new Date().toLocaleString(),
         orderItems: cartItems,
         userId: user?.id ? user?.id : 'Anonymous',
         amount: user ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems),

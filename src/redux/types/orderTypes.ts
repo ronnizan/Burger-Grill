@@ -20,6 +20,7 @@ export interface Order {
   email: string;
   phoneNumber: string;
   orderNotes: string;
+  payAtRestaurant?:boolean;
 }
 
 interface CreateOrderRequest {

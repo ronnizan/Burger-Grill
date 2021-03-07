@@ -77,25 +77,25 @@ const Profile = () => {
             <hr />
             <CardRow>
               <CardLabel>Order Made At: </CardLabel>
-              <CardDescription>&nbsp; {new Date(order.create_time).toLocaleString()}.</CardDescription>
+              <CardDescription>&nbsp; {order.create_time}.</CardDescription>
             </CardRow>
-            {order.address &&<CardRow>
+            {order.address && <CardRow>
               <CardLabel>Address: </CardLabel>
               <CardDescription>&nbsp; {order.address}, {order.city}. </CardDescription>
             </CardRow>}
             <CardOrderItemsRow>
               <CardLabel>Order Items: </CardLabel>
-              {order.orderItems.map((orderItem => <>
-                <OrderItemsDescription>*{orderItem.title}.</OrderItemsDescription>
-              </>))}
+              {order.orderItems.map(((orderItem,index) => 
+                <OrderItemsDescription key={index}>*{orderItem.title}.</OrderItemsDescription>
+              ))}
             </CardOrderItemsRow>
             <CardRow>
               <CardLabel>Order Sum: </CardLabel>
-              <CardDescription>&nbsp;${order.amount}.</CardDescription>
+              <CardDescription>&nbsp;${order.amount}.</CardDescription>  
             </CardRow>
           </Card>)}
         </CardsContainer>}
-        {currentNavItem === "Settings" && orders?.length > 0 && <CardsContainer>
+        {currentNavItem === "Settings" && <CardsContainer>
           {deleteUserLoading && <Loader />}
           <DeleteAccountButton onClick={() => {
             dispatch(deleteUser())

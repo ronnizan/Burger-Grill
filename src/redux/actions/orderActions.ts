@@ -24,7 +24,7 @@ export const createOrder = (order: Order): ThunkAction<void, RootState, null, Or
         payload: order
       });
       const { data } = await axios.post(`${ServerBaseUrlProd}/email/send-order-mail`, {
-        date: new Date(order.create_time).toLocaleString(),
+        date: new Date().toLocaleString(),
         firstName: order.firstName,
         amount: order.amount,
         orderItems: order.orderItems,

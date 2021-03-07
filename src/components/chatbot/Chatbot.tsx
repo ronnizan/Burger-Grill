@@ -13,7 +13,7 @@ import {
   ChatbotColumnWithOptions,
   ChatbotColumnWithOptionsContent,
   ChatbotColumnWithOptionsContentText,
-  // ChatCommentDate,
+  PaypalWrapper,
   ChatbotSelfUserContent,
   ChatbotBotContent,
   // ProfileImageLinkWrapper,
@@ -28,29 +28,39 @@ import {
 import { User } from './../../redux/types/authTypes';
 import { initialChatbot, pickupSelected } from '../../redux/actions/chatbotActions';
 import { RootState } from '../../redux';
-import { Message } from './../../redux/types/popupMessageTypes';
 import { ChatbotMessage } from '../../redux/types/chatbotTypes';
 import ChatbotLogo from '../../../src/images/burger-logo.png';
-import { SendChatbotMessage } from './../../redux/actions/chatbotActions';
+import { sendChatbotMessage } from './../../redux/actions/chatbotActions';
 import AnonymousUser from '../../images/user.png';
 import Loader from '../loader/Loader';
 import { selectItemForPopup } from './../../redux/actions/productsActions';
 import { MenuItem } from './../../redux/types/productsType';
 import { CartItem } from '../../redux/types/cartTypes';
+import uidGenerator from '../../helpers/genrateUid';
+import { ServerBaseUrlProd } from '../../redux/constants/endPoints';
+import axios from 'axios';
+import { PayPalButton } from 'react-paypal-button-v2';
+import { getCartTotalForLoggedUser, getCartTotal } from '../../helpers/getCartTotal';
+import { CREATE_ORDER_FAIL } from '../../redux/constants/orderConstants';
+import { Order } from '../../redux/types/orderTypes';
+import { createOrder } from '../../redux/actions/orderActions';
 
 
-
+declare global {
+  interface Window {
+    paypal: any,
+  }
+}
 const ChatBot = ({ user }: { user: User }) => {
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
   const [restaurantOptionSelected, setRestaurantOptionSelected] = useState('');
-  // const [content, setContent] = useState('');
+  const [sdkReady, setSdkReady] = useState(false);
+  const [showPaypalButton, setShowPaypalButton] = useState(false);
   const [chatbotId, setChatbotId] = useState(localStorage.getItem('chatbot') || '');
-  const { loading, messages, error }: { loading: boolean, messages: ChatbotMessage[], error: string } = useSelector((state: RootState) => state.chatbot);
+  const { loading, messages, error, orderDeatils }: { loading: boolean, messages: ChatbotMessage[], error: string, orderDeatils: Order } = useSelector((state: RootState) => state.chatbot);
   const { menuItems, }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.allProducts);
   const { cartItems }: { cartItems: CartItem[] } = useSelector((state: RootState) => state.cartChatbot);
-
-
   const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
@@ -64,12 +74,25 @@ const ChatBot = ({ user }: { user: User }) => {
     }
   }, [chatbotId])
 
-  const uidGenerator = () => {
-    let S4 = () => {
-      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    };
-    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-  }
+  useEffect(() => {
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get(ServerBaseUrlProd + '/config/paypal')
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
+      script.async = true
+      script.onload = () => {
+        setSdkReady(true)
+      }
+      document.body.appendChild(script)
+    }
+    if (!window.paypal) {
+      addPayPalScript()
+    } else {
+      setSdkReady(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
   useEffect(() => {
@@ -84,12 +107,16 @@ const ChatBot = ({ user }: { user: User }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
+
+
+
+
   const submitMessage = (e) => {
     e.preventDefault();
     if (!content) {
       return;
     }
-    dispatch(SendChatbotMessage(content, chatbotId));
+    dispatch(sendChatbotMessage(content, chatbotId));
     setContent('');
   };
 
@@ -117,6 +144,17 @@ const ChatBot = ({ user }: { user: User }) => {
 
 
   }
+  const successPaymentHandler = (paymentResult) => {
+    if (paymentResult.status === "COMPLETED") {
+      dispatch(createOrder(orderDeatils))
+    }
+
+  }
+  const errorPaymentHandler = (paymentResult) => {
+    dispatch({ type: CREATE_ORDER_FAIL, payload: 'payment failed' })
+
+  }
+
 
 
 
@@ -159,6 +197,7 @@ const ChatBot = ({ user }: { user: User }) => {
                   <OptionImage
                     src={message.image}
                   ></OptionImage>
+
                 </ChatbotColumnWithOptionsContent>
 
               </ChatbotColumnWithOptions>
@@ -183,11 +222,18 @@ const ChatBot = ({ user }: { user: User }) => {
                       {message.content}
                     </ChatbotBotContent>
                   )}
+                  
                 </ChatbotRow>
 
 
-
             })}
+              {
+                !sdkReady ? <Loader /> : !loading && orderDeatils.id ? <PaypalWrapper><PayPalButton amount={user ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems)} onSuccess={successPaymentHandler}
+                  catchError={errorPaymentHandler}
+                  onError={errorPaymentHandler}
+                /></PaypalWrapper> : null
+              }
+
         </ChatbotBody>
         <ChatbotInputAndButton>
           <ChatbotInput

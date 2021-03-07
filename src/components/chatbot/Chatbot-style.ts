@@ -80,12 +80,15 @@ export const ChatbotColumnWithOptionsContent = styled.div<{isRestaurantOption: b
   }
 `;
 
-// ,
-//     {
-//       "title": "Fish Burger Meal",
-//       "type": "pickupOptionMeal",
-//       "image": "https://icecube-eu-291.icedrive.io/thumbnail?p=E3WNJeQkGVplO%2F9OrildWjAzblnuqJMnf%2BUYl1y2sktWwsghD9wm%2FFTfDVYu6UYO%2FzeHS2PIuM4St3CERN6uWYAq9IDpSULnFS%2FR2zBM3q%2B5R3GLIkDBpAjXffscRxzb&w=1280&h=1280&m=cropped"
-//     }
+export const PaypalWrapper = styled.div`
+  border: none;
+  outline: none;
+  // width: 30%;
+  margin: 20px auto;
+  @media screen and (max-width: 768px) {
+    // width: 90%;
+  }
+`;
 export const ChatbotColumnWithOptionsContentText = styled.p`
 font-size:14px;
 font-weight:bold;

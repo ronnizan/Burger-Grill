@@ -1,16 +1,22 @@
-import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID } from '../constants/chatbotConstants';
+import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS } from '../constants/chatbotConstants';
+import { Order } from './orderTypes';
 
 export interface ChatbotMessage {
   content: string;
   fromUser: boolean;
-  image?:string
-  type?: string
+  image?:string;
+  type?: string;
+  orderDeatils?:any;
 }
 
 
 interface SetChatbotId {
   type: typeof SET_CHATBOT_ID;
   payload:string;
+}
+interface SetOrderDeatails {
+  type: typeof SET_ORDER_DEATILS;
+  payload:Order;
 }
 interface SendMessageRequest {
   type: typeof SEND_MESSAGE_REQUEST;
@@ -28,6 +34,6 @@ interface ReceivedMessageSuccess {
   payload:ChatbotMessage[];
 }
 
-export type ChatbotAction = SendMessageRequest | SendMessageSuccess | SendMessageFail|ReceivedMessageSuccess|SetChatbotId ;
+export type ChatbotAction = SendMessageRequest | SendMessageSuccess | SendMessageFail|ReceivedMessageSuccess|SetChatbotId|SetOrderDeatails ;
 
     
