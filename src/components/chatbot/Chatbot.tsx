@@ -26,7 +26,7 @@ import {
 } from './Chatbot-style';
 // import {
 import { User } from './../../redux/types/authTypes';
-import { initialChatbot, pickupSelected, paymentProcessCompleted } from '../../redux/actions/chatbotActions';
+import { initialChatbot, restaurantOptionChosen, paymentProcessCompleted } from '../../redux/actions/chatbotActions';
 import { RootState } from '../../redux';
 import { ChatbotMessage } from '../../redux/types/chatbotTypes';
 import ChatbotLogo from '../../../src/images/burger-logo.png';
@@ -121,15 +121,15 @@ const ChatBot = ({ user }: { user: User }) => {
 
   const handleRestaurantOption = (optionSelected: string) => {
     if (optionSelected === 'Pickup') {
-      dispatch(pickupSelected(chatbotId))
+      dispatch(restaurantOptionChosen(chatbotId, 'PickupSelected'))
       setRestaurantOptionSelected('Pickup')
     }
     if (optionSelected === 'Delivery') {
-      // dispatch(pickupSelected(chatbotId))
-      setRestaurantOptionSelected('Delivery')
+      dispatch(restaurantOptionChosen(chatbotId, 'DeliverySelected'));
+      setRestaurantOptionSelected('Delivery');
     }
     if (optionSelected === 'Book A Table') {
-      dispatch(pickupSelected(chatbotId))
+      // dispatch(restaurantOptionChosen(chatbotId))
       setRestaurantOptionSelected('Pickup')
     }
 
@@ -145,9 +145,15 @@ const ChatBot = ({ user }: { user: User }) => {
   }
   const successPaymentHandler = (paymentResult) => {
     if (paymentResult.status === "COMPLETED") {
+      if (orderDeatils.orderMethod === 'Pickup') {
+        dispatch(paymentProcessCompleted('Pickup'))
+        dispatch(createOrder(orderDeatils, true))
+      }
+      if (orderDeatils.orderMethod === 'Delivery') {
+        dispatch(paymentProcessCompleted('Delivery'))
+        dispatch(createOrder(orderDeatils, true))
+      }
 
-      dispatch(paymentProcessCompleted())
-      dispatch(createOrder(orderDeatils,true))
 
     }
 
@@ -223,21 +229,21 @@ const ChatBot = ({ user }: { user: User }) => {
                   ) : (
                     <ChatbotBotContent>
                       {message.content}
-                    </ChatbotBotContent> 
+                    </ChatbotBotContent>
                   )}
-                  
-                </ChatbotRow>    
+
+                </ChatbotRow>
 
 
             })}
-            {/* finished entering all info and user says yes to pay now; show paypal button */}
-              {
-                 !loading && sdkReady&& orderDeatils.id && <PaypalWrapper><PayPalButton amount={user ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems)} onSuccess={successPaymentHandler}
-                  catchError={errorPaymentHandler}
-                  onError={errorPaymentHandler}
-                /></PaypalWrapper> 
-              }
-              {loading && <Loader />}
+          {/* finished entering all info and user says yes to pay now; show paypal button */}
+          {
+            !loading && sdkReady && orderDeatils.id && <PaypalWrapper><PayPalButton amount={user ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems)} onSuccess={successPaymentHandler}
+              catchError={errorPaymentHandler}
+              onError={errorPaymentHandler}
+            /></PaypalWrapper>
+          }
+          {loading && <Loader />}
 
         </ChatbotBody>
         <ChatbotInputAndButton>

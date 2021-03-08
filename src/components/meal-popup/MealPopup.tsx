@@ -141,7 +141,7 @@ const MealPopup = ({ menuItem, children, fromChatbot }: { menuItem: MenuItem; ch
         </PopupOptionsContainer>
       </PopupRow>
       <AddToCartButton onClick={() => {
-        if (fromChatbot) {
+        if (fromChatbot) {  
           dispatch(addItemToChatbotCart({ ...menuItem, burgerSize, cookingLevel, changes, drink, sideDish, price: burgerSize === 'Large' ? menuItem.price + 2 : burgerSize === 'Gigantic' ? menuItem.price + 3 : menuItem.price }))
           dispatch(removeItemFromPopup())
         } else {

@@ -20,12 +20,12 @@ export const addItemToChatbotCart = (cartItem: CartItem): ThunkAction<void, Root
   return async (dispatch, getState) => {
 
     const {
-      chatbot
+      chatbot  
     } = getState();
-    const { chatbotId }: { chatbotId: string } = chatbot;
+    const { chatbotId, restaurantOption}: { chatbotId: string,restaurantOption:string } = chatbot;
     let chatbotIdFromState;
     if (chatbot && chatbotId) {
-      chatbotIdFromState = chatbotId
+      chatbotIdFromState = chatbotId  
     }
     dispatch({
       type: ADD_ITEM_TO_CHATBOT_CART,
@@ -41,7 +41,15 @@ export const addItemToChatbotCart = (cartItem: CartItem): ThunkAction<void, Root
     dispatch({
       type: SEND_MESSAGE_REQUEST
     })
-    const dialogFlowRequest = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'pickupItemSelected', uid: chatbotIdFromState });
+    let dialogFlowRequest;
+    if (restaurantOption ==='PickupSelected') {
+      dialogFlowRequest = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'pickupItemSelected', uid: chatbotIdFromState });
+
+    }
+    if (restaurantOption ==='DeliverySelected') {
+      dialogFlowRequest = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'deliveryItemSelected', uid: chatbotIdFromState });
+
+    }
 
     // console.log(uid)
     let secondMessagesArr = []

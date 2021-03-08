@@ -2,7 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
 import firebase from '../../firebase/firebaseConfig';
 import { popupMessage } from './popupMessageAction';
-import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS } from '../constants/chatbotConstants';
+import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS, SET_RESTAURANT_OPTION_SELECTED } from '../constants/chatbotConstants';
 import axios from 'axios';
 import { ServerBaseUrlProd } from './../constants/endPoints';
 import { ChatbotAction, ChatbotMessage, } from '../types/chatbotTypes';
@@ -17,7 +17,7 @@ import { createOrder } from './orderActions';
 // const res = await axios.post('https://us-central1-burgergril-30358.cloudfunctions.net/api/dialogFlow/text-query', { text: 'Who are you?' });
 let order: Order;
 
-export const handleUserInfo = (res: any) => {
+export const handleUserInfo = (res: any, restaurantOption: string) => {
 
   const order: Order = {
     id: uidGenerator(),
@@ -25,7 +25,7 @@ export const handleUserInfo = (res: any) => {
     orderItems: [],
     userId: 'Anonymous',
     amount: 0,
-    orderMethod: 'Pickup',
+    orderMethod: restaurantOption,
     firstName: res.data.parameters.fields.firstName.stringValue,
     lastName: res.data.parameters.fields.lastName.stringValue,
     city: res.data.parameters.fields?.city?.stringValue || '',
@@ -55,13 +55,13 @@ export const handlePickupPayment = (res: any, uid: string, order: Order, payNow:
         order.amount = user?.id ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems);
         order.payAtRestaurant = true;
         //second argument indicates the request comes from the chatbot
-        dispatch(createOrder(order,true))
+        dispatch(createOrder(order, true))
       }
       if (payNow) {
         order.userId = user?.id ? user?.id : order.userId;
         order.orderItems = cartItems;
         order.amount = user?.id ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems);
-        const message = [{content: 'please complete the payment process:' ,fromUser: false,type:'showPaypalButton'}]
+        const message = [{ content: 'Please complete the payment process:', fromUser: false, type: 'showPaypalButton' }]
         dispatch({
           type: RECEIVED_MESSAGE_SUCCESS,
           payload: message
@@ -84,13 +84,19 @@ export const handlePickupPayment = (res: any, uid: string, order: Order, payNow:
   }
 }
 
-export const pickupSelected = (uid: string): ThunkAction<void, RootState, null, ChatbotAction> => {
+export const restaurantOptionChosen = (uid: string, optionChosen: string): ThunkAction<void, RootState, null, ChatbotAction> => {
   return async dispatch => {
     try {
+
+
+      dispatch({
+        type: SET_RESTAURANT_OPTION_SELECTED,
+        payload: optionChosen
+      })
       dispatch({
         type: SEND_MESSAGE_REQUEST
       })
-      const firstResponse = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'PickupSelected', uid: uid });
+      const firstResponse = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: optionChosen, uid: uid });
 
       const messagesArr = firstResponse.data.fulfillmentMessages[0].text.text.map(message => {
         return { content: message, fromUser: false }
@@ -126,8 +132,17 @@ export const pickupSelected = (uid: string): ThunkAction<void, RootState, null, 
 
 
 export const sendChatbotMessage = (content: string, uid: string): ThunkAction<void, RootState, null, ChatbotAction> => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
+
+      const {
+        userLogin,
+        cartChatbot
+      } = getState();
+      const { user }: { user: User } = userLogin;
+      const { cartItems }: { cartItems: CartItem[] } = cartChatbot;
+
+
       dispatch({
         type: SEND_MESSAGE_REQUEST
       })
@@ -161,10 +176,27 @@ export const sendChatbotMessage = (content: string, uid: string): ThunkAction<vo
         })
       }
 
-
       if (res.data.action === 'pickupUserInfo' && res.data.allRequiredParamsPresent) {
-        order = handleUserInfo(res)
+        order = handleUserInfo(res, 'Pickup')
       }
+      if (res.data.action === 'deliveryUserInfo' && res.data.allRequiredParamsPresent) {
+        order = handleUserInfo(res, 'Delivery');
+        order.userId = user?.id ? user?.id : order.userId;
+        order.orderItems = cartItems;
+        order.amount = user?.id ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems);
+        const message = [{ content: 'Please complete the payment process:', fromUser: false, type: 'showPaypalButton' }]
+        dispatch({
+          type: RECEIVED_MESSAGE_SUCCESS,
+          payload: message
+        })
+        dispatch({
+          type: SET_ORDER_DEATILS,
+          payload: order
+        })
+
+      }
+
+
       if (res.data.action === 'paymentNow') {
         dispatch(handlePickupPayment(res, uid, order, true))
       }
@@ -225,7 +257,7 @@ export const initialChatbot = (uid: string): ThunkAction<void, RootState, null, 
   }
 }
 export const finishChatbotConversation = (): ThunkAction<void, RootState, null, ChatbotAction> => {
-  return async (dispatch,getState) => {
+  return async (dispatch, getState) => {
     try {
       const {
         chatbot
@@ -258,12 +290,12 @@ export const finishChatbotConversation = (): ThunkAction<void, RootState, null, 
   }
 }
 export const paymentProcessFailed = (): ThunkAction<void, RootState, null, ChatbotAction> => {
-  return async (dispatch,getState) => {
+  return async (dispatch, getState) => {
     try {
-   
+
       // console.log(uid)
       const messagesArr =
-         [{ content: 'Payment process failed.., please try again later!', fromUser: false }]
+        [{ content: 'Payment process failed.., please try again later!', fromUser: false }]
       dispatch({
         type: RECEIVED_MESSAGE_SUCCESS,
         payload: messagesArr
@@ -279,17 +311,27 @@ export const paymentProcessFailed = (): ThunkAction<void, RootState, null, Chatb
     }
   }
 }
-export const paymentProcessCompleted = (): ThunkAction<void, RootState, null, ChatbotAction> => {
-  return async (dispatch,getState) => {
+export const paymentProcessCompleted = (restaurantOption: string): ThunkAction<void, RootState, null, ChatbotAction> => {
+  return async (dispatch, getState) => {
     try {
-   
-      // console.log(uid)
-      const messagesArr =
-         [{ content: 'Payment process Completed!, your order will be ready within 30 minutes.', fromUser: false }]
-      dispatch({
-        type: RECEIVED_MESSAGE_SUCCESS,
-        payload: messagesArr
-      })
+
+      if (restaurantOption === 'Pickup') {
+        const messagesArr =
+          [{ content: 'Payment process Completed!, your order will be ready within 30 minutes.', fromUser: false }]
+        dispatch({
+          type: RECEIVED_MESSAGE_SUCCESS,
+          payload: messagesArr
+        })
+      }
+      if (restaurantOption === 'Delivery') {
+        const messagesArr =
+          [{ content: 'Payment process Completed!, your order will arrive to you within 30 minutes.', fromUser: false }]
+        dispatch({
+          type: RECEIVED_MESSAGE_SUCCESS,
+          payload: messagesArr
+        })
+      }
+
 
     } catch (err) {
       console.log('err', err);

@@ -1,5 +1,5 @@
 import { USER_LOGOUT } from '../constants/authConstants';
-import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS } from '../constants/chatbotConstants';
+import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS, SET_RESTAURANT_OPTION_SELECTED } from '../constants/chatbotConstants';
 import { CartAction, Cart, } from '../types/cartTypes';
 import { ChatbotAction, ChatbotMessage } from '../types/chatbotTypes';
 import { Order } from '../types/orderTypes';
@@ -7,7 +7,7 @@ import { CLEAR_ORDER_DEATILS } from './../constants/chatbotConstants';
 
 
 
-export const chatbotReducer = (state: { loading: boolean, messages: ChatbotMessage[], error: string, chatbotId: string, orderDeatils: any } = { loading: false, messages: [], error: '', chatbotId: '', orderDeatils: {} }, action: ChatbotAction) => {
+export const chatbotReducer = (state: { loading: boolean, messages: ChatbotMessage[], error: string, chatbotId: string, orderDeatils: any, restaurantOption: string } = { loading: false, messages: [], error: '', chatbotId: '', orderDeatils: {}, restaurantOption: '' }, action: ChatbotAction) => {
   switch (action.type) {
     case SEND_MESSAGE_REQUEST:
       return {
@@ -34,6 +34,12 @@ export const chatbotReducer = (state: { loading: boolean, messages: ChatbotMessa
       return {
         ...state,
         orderDeatils: action.payload
+
+      }
+    case SET_RESTAURANT_OPTION_SELECTED:
+      return {
+        ...state,
+        restaurantOption: action.payload
 
       }
     case CLEAR_ORDER_DEATILS:

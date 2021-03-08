@@ -1,5 +1,6 @@
-import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS,CLEAR_ORDER_DEATILS} from '../constants/chatbotConstants';
+import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS,CLEAR_ORDER_DEATILS, SET_RESTAURANT_OPTION_SELECTED} from '../constants/chatbotConstants';
 import { Order } from './orderTypes';
+import { CLEAR_RESTAURANT_OPTION_SELECTED } from './../constants/chatbotConstants';
 
 export interface ChatbotMessage {
   content: string;
@@ -21,6 +22,13 @@ interface SetOrderDeatils {
 interface ClearOrderDeatils {
   type: typeof CLEAR_ORDER_DEATILS;
 }
+interface SetRestaurantOption {
+  type: typeof SET_RESTAURANT_OPTION_SELECTED;
+  payload:string;
+}
+interface ClearRestaurantOption {
+  type: typeof CLEAR_RESTAURANT_OPTION_SELECTED;
+}
 interface SendMessageRequest {
   type: typeof SEND_MESSAGE_REQUEST;
 }
@@ -37,6 +45,6 @@ interface ReceivedMessageSuccess {
   payload:ChatbotMessage[];
 }
 
-export type ChatbotAction = SendMessageRequest | SendMessageSuccess | SendMessageFail|ReceivedMessageSuccess|SetChatbotId|SetOrderDeatils|ClearOrderDeatils ;
+export type ChatbotAction = SendMessageRequest | SendMessageSuccess | SendMessageFail|ReceivedMessageSuccess|SetChatbotId|SetOrderDeatils|ClearOrderDeatils|SetRestaurantOption|ClearRestaurantOption ;
 
-    
+     
