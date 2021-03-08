@@ -2,7 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
 import firebase from '../../firebase/firebaseConfig';
 import { popupMessage } from './popupMessageAction';
-import { CLEAR_CART } from '../constants/cartConstants';
+import { CLEAR_CART, CLEAR_CHATBOT_CART } from '../constants/cartConstants';
 import { Order, OrderAction } from '../types/orderTypes';
 import { CREATE_ORDER_REQUEST, CREATE_ORDER_FAIL, CREATE_ORDER_SUCCESS, GET_ORDERS_FOR_USER_FAIL, GET_ORDERS_FOR_USER_REQUEST } from '../constants/orderConstants';
 import axios from 'axios';
@@ -10,9 +10,12 @@ import { CartAction } from '../types/cartTypes';
 import { ServerBaseUrlProd } from './../constants/endPoints';
 import { User } from './../types/authTypes';
 import { GET_ORDERS_FOR_USER_SUCCESS } from './../constants/orderConstants';
+import { CLEAR_ORDER_DEATILS } from './../constants/chatbotConstants';
+import { ChatbotAction } from '../types/chatbotTypes';
+import { finishChatbotConversation } from './chatbotActions';
 
 
-export const createOrder = (order: Order): ThunkAction<void, RootState, null, OrderAction | CartAction> => {
+export const createOrder = (order: Order,fromChatbot = false): ThunkAction<void, RootState, null, OrderAction | CartAction| ChatbotAction> => {
   return async dispatch => {
     try {
       dispatch({
@@ -42,6 +45,13 @@ export const createOrder = (order: Order): ThunkAction<void, RootState, null, Or
       dispatch(popupMessage({ type: 'success', content: "Order Completed!" }));
 
       dispatch({ type: CLEAR_CART });
+      if (fromChatbot) {
+        // finishConversation
+        dispatch(finishChatbotConversation());  
+        dispatch({ type: CLEAR_ORDER_DEATILS });  
+        dispatch({ type: CLEAR_CHATBOT_CART });
+      }
+
 
     } catch (err) {
       console.log('err', err);

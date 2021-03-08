@@ -26,11 +26,11 @@ import {
 } from './Chatbot-style';
 // import {
 import { User } from './../../redux/types/authTypes';
-import { initialChatbot, pickupSelected } from '../../redux/actions/chatbotActions';
+import { initialChatbot, pickupSelected, paymentProcessCompleted } from '../../redux/actions/chatbotActions';
 import { RootState } from '../../redux';
 import { ChatbotMessage } from '../../redux/types/chatbotTypes';
 import ChatbotLogo from '../../../src/images/burger-logo.png';
-import { sendChatbotMessage } from './../../redux/actions/chatbotActions';
+import { sendChatbotMessage, paymentProcessFailed } from './../../redux/actions/chatbotActions';
 import AnonymousUser from '../../images/user.png';
 import Loader from '../loader/Loader';
 import { selectItemForPopup } from './../../redux/actions/productsActions';
@@ -56,7 +56,6 @@ const ChatBot = ({ user }: { user: User }) => {
   const [content, setContent] = useState('');
   const [restaurantOptionSelected, setRestaurantOptionSelected] = useState('');
   const [sdkReady, setSdkReady] = useState(false);
-  const [showPaypalButton, setShowPaypalButton] = useState(false);
   const [chatbotId, setChatbotId] = useState(localStorage.getItem('chatbot') || '');
   const { loading, messages, error, orderDeatils }: { loading: boolean, messages: ChatbotMessage[], error: string, orderDeatils: Order } = useSelector((state: RootState) => state.chatbot);
   const { menuItems, }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.allProducts);
@@ -146,12 +145,16 @@ const ChatBot = ({ user }: { user: User }) => {
   }
   const successPaymentHandler = (paymentResult) => {
     if (paymentResult.status === "COMPLETED") {
-      dispatch(createOrder(orderDeatils))
+
+      dispatch(paymentProcessCompleted())
+      dispatch(createOrder(orderDeatils,true))
+
     }
 
   }
   const errorPaymentHandler = (paymentResult) => {
     dispatch({ type: CREATE_ORDER_FAIL, payload: 'payment failed' })
+    dispatch(paymentProcessFailed())
 
   }
 
@@ -220,19 +223,21 @@ const ChatBot = ({ user }: { user: User }) => {
                   ) : (
                     <ChatbotBotContent>
                       {message.content}
-                    </ChatbotBotContent>
+                    </ChatbotBotContent> 
                   )}
                   
-                </ChatbotRow>
+                </ChatbotRow>    
 
 
             })}
+            {/* finished entering all info and user says yes to pay now; show paypal button */}
               {
-                !sdkReady ? <Loader /> : !loading && orderDeatils.id ? <PaypalWrapper><PayPalButton amount={user ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems)} onSuccess={successPaymentHandler}
+                 !loading && sdkReady&& orderDeatils.id && <PaypalWrapper><PayPalButton amount={user ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems)} onSuccess={successPaymentHandler}
                   catchError={errorPaymentHandler}
                   onError={errorPaymentHandler}
-                /></PaypalWrapper> : null
+                /></PaypalWrapper> 
               }
+              {loading && <Loader />}
 
         </ChatbotBody>
         <ChatbotInputAndButton>

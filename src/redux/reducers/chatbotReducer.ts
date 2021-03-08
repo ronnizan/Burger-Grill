@@ -3,14 +3,15 @@ import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL, RECEIVED
 import { CartAction, Cart, } from '../types/cartTypes';
 import { ChatbotAction, ChatbotMessage } from '../types/chatbotTypes';
 import { Order } from '../types/orderTypes';
+import { CLEAR_ORDER_DEATILS } from './../constants/chatbotConstants';
 
-  
 
-export const chatbotReducer = (state: { loading: boolean, messages: ChatbotMessage[], error: string, chatbotId: string ,orderDeatils:any} = { loading: false, messages: [], error: '', chatbotId: '' ,orderDeatils:{}}, action: ChatbotAction) => {
+
+export const chatbotReducer = (state: { loading: boolean, messages: ChatbotMessage[], error: string, chatbotId: string, orderDeatils: any } = { loading: false, messages: [], error: '', chatbotId: '', orderDeatils: {} }, action: ChatbotAction) => {
   switch (action.type) {
     case SEND_MESSAGE_REQUEST:
       return {
-        ...state,   
+        ...state,
         loading: true,
       }
     case RECEIVED_MESSAGE_SUCCESS:
@@ -20,7 +21,8 @@ export const chatbotReducer = (state: { loading: boolean, messages: ChatbotMessa
       }
     case SEND_MESSAGE_FAIL:
       return {
-        loading: [], messages: [], error: action.payload, chatbotId: state.chatbotId
+        ...state,
+        loading: false, error: action.payload
       }
     case SET_CHATBOT_ID:
       return {
@@ -32,6 +34,12 @@ export const chatbotReducer = (state: { loading: boolean, messages: ChatbotMessa
       return {
         ...state,
         orderDeatils: action.payload
+
+      }
+    case CLEAR_ORDER_DEATILS:
+      return {
+        ...state
+        , orderDeatils: {}
 
       }
     default:

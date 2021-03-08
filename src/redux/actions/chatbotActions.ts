@@ -54,13 +54,14 @@ export const handlePickupPayment = (res: any, uid: string, order: Order, payNow:
         order.orderItems = cartItems;
         order.amount = user?.id ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems);
         order.payAtRestaurant = true;
-        dispatch(createOrder(order))
+        //second argument indicates the request comes from the chatbot
+        dispatch(createOrder(order,true))
       }
       if (payNow) {
         order.userId = user?.id ? user?.id : order.userId;
         order.orderItems = cartItems;
         order.amount = user?.id ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems);
-        const message = [{content: 'please complete the payment process',fromUser: false,type:'showPaypalButton'}]
+        const message = [{content: 'please complete the payment process:' ,fromUser: false,type:'showPaypalButton'}]
         dispatch({
           type: RECEIVED_MESSAGE_SUCCESS,
           payload: message
@@ -223,50 +224,84 @@ export const initialChatbot = (uid: string): ThunkAction<void, RootState, null, 
     }
   }
 }
-// export const getOrdersForUser = (): ThunkAction<void, RootState, null, OrderAction> => {
-//   return async (dispatch, getState) => {
-//     try {
-//       dispatch({
-//         type: GET_ORDERS_FOR_USER_REQUEST
-//       })
-//       const {
-//         userLogin
-//       } = getState();
+export const finishChatbotConversation = (): ThunkAction<void, RootState, null, ChatbotAction> => {
+  return async (dispatch,getState) => {
+    try {
+      const {
+        chatbot
+      } = getState();
+      const { chatbotId }: { chatbotId: string } = chatbot;
 
-//       const { user }: { user: User } = userLogin;
-//       let userId;
-//       if (user && user.id) {
-//         userId = user.id;
-//       }
 
-//       const orders = await firebase.firestore().collection('orders').where('userId', '==', userId)
-//         .get();
-//       if (orders.empty) {
-//         dispatch({
-//           type: GET_ORDERS_FOR_USER_SUCCESS,
-//           payload: []
-//         });
-//       } else {
-//         let ordersFromDb: Order [] = [];
-//         orders.forEach(doc => {
-//           ordersFromDb.push(doc.data() as Order);
-//         });
-//         dispatch({
-//           type: GET_ORDERS_FOR_USER_SUCCESS,
-//           payload: ordersFromDb
-//         });
+      dispatch({
+        type: SEND_MESSAGE_REQUEST
+      })
+      const response = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'finishConversation', uid: chatbotId });
 
-//       }
+      // console.log(uid)
+      const messagesArr = response.data.fulfillmentMessages[0].text.text.map(message => {
+        return { content: message, fromUser: false }
+      })
+      dispatch({
+        type: RECEIVED_MESSAGE_SUCCESS,
+        payload: messagesArr
+      })
 
-//     } catch (err) {
-//       console.log('err', err);
-//       dispatch({
-//         type: GET_ORDERS_FOR_USER_FAIL,
-//         payload: 'get orders failed'
-//       });
-//     }
-//   }
-// }
+    } catch (err) {
+      console.log('err', err);
+      dispatch({
+        type: SEND_MESSAGE_FAIL,
+        payload: 'failed to Initialize chatbot'
+      });
+
+    }
+  }
+}
+export const paymentProcessFailed = (): ThunkAction<void, RootState, null, ChatbotAction> => {
+  return async (dispatch,getState) => {
+    try {
+   
+      // console.log(uid)
+      const messagesArr =
+         [{ content: 'Payment process failed.., please try again later!', fromUser: false }]
+      dispatch({
+        type: RECEIVED_MESSAGE_SUCCESS,
+        payload: messagesArr
+      })
+
+    } catch (err) {
+      console.log('err', err);
+      dispatch({
+        type: SEND_MESSAGE_FAIL,
+        payload: 'failed to Initialize chatbot'
+      });
+
+    }
+  }
+}
+export const paymentProcessCompleted = (): ThunkAction<void, RootState, null, ChatbotAction> => {
+  return async (dispatch,getState) => {
+    try {
+   
+      // console.log(uid)
+      const messagesArr =
+         [{ content: 'Payment process Completed!, your order will be ready within 30 minutes.', fromUser: false }]
+      dispatch({
+        type: RECEIVED_MESSAGE_SUCCESS,
+        payload: messagesArr
+      })
+
+    } catch (err) {
+      console.log('err', err);
+      dispatch({
+        type: SEND_MESSAGE_FAIL,
+        payload: 'failed to Initialize chatbot'
+      });
+
+    }
+  }
+}
+
 
 
 

@@ -15,7 +15,7 @@ export const Chatbot = styled.form<{ chatOpen: boolean }>`
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
   height: 310px;
   overflow-y: scroll;
-  width: 310px;
+  width: 300px;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -84,7 +84,8 @@ export const PaypalWrapper = styled.div`
   border: none;
   outline: none;
   // width: 30%;
-  margin: 20px auto;
+  margin: 10px auto;
+  margin-left: 30px;
   @media screen and (max-width: 768px) {
     // width: 90%;
   }
