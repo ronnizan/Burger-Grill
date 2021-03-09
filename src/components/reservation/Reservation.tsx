@@ -20,9 +20,11 @@ const Reservation = ({ fromBookTablePage }) => {
 
 
   const handleDate = (date: any) => {
+    console.log(date)
     setDate(date);
   }
   const handleTimeDate = (date: any) => {
+    console.log(date)
     setTime(date);
   }
 

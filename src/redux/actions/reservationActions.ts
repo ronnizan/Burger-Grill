@@ -10,6 +10,44 @@ import { User } from './../types/authTypes';
 import axios from 'axios';
 import { ServerBaseUrlProd } from '../constants/endPoints';
 
+
+
+
+
+export const isThereTableAvailable = async ({ date, time, guests }) => {
+  try {  
+
+    const isDateAndTimeAlreadyInDb = await firebase.firestore().collection('/tableBookingByDate').doc(date + " " + time).get();
+    if (isDateAndTimeAlreadyInDb.exists) {
+      const tables = Object.values(isDateAndTimeAlreadyInDb.data())
+      console.log(tables);
+      const isTableAvailable = tables.find(t => t.capacity === +guests && t.isAvailable);
+      return isTableAvailable;
+      // const findTable = tables.find(t => t.name === table.name);
+      // findTable.isAvailable = false;
+      // const tablesToSaveInDb = Object.assign({}, tables);
+      // await firebase.firestore().collection('/tableBookingByDate').doc(date + " " + time).set(tablesToSaveInDb);
+
+    } else {
+      const tablesSnapshot = await firebase.firestore().collection('tables').get();
+      const tables = tablesSnapshot.docs.map(contentObj => ({ ...contentObj.data() })) as TableData[];
+      // console.log(tables);
+      const isTableAvailable = tables.find(t => t.capacity === +guests && t.isAvailable);
+      return isTableAvailable;
+  
+      // findTable.isAvailable = false;
+      // const tablesToSaveInDb = Object.assign({}, tables);
+      // await firebase.firestore().collection('/tableBookingByDate').doc(date + " " + time).set(tablesToSaveInDb);
+    }
+
+  } catch (err) {
+
+  }
+}
+
+
+
+
 export const getReservationsForUser = (): ThunkAction<void, RootState, null, ReservationAction> => {
   return async (dispatch, getState) => {
     try {
@@ -25,7 +63,7 @@ export const getReservationsForUser = (): ThunkAction<void, RootState, null, Res
       if (user && user.id) {
         userId = user.id;
       }
-      
+
       const isReservationAlreadyExists = await firebase.firestore().collection('/reservations').doc(userId && userId).get();
       if (isReservationAlreadyExists.exists) {
         //convert into array the reservations
@@ -33,12 +71,12 @@ export const getReservationsForUser = (): ThunkAction<void, RootState, null, Res
         //convert into object all the reservations, firebase not accepting arrays
         dispatch({
           type: GET_RESERVATIONS_FOR_USER_SUCCESS,
-          payload:reservations
+          payload: reservations
         })
       } else {
         dispatch({
           type: GET_RESERVATIONS_FOR_USER_SUCCESS,
-          payload:[]
+          payload: []
         })
       }
     } catch (err) {
@@ -67,6 +105,7 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
       if (user && user.id) {
         userId = user.id;
       }
+
       const isDateAndTimeAlreadyInDb = await firebase.firestore().collection('/tableBookingByDate').doc(date + " " + time).get();
       if (isDateAndTimeAlreadyInDb.exists) {
         const tables = Object.values(isDateAndTimeAlreadyInDb.data())
@@ -104,23 +143,23 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
 
         await firebase.firestore().collection('/reservations').doc(userId ? userId : date + " " + time + " " + table.name).set(reservationsToSaveInDb);
       } else {
-        
+
         await firebase.firestore().collection('/reservations').doc(userId ? userId : date + " " + time + table.name).set({ 0: reservationData });
       }
       dispatch({
         type: BOOK_TABLE_SUCCESS,
         payload: reservationData
       });
-    
+
       const { data } = await axios.post(`${ServerBaseUrlProd}/email/send-reservation-mail`, {
         email: reservationData.email,
         name: reservationData.name,
         date: reservationData.date,
         time: reservationData.time,
-        partySize:reservationData.partySize,  
+        partySize: reservationData.partySize,
         table: reservationData.table,
       });
-      
+
       dispatch(popupMessage({ type: 'success', content: "Table Booked!" }))
 
 
@@ -163,7 +202,7 @@ export const getTables = (date, time): ThunkAction<void, RootState, null, Reserv
           payload: tables
         });
       }
-     
+
     } catch (err) {
       console.log(err);
       dispatch({
@@ -187,7 +226,7 @@ export const clearReservationData = (data: ReservationData): ThunkAction<void, R
 
     dispatch({
       type: CLEAR_RESERVATION_DATA
-    })
+    })   
 
   }
 }

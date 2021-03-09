@@ -44,6 +44,8 @@ import { getCartTotalForLoggedUser, getCartTotal } from '../../helpers/getCartTo
 import { CREATE_ORDER_FAIL } from '../../redux/constants/orderConstants';
 import { Order } from '../../redux/types/orderTypes';
 import { createOrder } from '../../redux/actions/orderActions';
+import { ReservationData, TableData } from '../../redux/types/reservationTypes';
+import PhoneConformation from './../phone-conformation/PhoneConformation';
 
 
 declare global {
@@ -60,6 +62,7 @@ const ChatBot = ({ user }: { user: User }) => {
   const { loading, messages, error, orderDeatils }: { loading: boolean, messages: ChatbotMessage[], error: string, orderDeatils: Order } = useSelector((state: RootState) => state.chatbot);
   const { menuItems, }: { menuItems: MenuItem[], loading: boolean, error: string } = useSelector((state: RootState) => state.allProducts);
   const { cartItems }: { cartItems: CartItem[] } = useSelector((state: RootState) => state.cartChatbot);
+  const { reservationData, table }: { reservationData: ReservationData, table: TableData } = useSelector((state: RootState) => state.BookTableDataFromChatbot);
   const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
@@ -128,9 +131,9 @@ const ChatBot = ({ user }: { user: User }) => {
       dispatch(restaurantOptionChosen(chatbotId, 'DeliverySelected'));
       setRestaurantOptionSelected('Delivery');
     }
-    if (optionSelected === 'Book A Table') {
-      // dispatch(restaurantOptionChosen(chatbotId))
-      setRestaurantOptionSelected('Pickup')
+    if (optionSelected === 'Book Table') {
+      dispatch(restaurantOptionChosen(chatbotId, "BookTableSelected"))
+      setRestaurantOptionSelected('Book Table')
     }
 
   }
@@ -188,6 +191,7 @@ const ChatBot = ({ user }: { user: User }) => {
           {messages.length > 0 &&
 
             messages.map((message, index) => {
+              // restaurant options or meal options 
               return message.image ? <ChatbotColumnWithOptions
                 key={index}
               >
@@ -242,6 +246,9 @@ const ChatBot = ({ user }: { user: User }) => {
               catchError={errorPaymentHandler}
               onError={errorPaymentHandler}
             /></PaypalWrapper>
+          }
+          {
+            reservationData?.name && <PhoneConformation phoneNumber={reservationData.phoneNumber} date={reservationData.date} table={table} partySize={+reservationData.partySize} time={reservationData.time}></PhoneConformation>
           }
           {loading && <Loader />}
 

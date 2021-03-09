@@ -1,10 +1,41 @@
 import { USER_LOGOUT } from '../constants/authConstants';
-import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS } from '../constants/reservationConstants';
+import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS, SET_RESERVATION_DATA_FROM_CHATBOT, SET_TABLE_FROM_CHATBOT, CLEAR_RESERVATION_DATA_FROM_CHATBOT, CLEAR_TABLE_FROM_CHATBOT } from '../constants/reservationConstants';
 import { ReservationAction, ReservationData, TableData, ReservationDataFromDb } from '../types/reservationTypes';
 import { GET_RESERVATIONS_FOR_USER_REQUEST, GET_RESERVATIONS_FOR_USER_FAIL } from './../constants/reservationConstants';
 
 
+export const BookTableDataFromChatbotReducer = (state: { reservationData: ReservationData | null, table: TableData | null } = { reservationData: null, table: null }, action: ReservationAction) => {
+  switch (action.type) {
+    case SET_RESERVATION_DATA_FROM_CHATBOT:
+      return {
+        ...state,
+        reservationData: action.payload
+      }
+    case SET_TABLE_FROM_CHATBOT:
+      return {
+        ...state,
+        table: action.payload
+      }
+    case CLEAR_RESERVATION_DATA_FROM_CHATBOT:
+      return {
+        ...state,
+        reservationData: null
+      }
+        ;
+    case CLEAR_TABLE_FROM_CHATBOT:
+      return {
+        ...state,
+        table: null
+      }
+    // case BOOK_TABLE_SUCCESS:
+    //   return { name: '', partySize: 0, email: "", phoneNumber: "", time: "", date: "" }
 
+    case USER_LOGOUT:
+      return {}
+    default:
+      return state;
+  }
+}
 
 export const reservationAvailabilityReducer = (state: ReservationData = { name: '', partySize: 0, email: "", phoneNumber: "", time: "", date: "", }, action: ReservationAction) => {
   switch (action.type) {

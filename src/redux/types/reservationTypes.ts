@@ -1,5 +1,5 @@
 import { USER_LOGOUT } from "../constants/authConstants";
-import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS } from '../constants/reservationConstants';
+import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS, SET_RESERVATION_DATA_FROM_CHATBOT, CLEAR_RESERVATION_DATA_FROM_CHATBOT, SET_TABLE_FROM_CHATBOT, CLEAR_TABLE_FROM_CHATBOT } from '../constants/reservationConstants';
 import { GET_RESERVATIONS_FOR_USER_REQUEST, GET_RESERVATIONS_FOR_USER_FAIL } from './../constants/reservationConstants';
 
 
@@ -19,7 +19,7 @@ export interface ReservationDataFromDb {
   date: string;
   time: string;
   partySize: number;
-  table:TableData
+  table: TableData
 }
 export interface TableData {
   name: string;
@@ -31,13 +31,31 @@ export interface TableData {
 
 
 
-interface SetReservationDataAction {
-  type: typeof CLEAR_RESERVATION_DATA;
+interface SetReservationDataFromChatbotAction {
+  type: typeof SET_RESERVATION_DATA_FROM_CHATBOT;
+  payload: ReservationData;
+
 }
-interface ClearReservationDataAction {
+interface ClearReservationDataFromChatbotAction {
+  type: typeof CLEAR_RESERVATION_DATA_FROM_CHATBOT;
+}
+interface SetTableFromChatbotAction {
+  type: typeof SET_TABLE_FROM_CHATBOT;
+  payload:TableData;
+}
+interface ClearTableFromChatbotAction {
+  type: typeof CLEAR_TABLE_FROM_CHATBOT;
+}
+
+interface SetReservationDataAction {
   type: typeof SET_RESERVATION_DATA;
   payload: ReservationData;
 }
+interface ClearReservationDataAction {
+  type: typeof CLEAR_RESERVATION_DATA;
+}
+
+
 
 
 interface GetTablesRequestAction {
@@ -80,5 +98,5 @@ interface SignOutAction {
 
 
 
-export type ReservationAction = SetReservationDataAction | ClearReservationDataAction | GetTablesRequestAction | GetTablesSuccessAction | GetTablesFailAction | BookTableRequestAction | BookTableSuccessAction | BookTableFailAction |GetReservationsForUserRequestAction|GetReservationsForUserSuccessAction|GetReservationsForUserFailAction| SignOutAction;
+export type ReservationAction = SetReservationDataAction | ClearReservationDataAction | SetReservationDataFromChatbotAction | ClearReservationDataFromChatbotAction | SetTableFromChatbotAction | ClearTableFromChatbotAction | GetTablesRequestAction | GetTablesSuccessAction | GetTablesFailAction | BookTableRequestAction | BookTableSuccessAction | BookTableFailAction | GetReservationsForUserRequestAction | GetReservationsForUserSuccessAction | GetReservationsForUserFailAction | SignOutAction;
 

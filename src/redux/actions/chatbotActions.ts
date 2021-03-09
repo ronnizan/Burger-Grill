@@ -1,7 +1,8 @@
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
-import firebase from '../../firebase/firebaseConfig';
-import { popupMessage } from './popupMessageAction';
+// import firebase from '../../firebase/firebaseConfig';
+// import { popupMessage } from './popupMessageAction';
+import { ReservationData, TableData } from './../types/reservationTypes';
 import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS, SET_RESTAURANT_OPTION_SELECTED } from '../constants/chatbotConstants';
 import axios from 'axios';
 import { ServerBaseUrlProd } from './../constants/endPoints';
@@ -13,12 +14,18 @@ import { CartItem } from './../types/cartTypes';
 import { getCartTotal } from './../../helpers/getCartTotal';
 import { getCartTotalForLoggedUser } from '../../helpers/getCartTotal';
 import { createOrder } from './orderActions';
+import { formatDateToShowUser, formatDateForBookTableData } from '../../helpers/convertDates';
+import { isThereTableAvailable } from './reservationActions';
+import { SET_RESERVATION_DATA_FROM_CHATBOT, SET_TABLE_FROM_CHATBOT } from '../constants/reservationConstants';
+import { ReservationAction } from '../types/reservationTypes';
 
 // const res = await axios.post('https://us-central1-burgergril-30358.cloudfunctions.net/api/dialogFlow/text-query', { text: 'Who are you?' });
 let order: Order;
+let reservationData: ReservationData = { name: '', email: "", phoneNumber: '', date: '', time: '', partySize: 0 };
+let tableData: TableData;
+
 
 export const handleUserInfo = (res: any, restaurantOption: string) => {
-
   const order: Order = {
     id: uidGenerator(),
     create_time: new Date().toLocaleString(),
@@ -30,8 +37,8 @@ export const handleUserInfo = (res: any, restaurantOption: string) => {
     lastName: res.data.parameters.fields.lastName.stringValue,
     city: res.data.parameters.fields?.city?.stringValue || '',
     address: res.data.parameters.fields?.address?.stringValue || '',
-    floor: res.data.parameters.fields?.floor?.stringValue || '',
-    apartmentNumber: res.data.parameters.fields?.apartmentNumber?.stringValue || '',
+    floor: res.data.parameters.fields?.floor?.numberValue || '',
+    apartmentNumber: res.data.parameters.fields?.apartmentNumber?.numberValue || '',
     email: res.data.parameters.fields?.email.stringValue,
     phoneNumber: res.data.parameters.fields?.phone.stringValue,
     orderNotes: res.data.parameters.fields?.orderNotes.stringValue,
@@ -39,6 +46,31 @@ export const handleUserInfo = (res: any, restaurantOption: string) => {
   return order;
 
 }
+
+
+export const handleTableFound = (uid: string): ThunkAction<void, RootState, null, ChatbotAction> => {
+  return async (dispatch, getState) => {
+    try {
+      const firstResponse = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'TableFound', uid: uid });
+      const messagesArr = firstResponse.data?.fulfillmentMessages[0]?.text.text.map(message => {
+        return { content: message, fromUser: false }
+      })
+
+      dispatch({
+        type: RECEIVED_MESSAGE_SUCCESS,
+        payload: messagesArr
+      })
+    } catch (err) {
+      console.log('err', err);
+      dispatch({
+        type: SEND_MESSAGE_FAIL,
+        payload: 'failed to Initialize chatbot'
+      });
+
+    }
+  }
+}
+
 export const handlePickupPayment = (res: any, uid: string, order: Order, payNow: boolean): ThunkAction<void, RootState, null, ChatbotAction> => {
   return async (dispatch, getState) => {
     try {
@@ -98,20 +130,24 @@ export const restaurantOptionChosen = (uid: string, optionChosen: string): Thunk
       })
       const firstResponse = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: optionChosen, uid: uid });
 
-      const messagesArr = firstResponse.data.fulfillmentMessages[0].text.text.map(message => {
+
+      const messagesArr = firstResponse.data?.fulfillmentMessages[0]?.text.text.map(message => {
         return { content: message, fromUser: false }
       })
+
+
+      // console.log(messagesArr)
       dispatch({
         type: SEND_MESSAGE_REQUEST
       })
 
-      firstResponse.data.fulfillmentMessages[1].payload.fields.cards.listValue.values.forEach(card => {
+      firstResponse.data?.fulfillmentMessages[1]?.payload.fields.cards.listValue.values.forEach(card => {
         if (card?.structValue?.fields?.title?.stringValue) {
           messagesArr.push({ content: card.structValue.fields.title.stringValue, image: card.structValue.fields.image.stringValue, fromUser: false, type: card.structValue.fields.type.stringValue })
         }
       })
 
-      firstResponse.data.fulfillmentMessages[2].text.text.forEach(message => {
+      firstResponse.data?.fulfillmentMessages[2]?.text.text.forEach(message => {
         messagesArr.push({ content: message, fromUser: false })
 
       })
@@ -131,7 +167,7 @@ export const restaurantOptionChosen = (uid: string, optionChosen: string): Thunk
 }
 
 
-export const sendChatbotMessage = (content: string, uid: string): ThunkAction<void, RootState, null, ChatbotAction> => {
+export const sendChatbotMessage = (content: string, uid: string): ThunkAction<void, RootState, null, ChatbotAction | ReservationAction> => {
   return async (dispatch, getState) => {
     try {
 
@@ -147,12 +183,37 @@ export const sendChatbotMessage = (content: string, uid: string): ThunkAction<vo
         type: SEND_MESSAGE_REQUEST
       })
       const res = await axios.post(ServerBaseUrlProd + '/dialogFlow/text-query', { text: content, uid: uid });
-
       let messagesArr: ChatbotMessage[]
-      messagesArr = [{ content, fromUser: true }]
-      res.data.fulfillmentMessages[0].text.text.forEach(message => {
-        messagesArr.push({ content: message, fromUser: false })
-      })
+
+      if (res.data.action === 'checkTableAvailability' && res.data.allRequiredParamsPresent) {
+        messagesArr = [{ content, fromUser: true }]
+        let formatTableData;
+        res.data.fulfillmentMessages[0].text.text.forEach(message => {
+          messagesArr.push({ content: formatDateToShowUser(message), fromUser: false, type: 'bookTableData' })
+          formatTableData = formatDateForBookTableData(message)
+        })
+        reservationData.date = formatTableData.date;
+        reservationData.time = formatTableData.time;
+        reservationData.partySize = formatTableData.guests;
+
+        const table = await isThereTableAvailable(formatTableData)
+        if (table) {
+          tableData = table;
+          messagesArr.push({ content: 'Great news we found a table at your desired date. we just need your information to complete the booking:', fromUser: false });
+          dispatch(handleTableFound(uid))
+        } else {
+          messagesArr.push({ content: 'Sorry there is no table available at that date and time...', fromUser: false })
+        }
+
+      } else {
+        messagesArr = [{ content, fromUser: true }]
+        res.data.fulfillmentMessages[0].text.text.forEach(message => {
+          messagesArr.push({ content: message, fromUser: false })
+        })
+      }
+
+
+
 
       if (res.data.fulfillmentMessages[1]) {
         res.data.fulfillmentMessages[1]?.payload?.fields?.cards?.listValue?.values?.forEach(card => {
@@ -176,6 +237,22 @@ export const sendChatbotMessage = (content: string, uid: string): ThunkAction<vo
         })
       }
 
+
+      if (res.data.action === 'bookTableUserInfo' && res.data.allRequiredParamsPresent) {
+        
+        reservationData.email = res.data.parameters.fields?.email.stringValue;
+        reservationData.phoneNumber = res.data.parameters.fields?.phoneNumber.stringValue;
+        reservationData.name = res.data.parameters.fields?.name.stringValue;
+        dispatch({
+          type: SET_RESERVATION_DATA_FROM_CHATBOT,
+          payload: reservationData
+        })
+        dispatch({
+          type: SET_TABLE_FROM_CHATBOT,
+          payload: tableData
+        })
+      }
+
       if (res.data.action === 'pickupUserInfo' && res.data.allRequiredParamsPresent) {
         order = handleUserInfo(res, 'Pickup')
       }
@@ -185,6 +262,7 @@ export const sendChatbotMessage = (content: string, uid: string): ThunkAction<vo
         order.orderItems = cartItems;
         order.amount = user?.id ? getCartTotalForLoggedUser(cartItems) : getCartTotal(cartItems);
         const message = [{ content: 'Please complete the payment process:', fromUser: false, type: 'showPaypalButton' }]
+
         dispatch({
           type: RECEIVED_MESSAGE_SUCCESS,
           payload: message
@@ -196,7 +274,7 @@ export const sendChatbotMessage = (content: string, uid: string): ThunkAction<vo
 
       }
 
-
+      ///for pickup payment
       if (res.data.action === 'paymentNow') {
         dispatch(handlePickupPayment(res, uid, order, true))
       }

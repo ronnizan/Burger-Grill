@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { userLoginReducer, userRegisterReducer, userDeleteReducer } from './reducers/authReducer';
 import { popupMessageReducer } from './reducers/popupMessageReducer';
-import { getTablesReducer, reservationAvailabilityReducer,bookTableReducer, getReservationForUserReducer } from './reducers/reservationReducer';
+import { getTablesReducer, reservationAvailabilityReducer, bookTableReducer, getReservationForUserReducer, BookTableDataFromChatbotReducer } from './reducers/reservationReducer';
 import { cartReducer, cartChatbotReducer } from './reducers/cartReducer';
 import { allProductsReducer, bestSellersReducer, productPopupReducer } from './reducers/productsReducer';
 import { creatOrderReducer, getOrdersForUserReducer } from './reducers/orderReducer';
@@ -18,6 +18,7 @@ const rootReducer = combineReducers({
   reservationAvailability:reservationAvailabilityReducer,
   getTables:getTablesReducer,
   bookTable:bookTableReducer,
+  BookTableDataFromChatbot:BookTableDataFromChatbotReducer,
   getReservationForUser:getReservationForUserReducer,
   cart:cartReducer,
   cartChatbot:cartChatbotReducer,
