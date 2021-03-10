@@ -46,7 +46,8 @@ import { Order } from '../../redux/types/orderTypes';
 import { createOrder } from '../../redux/actions/orderActions';
 import { ReservationData, TableData } from '../../redux/types/reservationTypes';
 import PhoneConformation from './../phone-conformation/PhoneConformation';
-
+import ChatbotPhoneConformation from '../chatbot-phone-conformation/ChatbotPhoneConformation';
+// 123221
 
 declare global {
   interface Window {
@@ -230,7 +231,7 @@ const ChatBot = ({ user }: { user: User }) => {
                     <ChatbotSelfUserContent>
                       {message.content}
                     </ChatbotSelfUserContent>
-                  ) : (
+                  ) : (  
                     <ChatbotBotContent>
                       {message.content}
                     </ChatbotBotContent>
@@ -247,8 +248,10 @@ const ChatBot = ({ user }: { user: User }) => {
               onError={errorPaymentHandler}
             /></PaypalWrapper>
           }
+
+          {/* finished getting all info for table booking start phone confirmation */}
           {
-            reservationData?.name && <PhoneConformation phoneNumber={reservationData.phoneNumber} date={reservationData.date} table={table} partySize={+reservationData.partySize} time={reservationData.time}></PhoneConformation>
+            reservationData?.name && <ChatbotPhoneConformation phoneNumber={reservationData.phoneNumber} date={reservationData.date} table={table} partySize={+reservationData.partySize} time={reservationData.time} email={reservationData.email} name={reservationData.name}></ChatbotPhoneConformation> 
           }
           {loading && <Loader />}
 

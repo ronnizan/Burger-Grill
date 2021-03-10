@@ -2,7 +2,6 @@
 export const formatDateToShowUser = (message:string) => {
   const arrOfMessage = message.split(" ")
   const date = new Date(arrOfMessage[0]).toLocaleDateString().replace(".", "/").replace('.', "/");
-  console.log(arrOfMessage[1]) 
   let time = new Date(arrOfMessage[1]).getHours() + ":00";
   if (time === '0:00') {
     time = '12:00'

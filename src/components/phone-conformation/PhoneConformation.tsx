@@ -28,7 +28,6 @@ function PhoneConformation({ phoneNumber, date, table, partySize, time }) {
   useEffect(() => {
     window.recaptchaVerifier = new firebaseForCaptcha.auth.RecaptchaVerifier('recaptcha-container');
     const appVerifier = window.recaptchaVerifier;
-    console.log(convertedPhoneNumber)
     firebase.auth().signInWithPhoneNumber(convertedPhoneNumber, appVerifier)
       .then((confirmationResult) => {
         setConfirmationResult(confirmationResult)
@@ -44,10 +43,8 @@ function PhoneConformation({ phoneNumber, date, table, partySize, time }) {
     if (confirmationResult) {
       setProcessing(true);
       confirmationResult.confirm(code).then((result) => {
-        // const dateToSend = date.getDate().toString() + " " + (date.getMonth() + 1).toString() + " " + date.getFullYear();
-        // dispatch(bookTable({ date: dateToSend, partySize, time, table, email: reservationData.email, name: reservationData.name }))
-        // const dateToSend = date.getDate().toString() + " " + (date.getMonth() + 1).toString() + " " + date.getFullYear();
-        dispatch(bookTable({ date: date, partySize, time, table, email: 'ronnizan01@gmail.com', name:'roniww' }))
+        const dateToSend = date.getDate().toString() + " " + (date.getMonth() + 1).toString() + " " + date.getFullYear();
+        dispatch(bookTable({ date: dateToSend, partySize, time, table, email: reservationData.email, name: reservationData.name }))
 
       }).catch((error) => {
         console.log(error)

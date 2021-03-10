@@ -199,10 +199,11 @@ export const sendChatbotMessage = (content: string, uid: string): ThunkAction<vo
         const table = await isThereTableAvailable(formatTableData)
         if (table) {
           tableData = table;
-          messagesArr.push({ content: 'Great news we found a table at your desired date. we just need your information to complete the booking:', fromUser: false });
+          messagesArr.push({ content: 'Great news!, we found a table at your desired date and time. we just need your deatils to complete the booking:', fromUser: false });
           dispatch(handleTableFound(uid))
         } else {
-          messagesArr.push({ content: 'Sorry there is no table available at that date and time...', fromUser: false })
+          messagesArr.push({ content: 'Sorry there is no table available at that date and time... please try again with different date or time', fromUser: false })
+          dispatch(noTableAvailable(uid));
         }
 
       } else {
@@ -239,7 +240,7 @@ export const sendChatbotMessage = (content: string, uid: string): ThunkAction<vo
 
 
       if (res.data.action === 'bookTableUserInfo' && res.data.allRequiredParamsPresent) {
-        
+
         reservationData.email = res.data.parameters.fields?.email.stringValue;
         reservationData.phoneNumber = res.data.parameters.fields?.phoneNumber.stringValue;
         reservationData.name = res.data.parameters.fields?.name.stringValue;
@@ -422,8 +423,35 @@ export const paymentProcessCompleted = (restaurantOption: string): ThunkAction<v
   }
 }
 
+export const noTableAvailable = (uid: string): ThunkAction<void, RootState, null, ChatbotAction> => {
+  return async dispatch => {
+    try {
+
+      dispatch({
+        type: SEND_MESSAGE_REQUEST
+      })
+      const firstResponse = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'BookTableSelected', uid: uid });
 
 
+      const messagesArr = firstResponse.data?.fulfillmentMessages[0]?.text.text.map(message => {
+        return { content: message, fromUser: false }
+      })
+
+
+      dispatch({
+        type: RECEIVED_MESSAGE_SUCCESS,
+        payload: messagesArr
+      })
+    } catch (err) {
+      console.log('err', err);
+      dispatch({
+        type: SEND_MESSAGE_FAIL,
+        payload: 'failed to Initialize chatbot'
+      });
+
+    }
+  }
+}
 
 
 

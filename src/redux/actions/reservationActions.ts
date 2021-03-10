@@ -5,39 +5,35 @@ import { popupMessage } from './popupMessageAction';
 import { ReservationData, TableData } from './../types/reservationTypes';
 import { ReservationAction } from '../types/reservationTypes';
 import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_REQUEST, GET_TABLES_SUCCESS, GET_TABLES_FAIL, BOOK_TABLE_FAIL, BOOK_TABLE_SUCCESS, GET_RESERVATIONS_FOR_USER_REQUEST, GET_RESERVATIONS_FOR_USER_FAIL } from './../constants/reservationConstants';
-import { BOOK_TABLE_REQUEST, GET_RESERVATIONS_FOR_USER_SUCCESS } from '../constants/reservationConstants';
+import { BOOK_TABLE_REQUEST, GET_RESERVATIONS_FOR_USER_SUCCESS, BOOK_TABLE_SUCCESS_FROM_CHATBOT } from '../constants/reservationConstants';
 import { User } from './../types/authTypes';
 import axios from 'axios';
 import { ServerBaseUrlProd } from '../constants/endPoints';
+import { finishChatbotConversation } from './chatbotActions';
+import { RECEIVED_MESSAGE_SUCCESS } from '../constants/chatbotConstants';
+import { ChatbotAction } from '../types/chatbotTypes';
 
 
 
 
 
 export const isThereTableAvailable = async ({ date, time, guests }) => {
-  try {  
-
+  try {
+    if (+time > 22 || +time < 12 ) {
+      return false;
+    }
+     
     const isDateAndTimeAlreadyInDb = await firebase.firestore().collection('/tableBookingByDate').doc(date + " " + time).get();
     if (isDateAndTimeAlreadyInDb.exists) {
       const tables = Object.values(isDateAndTimeAlreadyInDb.data())
-      console.log(tables);
       const isTableAvailable = tables.find(t => t.capacity === +guests && t.isAvailable);
       return isTableAvailable;
-      // const findTable = tables.find(t => t.name === table.name);
-      // findTable.isAvailable = false;
-      // const tablesToSaveInDb = Object.assign({}, tables);
-      // await firebase.firestore().collection('/tableBookingByDate').doc(date + " " + time).set(tablesToSaveInDb);
-
     } else {
       const tablesSnapshot = await firebase.firestore().collection('tables').get();
       const tables = tablesSnapshot.docs.map(contentObj => ({ ...contentObj.data() })) as TableData[];
       // console.log(tables);
       const isTableAvailable = tables.find(t => t.capacity === +guests && t.isAvailable);
       return isTableAvailable;
-  
-      // findTable.isAvailable = false;
-      // const tablesToSaveInDb = Object.assign({}, tables);
-      // await firebase.firestore().collection('/tableBookingByDate').doc(date + " " + time).set(tablesToSaveInDb);
     }
 
   } catch (err) {
@@ -90,7 +86,7 @@ export const getReservationsForUser = (): ThunkAction<void, RootState, null, Res
 }
 
 
-export const bookTable = ({ date, table, time, partySize, email, name }: { date: string, time: string, table: TableData, partySize: number, email: string, name: string }): ThunkAction<void, RootState, null, ReservationAction> => {
+export const bookTable = ({ date, table, time, partySize, email, name, fromChatbot = false }: { date: string, time: string, table: TableData, partySize: number, email: string, name: string, fromChatbot?: boolean }): ThunkAction<void, RootState, null, ReservationAction | ChatbotAction> => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -149,7 +145,7 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
       dispatch({
         type: BOOK_TABLE_SUCCESS,
         payload: reservationData
-      });
+      });  
 
       const { data } = await axios.post(`${ServerBaseUrlProd}/email/send-reservation-mail`, {
         email: reservationData.email,
@@ -161,7 +157,19 @@ export const bookTable = ({ date, table, time, partySize, email, name }: { date:
       });
 
       dispatch(popupMessage({ type: 'success', content: "Table Booked!" }))
+      if (fromChatbot) {
+        const messagesArr = [{ content: 'Your table has been successfully Booked!, an email with your booking confirmation has been sent to your email address.', fromUser: false }]
+        dispatch({
+          type: BOOK_TABLE_SUCCESS_FROM_CHATBOT,
+          payload: reservationData 
+        });
+        dispatch({
+          type: RECEIVED_MESSAGE_SUCCESS,
+          payload: messagesArr
+        })
+        dispatch(finishChatbotConversation())
 
+      }
 
     } catch (err) {
       console.log(err);
@@ -226,7 +234,7 @@ export const clearReservationData = (data: ReservationData): ThunkAction<void, R
 
     dispatch({
       type: CLEAR_RESERVATION_DATA
-    })   
+    })
 
   }
 }

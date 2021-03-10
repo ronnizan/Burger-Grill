@@ -11,11 +11,11 @@ export const Chatbot = styled.form<{ chatOpen: boolean }>`
   z-index: 10000;
   position: fixed;
   bottom: 110px;
-  left: 20px;
+  left: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
   height: 310px;
   overflow-y: scroll;
-  width: 300px;
+  width: 310px;
   ::-webkit-scrollbar {
     // display: none;
     // background: red;

@@ -1,5 +1,5 @@
 import { USER_LOGOUT } from '../constants/authConstants';
-import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS, SET_RESERVATION_DATA_FROM_CHATBOT, SET_TABLE_FROM_CHATBOT, CLEAR_RESERVATION_DATA_FROM_CHATBOT, CLEAR_TABLE_FROM_CHATBOT } from '../constants/reservationConstants';
+import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS, SET_RESERVATION_DATA_FROM_CHATBOT, SET_TABLE_FROM_CHATBOT, CLEAR_RESERVATION_DATA_FROM_CHATBOT, CLEAR_TABLE_FROM_CHATBOT, BOOK_TABLE_SUCCESS_FROM_CHATBOT } from '../constants/reservationConstants';
 import { ReservationAction, ReservationData, TableData, ReservationDataFromDb } from '../types/reservationTypes';
 import { GET_RESERVATIONS_FOR_USER_REQUEST, GET_RESERVATIONS_FOR_USER_FAIL } from './../constants/reservationConstants';
 
@@ -70,7 +70,7 @@ export const getTablesReducer = (state: TableData[] = [], action: ReservationAct
       return state;
   }
 }
-export const bookTableReducer = (state: { loading: boolean, reservationData: ReservationData, error: string } = { loading: false, reservationData: null, error: '' }, action: ReservationAction) => {
+export const bookTableReducer = (state: { loading: boolean, reservationData: ReservationData, reservationDataFromChatbot: ReservationData, error: string } = { loading: false, reservationData: null, reservationDataFromChatbot: null, error: '' }, action: ReservationAction) => {
   switch (action.type) {
     case BOOK_TABLE_REQUEST:
       return {
@@ -78,6 +78,8 @@ export const bookTableReducer = (state: { loading: boolean, reservationData: Res
       }
     case BOOK_TABLE_SUCCESS:
       return { reservationData: action.payload, loading: false }
+    case BOOK_TABLE_SUCCESS_FROM_CHATBOT:
+      return { reservationDataFromChatbot: action.payload, loading: false }
     case BOOK_TABLE_FAIL:
       return { error: 'failed to book table', loading: false }
     case CLEAR_RESERVATION_DATA:

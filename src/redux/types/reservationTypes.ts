@@ -1,5 +1,5 @@
 import { USER_LOGOUT } from "../constants/authConstants";
-import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS, SET_RESERVATION_DATA_FROM_CHATBOT, CLEAR_RESERVATION_DATA_FROM_CHATBOT, SET_TABLE_FROM_CHATBOT, CLEAR_TABLE_FROM_CHATBOT } from '../constants/reservationConstants';
+import { SET_RESERVATION_DATA, CLEAR_RESERVATION_DATA, GET_TABLES_FAIL, GET_TABLES_SUCCESS, GET_TABLES_REQUEST, BOOK_TABLE_REQUEST, BOOK_TABLE_SUCCESS, BOOK_TABLE_FAIL, GET_RESERVATIONS_FOR_USER_SUCCESS, SET_RESERVATION_DATA_FROM_CHATBOT, CLEAR_RESERVATION_DATA_FROM_CHATBOT, SET_TABLE_FROM_CHATBOT, CLEAR_TABLE_FROM_CHATBOT, BOOK_TABLE_SUCCESS_FROM_CHATBOT } from '../constants/reservationConstants';
 import { GET_RESERVATIONS_FOR_USER_REQUEST, GET_RESERVATIONS_FOR_USER_FAIL } from './../constants/reservationConstants';
 
 
@@ -77,6 +77,10 @@ interface BookTableSuccessAction {
   type: typeof BOOK_TABLE_SUCCESS;
   payload: any;
 }
+interface BookTableSuccessFromChatbotAction {
+  type: typeof BOOK_TABLE_SUCCESS_FROM_CHATBOT;
+  payload: any;
+}
 interface BookTableFailAction {
   type: typeof BOOK_TABLE_FAIL;
 }
@@ -98,5 +102,5 @@ interface SignOutAction {
 
 
 
-export type ReservationAction = SetReservationDataAction | ClearReservationDataAction | SetReservationDataFromChatbotAction | ClearReservationDataFromChatbotAction | SetTableFromChatbotAction | ClearTableFromChatbotAction | GetTablesRequestAction | GetTablesSuccessAction | GetTablesFailAction | BookTableRequestAction | BookTableSuccessAction | BookTableFailAction | GetReservationsForUserRequestAction | GetReservationsForUserSuccessAction | GetReservationsForUserFailAction | SignOutAction;
+export type ReservationAction = SetReservationDataAction | ClearReservationDataAction | SetReservationDataFromChatbotAction | ClearReservationDataFromChatbotAction | SetTableFromChatbotAction | ClearTableFromChatbotAction | GetTablesRequestAction | GetTablesSuccessAction | GetTablesFailAction | BookTableRequestAction | BookTableSuccessAction | BookTableSuccessFromChatbotAction| BookTableFailAction | GetReservationsForUserRequestAction | GetReservationsForUserSuccessAction | GetReservationsForUserFailAction | SignOutAction;
 
