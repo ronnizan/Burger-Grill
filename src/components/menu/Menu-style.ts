@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import * as HiIcons from 'react-icons/hi';
 import * as AiIcons from 'react-icons/ai';
 import { Link as LinkRouter } from 'react-router-dom';
-// import ReviewsBackground from '../../images/menu-hero.jpg';
+
 
 export const MenuHero = styled.div`
   background-image: url('https://icecube-eu-288.icedrive.io/thumbnail?p=ORI5ex4iEw5VpTE1GXyKjTOJelM7MAXLCvUvbGbU%2Bit3%2B9WnUwAdSCn77zMm6cpouv24x1MtVA8K54ag6PfPwr1ljfvmEfI2ugPvUnf2niHpop7zFwqMEzTAR%2FP7Gthq&w=1280&h=1280&m=cropped');

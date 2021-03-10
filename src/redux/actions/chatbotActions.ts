@@ -1,7 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '..';
-// import firebase from '../../firebase/firebaseConfig';
-// import { popupMessage } from './popupMessageAction';
 import { ReservationData, TableData } from './../types/reservationTypes';
 import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS, SET_RESTAURANT_OPTION_SELECTED } from '../constants/chatbotConstants';
 import axios from 'axios';
@@ -19,7 +17,6 @@ import { isThereTableAvailable } from './reservationActions';
 import { SET_RESERVATION_DATA_FROM_CHATBOT, SET_TABLE_FROM_CHATBOT } from '../constants/reservationConstants';
 import { ReservationAction } from '../types/reservationTypes';
 
-// const res = await axios.post('https://us-central1-burgergril-30358.cloudfunctions.net/api/dialogFlow/text-query', { text: 'Who are you?' });
 let order: Order;
 let reservationData: ReservationData = { name: '', email: "", phoneNumber: '', date: '', time: '', partySize: 0 };
 let tableData: TableData;
@@ -135,8 +132,6 @@ export const restaurantOptionChosen = (uid: string, optionChosen: string): Thunk
         return { content: message, fromUser: false }
       })
 
-
-      // console.log(messagesArr)
       dispatch({
         type: SEND_MESSAGE_REQUEST
       })
@@ -306,7 +301,6 @@ export const initialChatbot = (uid: string): ThunkAction<void, RootState, null, 
       })
       const firstResponse = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'Welcome', uid: uid });
 
-      // console.log(uid)
       const messagesArr = firstResponse.data.fulfillmentMessages[0].text.text.map(message => {
         return { content: message, fromUser: false }
       })
@@ -315,7 +309,6 @@ export const initialChatbot = (uid: string): ThunkAction<void, RootState, null, 
       })
       const secondResponse = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'RestaurantOptions', uid: uid });
       const receivedMessage = { content: secondResponse.data.fulfillmentMessages[0].text.text[0], fromUser: false }
-      // console.log(secondResponse)
       messagesArr.push(receivedMessage);
       secondResponse.data.fulfillmentMessages[1].payload.fields.cards.listValue.values.forEach(card => {
         messagesArr.push({ content: card.structValue.fields.title.stringValue, image: card.structValue.fields.image.stringValue, fromUser: false, type: card.structValue.fields.type.stringValue })
@@ -349,7 +342,6 @@ export const finishChatbotConversation = (): ThunkAction<void, RootState, null, 
       })
       const response = await axios.post(ServerBaseUrlProd + '/dialogFlow/event-query', { event: 'finishConversation', uid: chatbotId });
 
-      // console.log(uid)
       const messagesArr = response.data.fulfillmentMessages[0].text.text.map(message => {
         return { content: message, fromUser: false }
       })
@@ -372,7 +364,6 @@ export const paymentProcessFailed = (): ThunkAction<void, RootState, null, Chatb
   return async (dispatch, getState) => {
     try {
 
-      // console.log(uid)
       const messagesArr =
         [{ content: 'Payment process failed.., please try again later!', fromUser: false }]
       dispatch({

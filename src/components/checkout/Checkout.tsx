@@ -104,7 +104,6 @@ const Checkout = () => {
     <>
       <CheckoutHero>
         <HeroTitle>Checkout</HeroTitle>
-        {/* <CheckoutSubTitle>Proceed to Checkout or Update your cart</CheckoutSubTitle> */}
       </CheckoutHero>
       <CheckoutSectionWrapper>
         {!order?.id && <CheckoutSection>

@@ -16,7 +16,6 @@ import {
   PaypalWrapper,
   ChatbotSelfUserContent,
   ChatbotBotContent,
-  // ProfileImageLinkWrapper,
   Image,
   OptionImage,
   ChatbotInputAndButton,
@@ -24,7 +23,7 @@ import {
   ChatbotSendBtnWrapper,
   ChatbotSendBtn,
 } from './Chatbot-style';
-// import {
+
 import { User } from './../../redux/types/authTypes';
 import { initialChatbot, restaurantOptionChosen, paymentProcessCompleted } from '../../redux/actions/chatbotActions';
 import { RootState } from '../../redux';
@@ -45,9 +44,7 @@ import { CREATE_ORDER_FAIL } from '../../redux/constants/orderConstants';
 import { Order } from '../../redux/types/orderTypes';
 import { createOrder } from '../../redux/actions/orderActions';
 import { ReservationData, TableData } from '../../redux/types/reservationTypes';
-import PhoneConformation from './../phone-conformation/PhoneConformation';
 import ChatbotPhoneConformation from '../chatbot-phone-conformation/ChatbotPhoneConformation';
-// 123221
 
 declare global {
   interface Window {

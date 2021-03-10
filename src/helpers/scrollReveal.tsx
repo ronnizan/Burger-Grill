@@ -3,21 +3,21 @@ import ScrollReveal from 'scrollreveal';
 
 export default function activateScrollReveal (){
   let reval = {
-    // distance: '50%',
+    
     origin: 'right',
     delay: 100,
     duration: 5000,
     easing: 'ease',
   };
   let revalWithDelay = {
-    // distance: '50%',
+    
     origin: 'right',
     delay: 1200,
     duration: 5000,
     easing: 'ease',
   };
   let revalWithLongerDelay = {
-    // distance: '50%',
+    
     origin: 'right',
     delay: 2200,
     duration: 5000,
@@ -26,14 +26,12 @@ export default function activateScrollReveal (){
   let revalFromRight = {
     distance: '15%',
     origin: 'right',
-    // delay: 1200,
     duration: 3000,
     easing: 'ease',  
   };
   let revalFromLeft = {
     distance: '15%',
     origin: 'left',
-    // delay: 1200,
     duration: 3000,
     easing: 'ease',  
   };

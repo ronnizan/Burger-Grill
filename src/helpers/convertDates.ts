@@ -20,18 +20,3 @@ export const formatDateForBookTableData = (message:string) => {
   const guests = arrOfMessage[2];
   return { date, time,guests}
 }
-
-
-
-// console.log(new Date(arr[1]).getHours() + ":00")
-
-
-// show user:
-// let date = new Date(arr[0]).toLocaleDateString().replace(".","/").replace('.',"/")
-// let time= new Date(arr[1]).getHours() + ":00"
-
-// data:
-
-// let date = new Date(arr[0]).toLocaleString().split(".").join(" ")
-// let time = new Date(arr[1]).getHours()
-// 10 3 2021 12

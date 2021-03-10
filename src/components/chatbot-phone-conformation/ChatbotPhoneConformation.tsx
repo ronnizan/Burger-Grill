@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import firebaseForCaptcha from 'firebase';
 import firebase from '../../firebase/firebaseConfig';
-import { Container, Captcha, Title, DownArrow, Input, Button, Error } from './ChatbotPhoneConformation-style'
+import { Container, Captcha, Input, Button, Error } from './ChatbotPhoneConformation-style'
 import { bookTable } from '../../redux/actions/reservationActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReservationData } from '../../redux/types/reservationTypes';
@@ -18,7 +18,7 @@ declare global {
 }
 const ChatbotPhoneConformation = ({ phoneNumber, date, table, partySize, time, email, name }) => {
   const dispatch = useDispatch();
-  const { loading, reservationData: reservationDataAfterBookingCompleted, reservationDataFromChatbot: reservationDataAfterBookingCompletedFromChatbot }: { loading: boolean, reservationData: ReservationData, reservationDataFromChatbot: ReservationData } = useSelector((state: RootState) => state.bookTable);
+  const { loading, reservationDataFromChatbot: reservationDataAfterBookingCompletedFromChatbot }: { loading: boolean, reservationData: ReservationData, reservationDataFromChatbot: ReservationData } = useSelector((state: RootState) => state.bookTable);
   const convertedPhoneNumber = convertPhoneNumber(phoneNumber);
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [code, setCode] = useState('');
@@ -77,12 +77,12 @@ const ChatbotPhoneConformation = ({ phoneNumber, date, table, partySize, time, e
   return (
     <Container>
       {!confirmationResult && <>
-        {/* <Title>Please Prove you are not a robot:<DownArrow>&darr;</DownArrow>  </Title> */}
+
         <Captcha id="recaptcha-container"></Captcha>
       </>}
       {confirmationResult && !reservationDataAfterBookingCompletedFromChatbot && <>
         {loading && <Loader />}
-        {/* <Title>Verification Sms message was sent to your phone, please enter the code you received.</Title> */}
+
         <Input placeholder="Enter Verification Code" type="text" onChange={e => {
           setError('');
           setCode(e.target.value)

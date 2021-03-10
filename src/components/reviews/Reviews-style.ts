@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import * as GoIcons from 'react-icons/go';
-// import ReviewsBackground from '../../images/reviews-background.jpg';
+
 
 export const ReviewsSection = styled.section`
   position: relative;

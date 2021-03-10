@@ -11,7 +11,6 @@ import MealPopup from '../meal-popup/MealPopup';
 const MenuItemPopup = () => {
   const { menuItem,fromChatbot }: { menuItem: MenuItem,fromChatbot:boolean } = useSelector((state: RootState) => state.productPopup);
   
-  // console.log(fromChatbot,'asd')
   return (<>
     {menuItem.id &&
       <Overlay>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-// import ProfileBackground from '../../images/checkout-hero.jpg';
+
 
 export const ProfileHero = styled.div`
   background-image: url('https://icecube-eu-288.icedrive.io/thumbnail?p=1yw1XZ3gnxykePwVFST%2FGGNzqJAZl%2BVrOPkWzBtgrq0uwt%2FkOo1dmLD2Ke6guVNVKWVUOGrUhFmeg5ePDrWUWsbibTCOEVM1rjEa2mHdGX%2BbltAF8n%2F%2FvgAJkQxzcOAR&w=1280&h=1280&m=cropped');

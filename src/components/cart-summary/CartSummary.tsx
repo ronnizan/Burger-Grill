@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CartSummaryHero, CartSummarySectionWrapper, CartSummarySection, CartSummaryTableAndTotalSummary, TotalSummary, TotalSummaryTitle, TotalSummaryRow, TotalSummaryCell, CartSummaryTitle, CartSummarySubTitle, CartIsEmptyTitle, CartSummaryTable, CartSummaryTableHeader, CartSummaryTableRow, CartSummaryTableHeaderCell, CartSummaryTableBody, CartSummaryTableBodyCell, CartSummaryItemImage, CartSummaryItemDescription, CloseIcon, LinksContainer, CheckoutLink, BackToOrderLink } from './CartSummary-style';
+import { CartSummaryHero, CartSummarySectionWrapper, CartSummarySection, CartSummaryTableAndTotalSummary, TotalSummary, TotalSummaryRow, TotalSummaryCell, CartSummaryTitle, CartSummarySubTitle, CartIsEmptyTitle, CartSummaryTable, CartSummaryTableHeader, CartSummaryTableRow, CartSummaryTableHeaderCell, CartSummaryTableBody, CartSummaryTableBodyCell, CartSummaryItemImage, CartSummaryItemDescription, CloseIcon, LinksContainer, CheckoutLink, BackToOrderLink } from './CartSummary-style';
 import { RootState } from '../../redux';
 import { removeItemFromCart } from '../../redux/actions/cartActions';
 import { CartItem } from '../../redux/types/cartTypes';
@@ -44,7 +44,6 @@ const CartSummary = () => {
           {cartItems.length === 0 && <CartIsEmptyTitle>Your cart is empty</CartIsEmptyTitle>}
           {cartItems.length > 0 && <CartSummaryTableAndTotalSummary>
             <TotalSummary>
-              {/* <TotalSummaryTitle>CART TOTALS</TotalSummaryTitle> */}
               <TotalSummaryRow>
                 <TotalSummaryCell>Cart Subtotal</TotalSummaryCell>
                 <TotalSummaryCell>{cartItems ? '$' : '0'}{getCartTotal(cartItems)}</TotalSummaryCell>

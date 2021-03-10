@@ -50,7 +50,6 @@ export const ItemDescription = styled.h3`
   font-family: 'Imbue', serif;
   font-size: 1.5rem;
   display: inline-block;
-  // border-bottom: 3px solid rgb(222, 141, 87, 0.7);
   margin-bottom: 20px;
   color: black;
   margin-top: 20px;

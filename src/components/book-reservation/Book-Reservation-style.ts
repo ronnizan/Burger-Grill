@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import BookReservationBackground from '../../images/bestsellers-background.jpg';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 

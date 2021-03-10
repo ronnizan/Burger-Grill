@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
 import * as FaIcons from 'react-icons/fa';
-// import Background from '../../images/hero2.jpg';
-// import TitleBackground from '../../images/burger-title-background.jpg';
+
 import { Link as LinkScroll } from 'react-scroll';
 import { Link as LinkRouter } from 'react-router-dom';
 

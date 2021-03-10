@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link as LinkR } from 'react-router-dom';
 import { FaRobot } from 'react-icons/fa';
 import { AiOutlineClose } from 'react-icons/ai';
 import { IoMdSend } from 'react-icons/io';
@@ -17,8 +16,6 @@ export const Chatbot = styled.form<{ chatOpen: boolean }>`
   overflow-y: scroll;
   width: 310px;
   ::-webkit-scrollbar {
-    // display: none;
-    // background: red;
     width: 10px;
   }
   ::-webkit-scrollbar-track {
@@ -61,7 +58,6 @@ export const ChatbotUserName = styled.p`
 `;
 export const ChatbotBody = styled.div`
   display: flex;
-  // flex-direction: column;
   flex-wrap: wrap;
   min-height: 200px;
 `;
@@ -88,7 +84,6 @@ export const ChatbotColumnWithOptionsContent = styled.div<{isRestaurantOption: b
   margin: 5px;
   width: ${({ isRestaurantOption }) =>
   isRestaurantOption ? '' : '65px'};
-  // width:50px;
   cursor: pointer;
   :hover{
     transform:scale(1.1)
@@ -98,12 +93,8 @@ export const ChatbotColumnWithOptionsContent = styled.div<{isRestaurantOption: b
 export const PaypalWrapper = styled.div`
   border: none;
   outline: none;
-  // width: 30%;
   margin: 10px auto;
   margin-left: 30px;
-  @media screen and (max-width: 768px) {
-    // width: 90%;
-  }
 `;
 export const ChatbotColumnWithOptionsContentText = styled.p`
 font-size:14px;
@@ -111,14 +102,7 @@ font-weight:bold;
 margin-bottom:5px;
 text-align: center;
 `;
-// export const ChatCommentDate = styled.span`
-//   position: absolute;
-//   font-size: 12px;
-//   color: grey;
-//   right: 5px;
-//   top: 0;
-//   font-family: 'Rubik', sans-serif;
-// `;
+
 export const ChatbotSelfUserContent = styled.p`
   background-color: #dcf8c6;
   padding: 15px;

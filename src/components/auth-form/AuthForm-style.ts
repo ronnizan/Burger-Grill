@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import * as FaIcons from 'react-icons/fa';
 import * as FcIcons from 'react-icons/fc';
-// import AuthFormBackground from '../../images/reviews-background.jpg';
+
 
 export const AuthFormSection = styled.section`
   padding-top: 100px;

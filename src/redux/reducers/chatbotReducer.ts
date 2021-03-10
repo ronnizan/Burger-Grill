@@ -1,8 +1,5 @@
-import { USER_LOGOUT } from '../constants/authConstants';
-import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS, SET_RESTAURANT_OPTION_SELECTED } from '../constants/chatbotConstants';
-import { CartAction, Cart, } from '../types/cartTypes';
+import { SEND_MESSAGE_REQUEST, SEND_MESSAGE_FAIL, RECEIVED_MESSAGE_SUCCESS, SET_CHATBOT_ID, SET_ORDER_DEATILS, SET_RESTAURANT_OPTION_SELECTED } from '../constants/chatbotConstants';
 import { ChatbotAction, ChatbotMessage } from '../types/chatbotTypes';
-import { Order } from '../types/orderTypes';
 import { CLEAR_ORDER_DEATILS } from './../constants/chatbotConstants';
 
 

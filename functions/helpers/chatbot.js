@@ -8,12 +8,9 @@ const credentials = {
   private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
 };
 
+//initialize chatbot configuration
 const sessionClient = new dialogflow.SessionsClient({ projectId, credentials });
 
-// const sessionPath = sessionClient.sessionPath(
-//   process.env.DIALOGFLOW_GOOGLE_PROJECT_ID,
-//   process.env.DIALOGFLOW_SESSION_ID
-// );
 
 module.exports = {
   textQuery: async function (text, uid, parameters = {}) {

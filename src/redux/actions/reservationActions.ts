@@ -31,7 +31,6 @@ export const isThereTableAvailable = async ({ date, time, guests }) => {
     } else {
       const tablesSnapshot = await firebase.firestore().collection('tables').get();
       const tables = tablesSnapshot.docs.map(contentObj => ({ ...contentObj.data() })) as TableData[];
-      // console.log(tables);
       const isTableAvailable = tables.find(t => t.capacity === +guests && t.isAvailable);
       return isTableAvailable;
     }

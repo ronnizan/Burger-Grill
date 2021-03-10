@@ -1,4 +1,4 @@
-import { USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, RESET_ERROR, USER_LOGOUT, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAIL, SET_USER, DELETE_USER_SUCCESS } from '../constants/authConstants';
+import { USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_LOGOUT, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAIL, SET_USER, DELETE_USER_SUCCESS } from '../constants/authConstants';
 import { AuthAction } from '../types/authTypes';
 import { User } from './../types/authTypes';
 import { DELETE_USER_REQUEST, DELETE_USER_FAIL } from './../constants/authConstants';

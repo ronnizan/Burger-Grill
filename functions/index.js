@@ -4,14 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const emailRoutes = require('./controllers/email-controller')
 const dialogflowRoutes = require('./controllers/dialogFlow-controller')
-   
-// require('dotenv').config({path:__dirname+'/./../../.env'})
-
-
-// http://localhost:5001/burgergril-30358/us-central1/api/send-reservation-mail
-// http://localhost:5001/burgergril-30358/us-central1/api/config/paypal
-// https://us-central1-burgergril-30358.cloudfunctions.net/api/config/paypal
-
+  
 const app = express();
 
 app.use(cors());

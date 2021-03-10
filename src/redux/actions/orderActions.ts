@@ -15,7 +15,7 @@ import { ChatbotAction } from '../types/chatbotTypes';
 import { finishChatbotConversation } from './chatbotActions';
 
 
-export const createOrder = (order: Order,fromChatbot = false): ThunkAction<void, RootState, null, OrderAction | CartAction| ChatbotAction> => {
+export const createOrder = (order: Order, fromChatbot = false): ThunkAction<void, RootState, null, OrderAction | CartAction | ChatbotAction> => {
   return async dispatch => {
     try {
       dispatch({
@@ -26,20 +26,38 @@ export const createOrder = (order: Order,fromChatbot = false): ThunkAction<void,
         type: CREATE_ORDER_SUCCESS,
         payload: order
       });
-      const { data } = await axios.post(`${ServerBaseUrlProd}/email/send-order-mail`, {
-        date: new Date().toLocaleString(),
-        firstName: order.firstName,
-        amount: order.amount,
-        orderItems: order.orderItems,
-        city: order.city,
-        address: order.address,
-        floor: order.floor,
-        email: order.email,
-        orderMethod: order.orderMethod,
-        apartmentNumber: order.apartmentNumber,
-        orderNotes: order.orderNotes,
-        phoneNumber: order.phoneNumber,
-      });
+      if (order.orderMethod === "Pickup") {
+        const { data } = await axios.post(`${ServerBaseUrlProd}/email/send-pickup-mail`, {
+          date: new Date().toLocaleString(),
+          firstName: order.firstName,
+          amount: order.amount,
+          orderItems: order.orderItems,
+          city: order.city,
+          address: order.address,
+          floor: order.floor,
+          email: order.email,
+          orderMethod: order.orderMethod,
+          apartmentNumber: order.apartmentNumber,
+          orderNotes: order.orderNotes,
+          phoneNumber: order.phoneNumber,
+        });
+      } else {
+        const { data } = await axios.post(`${ServerBaseUrlProd}/email/send-delivery-mail`, {
+          date: new Date().toLocaleString(),
+          firstName: order.firstName,
+          amount: order.amount,
+          orderItems: order.orderItems,
+          city: order.city,
+          address: order.address,
+          floor: order.floor,
+          email: order.email,
+          orderMethod: order.orderMethod,
+          apartmentNumber: order.apartmentNumber,
+          orderNotes: order.orderNotes,
+          phoneNumber: order.phoneNumber,
+        });
+      }
+
 
 
       dispatch(popupMessage({ type: 'success', content: "Order Completed!" }));
@@ -47,8 +65,8 @@ export const createOrder = (order: Order,fromChatbot = false): ThunkAction<void,
       dispatch({ type: CLEAR_CART });
       if (fromChatbot) {
         // finishConversation
-        dispatch(finishChatbotConversation());  
-        dispatch({ type: CLEAR_ORDER_DEATILS });  
+        dispatch(finishChatbotConversation());
+        dispatch({ type: CLEAR_ORDER_DEATILS });
         dispatch({ type: CLEAR_CHATBOT_CART });
       }
 
@@ -88,7 +106,7 @@ export const getOrdersForUser = (): ThunkAction<void, RootState, null, OrderActi
           payload: []
         });
       } else {
-        let ordersFromDb: Order [] = [];
+        let ordersFromDb: Order[] = [];
         orders.forEach(doc => {
           ordersFromDb.push(doc.data() as Order);
         });

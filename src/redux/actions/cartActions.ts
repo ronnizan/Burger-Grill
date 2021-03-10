@@ -51,7 +51,6 @@ export const addItemToChatbotCart = (cartItem: CartItem): ThunkAction<void, Root
 
     }
 
-    // console.log(uid)
     let secondMessagesArr = []
     dialogFlowRequest.data.fulfillmentMessages[0].text.text.forEach(message => {
       secondMessagesArr.push({ content: message, fromUser: false })
@@ -64,12 +63,6 @@ export const addItemToChatbotCart = (cartItem: CartItem): ThunkAction<void, Root
     })
 
   }
-
-
-  // const messagesArr = firstResponse.data.fulfillmentMessages[0].text.text.map(message => {
-  //   return { content: message, fromUser: false }
-  // })
-
 
 }
 
